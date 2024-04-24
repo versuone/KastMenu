@@ -4,7 +4,7 @@ Unixes Operating System's Menu broadKast
 ---
 
 
-**[Official web site here !](https://www.kastmenu.com)**
+**[Official web site here !](https://www.kastmenu.org)**
 **[KastMenu Demo here !](https://www.kastmenu.com:9000)**
 
 
