@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+<meta charset="utf-8" />
+<title>KastMenu Server</title>
+<meta http-equiv="Content-Type" content="text/HTML; charset=iso-8859-1" />
+<meta name="keywords" content="kastmenu server commands" />	 
+<meta name="authors" content="Patrick Germain Placidoux" />
+<meta name="robots" content="index, follow" />
+<meta name="revisit after" content="3 days" />
+
+<!-- avoiding browser/android resizing on input field: -->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+
+
+<style type="text/css">
+h1 {
+    display: inline;
+    font-size:3vmin;
+}
+h2 {
+    display: inline;
+    font-size:4vmin;'
+}
+
+/* footer: */
+div #footer { width: 100%;
+    border-top :  #c3c3c3  2px solid;
+    text-align:center;				
+}
+
+#footer li{display:inline;margin:0 6px 0 6px;}
+#footer li, #footer li a, #footer span{color:#463E41;
+    font-family:Verdana, Tahoma, Trebuchet, sans-serif;
+    font-size:12px;	
+    font-style:italic;						
+}
+#footer li a{text-decoration:none;font-style:normal;	}
+#footer li a:hover{color:#c3c3c3;}
+</style>
+</head>
+
+
+<body>
+<code style="font-family:monospace;font-size:3vmin;white-space:pre;word-wrap: break-all;">
+<hr style="width:100%;background-color:green;height:0.5vmin;border:0;padding-top:0;marging-top:0;"/>Command <h1>kastmenu</h1>:
+<b>path</b>: /opt/kastmenu/current/bin/km (or kastmenu)
+<b>usage</b>: use this command to launch KastMenu on a menu_file.
+<hr style="width:100%;background-color:green; height: 0.5vmin; border:0;"/>
+<b>km -h</b>
+Usage: 
+Syntax: km mymenu.xml
+e.g.: 
+With log level:
+    km mymenu.xml -v 30          
+With debug:
+    km mymenu.xml -v 30 --debug
+With noclear: do not clear the previous screen:
+    km mymenu.xml -v 30 --noclear
+Whith BigBrother logging:
+    km mymenu.xml -l -L /tmp -O
+-l: enable logging
+-L /tmp: where to log
+-O: allows command outputs logging.         
+See km -h for other options.
+
+KastMenu is a tools to allow access transparently to Terminal 
+Tree Menus from:
+- The Terminal Console
+- The Web, with a very oriented Mobile Phone interface.
+          
+Whatever the interface is:
+- A terminal Menu runs under the user for whom it is called for.
+
+1) Menu Tree:
+KastMenu is a Menu Tree of the following components:
+Menu, Option and
+IMenu, IOption.
+          
+- All final actions target a shell command.
+- The output sticks to what comes out from the command stdout.
+This means there is no attempt of transformation of the output 
+by KastMenu, and everything supported by the O.S. shell is 
+accessable and runnable by KastMenu.
+
+2) KastMenu File:
+A KastMenu file is a simple file describing the menu.
+See syntax above (mymenu.xml).
+This file is described by the [kastmenu_home]/conf/descs/menu.desc.xml decriptor.
+And this file could be either:
+mymenu.yaml
+mymenu.hcl or
+mymenu.xml
+          
+If this file is called:
+mymenu.[type].mako or mymenu.[type].jinja
+It will be parsed using respectively either the mako or jinja parser.
+e.g.: mymenu.xml.jinja, mymenu.yaml.mako, mymenu.hcl.jinja
+One can use --tmpl_kws option to provide CooltTyped dict of variables
+to jinja or mako.
+e.g.: {name:sebastian,address:2 open street}.
+
+3) KastMenu API:
+KastMenu API provides an API to dynamically create full featured Menus 
+on the flow.
+
+4) Indefinitly Pipable:
+KastMenu programs can call each others with the --follow_menu
+option that allows the same continuous quality of service 
+accross the chain of menu.
+          
+5) Big brother log:
+KastMenu provides a WYSIWYG logging system that keep track of every 
+action taken on the Menu by a user and (if required) of every outputs.
+This log will also trace the mpath.
+e.g.: km mymenu.xml -l -L /tmp -O
+See syntax.
+          
+6) Menu Automation:
+A mpath is a sequential path of every input played on a menu.
+Calling back KastMenu with a menupath will replay the menu and
+pause on each screen  (here 2 second).
+e.g.: km mymenu.xml -g [mpath] -p 2
+
+7) KastMenu usage:
+KastMenu is ideal for supervision, monitoring and production control,
+for restricted users access control,
+for administration management and automation purposes,
+and for training and education.          
+          
+8) From anywhere to anywhere:
+Combined with DKwad:
+- KastMenu allows access from any mobile phone to any menu, under any user
+on any remote machine, or  VM.
+With access control.
+
+- Allows access to the full featured DKwad SoftClass scheme.
+DKwad allows to run Software management actions from anywhere
+to anywhere.
+A DKwad action is a SoftClasse's module with operation on it
+(create, update, delete or anything)
+          
+9) Colors:
+KastMenu supports colors: black, red, green, yellow, blue, purple, cyan, white. 
+
+
+Options:
+  -h, --help            show this help message and exit
+  -v VERBOSE, --verbose=VERBOSE
+                        The verbose level.
+  --debug               Raises and Fails at first issue.
+  -r, --record          Will record all entries to a string ready to use for
+                        remote execution mode.
+  --show                Apimenu (now supports Mako www.makotemplates.org and
+                        palletsprojects.com/p/jinja) will do nothing but show
+                        the resulting xml file after mako|jinja2 parsing if
+                        your menu file ends with .mako or .jinja (e.g.
+                        menu.xml.mako instead of menu.xml).
+  --tmpl_kws=TMPL_KWS   (optional) A set of parameters (a CoolTyped dict) to
+                        feed mako or jinja with, when the file argument rather
+                        than beeing an .xml file is a .xml.mako file or a
+                        .xml.jinja file.
+  --temp_dir=TEMP_DIR   Temporary directory (optional usefull for mako or
+                        jinja debug).
+  --keep_temp_dir       This will keep the temporary dir ! Allowing to see all
+                        the intermediate state will parsing the file. e.g:
+                        from mako, jinja, yaml, hcl to xml.  Beware Parsing is
+                        usually done in memory, keeping the resulting files
+                        into temp_dir could be a security breach.
+  -l, --log             Do log console ?
+  -L LOG_DIR, --log_dir=LOG_DIR
+                        Optional log directory path. Required when log (-l) is
+                        provided.
+  -R LOG_ROTATE, --log_rotate=LOG_ROTATE
+                        (Default 20) How many log files to keep into the log
+                        directory.
+  -O, --log_output      By default system commands output is not retrieved
+                        into the log, this option allows it.
+  --show_shortcut       Only usefull for kupd showing SoftClasses as Menu.
+                        When kupd is called with option: show_shortcut, It
+                        will show At the same menu's level sublink for sub
+                        menus.
+
+  Advanced Menu options:
+    -b BATCH, --batch=BATCH
+                        This option requires a value:&lt;mpath&gt;.         
+                        mpath is the value for the menu, e.g.: path:1.abc.2.3.
+                        The menu path syntax is &lt;option number|option name&gt;.[option number|option name>].
+    -g GO, --go=GO      Same as --batch (-b) but will left the Menu at
+                        interactive mode !
+    -G GO_MENU, --GO=GO_MENU
+                        Same as --go (-g) but will disallow system commands !
+    -p PAUSE, --pause=PAUSE
+                        Works in conjunction with the --batch (-b) option.
+                        Pause every screen for the amount of seconds provided.
+    -C, --noclear       Works in conjunction with the --batch (-b) option. If
+                        set the terminal wont be cleared between each option.
+    -k, --nokdealer     (False by default) When False, Kdealer works in
+                        conjunction with batch (or WebMenu: internal
+                        is_listening).           nokdealer False: runs the
+                        kdealer menu input/output dispatcher and allows :
+                        - the support of follow_menu: to follow another
+                        independent menu processes, launched by some menu
+                        command like if it was the same unique menu.
+                        These menu command use: --follow_menu.           - the
+                        support of webMenu.           - the support of batch
+                        commands           - the support of full history for
+                        batch commands
+    --secid=SECID       (Internal only). Works in conjunction with the kdealer
+                        (--kdealer) option. An md5 on the kdealer listener
+                        session.
+    --follow_menu       Use this option, if you want to pipe this standalone
+                        Menu process with another.         If, within a Menu
+                        Option command you are calling another Manu process,
+                        use this option (--follow_menu) to allow them to glue
+                        together.         This would allow the listener and
+                        batch options to work as if they were called in the
+                        same Menu process.
+</code>
+<br>
+<br>
+
+<!-- footer: ----------------------------------------------------------------------------------------------------------------------- -->
+<div style='padding-left:3vmin;font-family:verdana;font-size:3vmin;'>
+<div id="footer" style='text-align:center;'>
+    <ul>
+        <li><a href="#top">Top</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="https://kastmenu.com:9000" target="_blank">Demo</a></li>
+        <li><a href="download.en.html">Download</a></li>
+        <li><a href="mailto:kastmenu@kastmenu.org">Contact</a></li>
+        <!-- <li><a href="site.map.en.html">Site Map</a></li> -->
+        <li><a href="javascript:window.print();" title="print"><img src="./images/print_ico.png" style="vertical-align:middle" alt="print" /></a></li>
+    </ul>
+    <span style="font-size:85%;">Copyright &copy; 2024 - Patrick Germain Placidoux </span>
+</div>
+</div>
+</body>
+</html>
