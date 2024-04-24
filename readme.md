@@ -11,13 +11,13 @@ Unixes Operating System's Menu broadKast
 **<u>Summary:</u>**
 
 
-* 1/ [What is KastMenu ?](#What is KastMenu ?)
-* 2/ [How it runs ?](#How it runs ?)
-* 3/ [What Public is it destinated for ?](#What Public is it destinated for ?)
-* 4/ [KastMenu Log System](#KastMenu Log System)
-* 5/ [KastMenu Replay](#KastMenu Replay)
-* 6/ [KastMenu Help Sytem](#KastMenu Help Sytem)
-* 7/ [KastMenu runs under the User and this is Powerfull !](#KastMenu runs under the User and this is Powerfull !)
+* 1/ What is KastMenu ?
+* 2/ How it runs ?
+* 3/ What Public is it destinated for ?
+* 4/ KastMenu Log System
+* 5/ KastMenu Replay
+* 6/ KastMenu Help Sytem
+* 7/ KastMenu runs under the User and this is Powerfull !
   
 **1/ [What is KastMenu ?](#top)**  
   
