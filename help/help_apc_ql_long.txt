@@ -1,0 +1,168 @@
+ -----------------
+|apc:aql long help|
+ -----------------
+
+ 
+help shows this help: a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+Note:
+-----
+The samples below use the file <REPOZ_INSTALLATION_DIR>/samples/test.xml with a processor like this:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+
+
+
+1 INTRODUCTION
+
+
+This aql implementation supports 3 commands: select, update, delete
+
+
+	
+2 SELECT OPERATION
+
+
+The select operation, selects one or more Attributes according an optional where clause.
+
+
+Syntax:
+-------
+select O_WHAT at F_TAGS if F_ATTRS
+
+
+- Simple select
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:test:/>ls
+field1:value1 field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+:test:/>%
+%test:/>select field1,field3
+                     field1               field3
+                     value1               {ccc:caa,ddd:daa}
+
+
+- Select with a where clause
+
+e.g.:
+%test:/>select field1,field3 where field1=value1
+                     field1               field3
+                     value1               {ccc:caa,ddd:daa}
+
+%test:/>select field1,field3 where field1<>value1
+                     field1               field3
+
+
+- Select with an imbricated where clause
+
+e.g.:
+%test:/>select field1,field3 where field1=value1 and ((field1 *in [value2,value1] or field1=value1) and field1=value1)
+                     field1               field3
+                     value1               {ccc:caa,ddd:daa}
+
+
+%test:/>select field1,field3 where field1=value1 and ((field1 *in [value2,value1] or field1=value1) and field1<>value1)
+                     field1               field3
+
+Note:
+-----
+Their is no limit to parenthesis imbrication.
+
+                     
+- Select using complex type and a Repoz Variable
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:test:/>ls
+field1:value1 field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+
+%test:/>%
+%test:/>select * where field3={ccc:caa,ddd:daa}
+
+                     field1               field2               field3
+                     value1               [{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] {ccc:caa,ddd:daa}
+
+
+e.g.:
+%test:/>var v3={ccc:caa,ddd:daa}
+%test:/>var v3
+{'ccc': 'caa', 'ddd': 'daa'}
+
+%test:/>select * where field3=$v3
+Var replacement: v3 to:{ccc:caa,ddd:daa}
+Var replacement: new line is:select * where field3={ccc:caa,ddd:daa}
+
+                     field1               field2               field3
+                     value1               [{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] {ccc:caa,ddd:daa}
+
+
+                     
+3 UPDATE OPERATION
+
+
+The Update operation, updates a set of Attributes with a set of pair Attribute/Values.
+
+
+Syntax:
+-------
+update set O_SET
+
+
+- Simple update
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:test:/>ls
+field1:value1 field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+
+:test:/>%
+%test:/>update set field1=aaa
+Updating attr:field1
+
+%test:/>:
+:test:/>ls
+field1:aaa field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+:test:/>%
+
+
+- Update with by complexe type
+
+e.g.:
+%test:/>update set field3={ccc:c,ddd:d}
+Updating attr:field3
+
+%test:/>:
+:test:/>ls
+field1:aaa field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:c,ddd:d}
+
+
+
+4 DELETE OPERATION
+
+
+The Delete operation, deletes one or more Attribute(s)
+
+
+Syntax:
+-------
+delete F_ATTRS
+
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:test:/>ls
+field1:value1 field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+:test:/>%
+%test:/>delete field1, field3
+%test:/>:
+:test:/>ls
+field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}]

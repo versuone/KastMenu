@@ -1,0 +1,26 @@
+ --------------------------
+|apc:apath set command help|
+ --------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+
+4 RM COMMAND
+
+set: The rm comand, delete an attribute.
+
+Syntax:
+-------
+rm <attr>
+                                                       
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:>rm field1

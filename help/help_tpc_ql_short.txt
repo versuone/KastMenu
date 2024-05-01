@@ -1,0 +1,16 @@
+ ------------------
+|tpc:tql short help|
+ ------------------
+
+
+h shows this help: a short summary of the commands available  for the mounted processor for the currrent mode. 
+help shows a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+COMMANDS SUMMARY
+
+No command is supported

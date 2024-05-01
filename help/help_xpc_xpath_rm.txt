@@ -1,0 +1,59 @@
+ -----------------------
+|xpc:xql rm command help|
+ -----------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+7 REMOVE COMMAND
+
+
+Command: rm
+
+The remove command, removes one or more nodes.
+
+Syntax: 
+-------
+rm <picpath> [<picpath>]
+
+
+- Simple remove
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>rm tag3
+Removed: /tag1/tag3<
+
+
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag2
+tag2
+
+
+- Removing more than one node
+
+e.g.:
+:test:/tag1>rm tag2
+Removed: /tag1/tag2<
+Removed: /tag1/tag2<
+Removed: /tag1/tag2<
+
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+
+:test:/tag1>

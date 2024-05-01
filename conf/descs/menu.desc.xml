@@ -1,0 +1,197 @@
+<!-- Copyright (c) 2007-2024, Patrick Germain Placidoux -->
+<!-- All rights reserved. -->
+<!-- -->
+<!-- This file is part of KastMenu (Unixes Operating System's Menus Broadkasting). -->
+<!-- -->
+<!-- KastMenu is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- KastMenu is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with KastMenu.  If not, see <http://www.gnu.org/licenses/>. -->
+<!-- -->
+<!-- Home: http://www.kastmenu.org -->
+<!-- Contact: kastmenu@kastmenu.org -->
+
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!--                                                                        -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+<!-- UPDATE     |     DATE     |   CODE   |  REASON                         -->
+<!-- ====================================================================== -->
+<!--            |              |          |                                 -->
+<!--                                                                        -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+
+<!-- Config: set the menu general properties all are defaulted except title which is required. -->
+<!-- wk_lang_dir: wkKeys fields like: label, help and lhelp can be converted using multilang support. -->
+<config
+    title='{*required:True}'
+    temp_dir='{*type:str}'
+    show_host='{*value:True,*type:bool,*required:True}'
+    up_car="{'*value': '+', '*required': True}"
+    up_message='{*value:%lang/menu.en/up_message,*required:True}'
+    down_car="{'*value': '-', '*required': True}"
+    down_message='{*value:%lang/menu.en/down_message,*required:True}'
+    exit_car='{*value:0,*type:str,*force_str:True,*required:True}'
+    exit_message='{*value:%lang/menu.en/exit_message,*required:True}'
+    check_all_car='{*value:s,*type:str,*force_str:True,*required:True}'
+    check_all_message='{*value:%lang/menu.en/check_all_message,*required:True}'
+    choice_message='{*value:%lang/menu.en/choice_message,*required:True}'
+    confirm_message='{*value:%lang/menu.en/confirm_message,*type:str,*required:True}'
+    confirm_exit_message='{*value:%lang/menu.en/confirm_exit_message,*type:str,*required:True}'
+    wait_message='{*value:%lang/menu.en/wait_message,*type:str,*required:True}'
+    option_upper='{*value:True,*type:bool,*required:True}'
+    option_check_message1='{*value:%lang/menu.en/option_check_message1,*type:str,*required:True}'
+    option_check_message2='{*value:%lang/menu.en/option_check_message2,*type:str,*required:True}'
+    input_field_message1='{*value:%lang/menu.en/input_field_message1,*type:str,*required:True}'
+    input_field_message2='{*value:%lang/menu.en/input_field_message2,*type:str,*required:True}'
+    input_field_default_message='{*value:%lang/menu.en/input_field_default_message,*type:str,*required:True}'
+    input_field_checkin_message='{*value:%lang/menu.en/input_field_checkin_message,*type:str,*required:True}'
+    command_label='{*value:%lang/menu.en/command_label,*type:str,*required:True}'
+    screen_max_lines='{*value:10,*type:int}'
+    indent='{*value:10,*type:int}'
+    option_help_indent='{*value:15,*type:int}'
+    option_value_indent='{*value:15,*type:int}'    
+    skip_line='{*value:True,*type:bool,*required:True}'
+    dont_use_unix_color='{*value:False,*type:bool,*required:True}'
+    lang_dir='{*value:$install_dir/langs,*required:True}'
+    roles_autz_dft='{*value:{*anyone:+all},*type:dict,*required:True}'
+    >
+
+    <!-- Roles Mapping sample:
+	<roles_mapping>
+		<role name='rpaul'>
+			<mapping>
+				<users>
+					paul
+				</users>
+			</mapping>
+		</role>
+		<role name='rpierre'>
+			<mapping>
+				<users>
+					pierre
+				</users>
+			</mapping>
+		</role>
+		<role name='askapy'>
+			<mapping>
+				<users>
+					alex
+                    pplacido
+				</users>
+				<groups>
+					askapy
+				</groups>
+			</mapping>
+		</role>
+    </roles_mapping>
+    -->
+        
+    <roles_mapping __wk__ = '{*le:1}'>
+        <role 
+            name = '{*required:True}'
+        > 
+            <mapping __wk__ = '{*eq:1}'>
+                <users __wk__ = '{*le:1}'>
+                    {*required:True}
+                </users>
+                <groups __wk__ = '{*le:1}'>
+                    {*required:True}
+                </groups>
+            </mapping>
+        </role>
+    </roles_mapping>
+
+    <!-- 
+    roles samples:
+    roles={admin:r,pilot:x}    
+    -->
+    <imenu title='{*required:True}' roles_autz='{*type:dict}' except_roles='{*type:list}' help='' lhelp='' command='{*force_str:True}'  command_enter='{*force_str:True}'  command_exit='{*force_str:True}' confirm='{*value:False,*type:bool,*required:True}' confirm_exit='{*value:False,*type:bool,*required:True}' verbose_exec_command='{*value:True,*type:bool,*required:True}' set_color='{*value:False,*type:bool,*required:True}' police_bold='{*value:False,*type:bool,*required:True}' police_color='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE)}' police_bgcolor='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,NONE)}' lock_name='' lock_timeout='{*type:int}'>
+        <__link__ name='menu'/>    
+        <__link__ name='imenu'/>
+        <__link__ name='option'/>    
+        <!-- ioption:
+            name: the field's name.
+            wk: a wkDefinition representing the allowed type for value checking on this field.
+            For more information about wkDefinitions, see the documentation of the wk project on sourceforge.net.
+            text:  a wkDefinition representing the allowed type for each line of text.
+            Only one of value or text can be used by one given option, not both.
+            If text is used the value provide to the command'field is a joined list of each items using list_separator_car.
+            e.g.:
+            <ioption name='field1' wk='{*type:str}'/>    
+            <ioption name='field2' wk='{*checkIn:(a,b,c),*value:a}'/>
+            or
+            <ioption name='field1'>
+                {*type:int,*value:3}
+            </ioption>
+        -->
+        
+        <ioption
+            name='{*required:True}' 
+            roles_autz='{*type:dict}'
+            except_roles='{*type:list}' 
+            help=''
+            lhelp=''
+            value=''
+            wk='{*type:wkDef,*withCoolTyping:True}'
+            lock_input='{*value:False,*type:bool,*required:True}'
+            list_separator_car="{
+                '*value': ';',
+                '*type': 'str',
+                '*required' :True
+                }"
+            set_color='{*value:False,*type:bool,*required:True}'
+            police_bold='{*value:False,*type:bool,*required:True}'
+            police_color='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE)}'
+            police_bgcolor='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,NONE)}'
+        >
+            {*type:wkDef,*withCoolTyping:True}
+        </ioption>        
+    </imenu>  
+    
+    <!-- menu: defines an input menu.
+        An input menu allows fields to be defined for input, befor calling the command.
+        Fields are defined within the ioption tag and attribute name.
+        Please note that, for an imenu, exceptionally the command is set at the menu level.
+        Afterward Field are refered by the command using the $<name> convention.
+        Suppose you defined 2 options with field1 and field2 as the  attribute name,
+        field1 and field2 may be refered by the command like this e.g. : "ls -ltr $filed1 $filed2".
+    -->
+    <menu title='{*required:True}' roles_autz='{*type:dict}' except_roles='{*type:list}' help='' lhelp='' confirm_exit='{*value:False,*type:bool,*required:True}' set_color='{*value:False,*type:bool,*required:True}' police_bold='{*value:False,*type:bool,*required:True}' police_color='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE)}' police_bgcolor='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,NONE)}'>
+        <__link__ name='imenu'/>
+        <__link__ name='menu'/>
+        <option 
+            name='{*required:True}' 
+            roles_autz='{*type:dict}'
+            except_roles='{*type:list}' 
+            help=''
+            lhelp=''
+            command='{*force_str:True}'
+            command_enter='{*force_str:True}'
+            command_exit='{*force_str:True}'
+            confirm='{*value:False,*type:bool,*required:True}'            
+            verbose_exec_command='{*value:False,*type:bool,*required:True}'
+            set_color='{*value:False,*type:bool,*required:True}'
+            police_bold='{*value:False,*type:bool,*required:True}'
+            police_color='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE)}'
+            police_bgcolor='{*checkIn:(BLACK,RED,GREEN,YELLOW,BLUE,PURPLE,CYAN,WHITE,NONE)}'
+            lock_name=''
+            lock_timeout='{*type:int}'
+        >
+            {*type:str}
+        </option>
+    </menu>   
+    
+    *deny
+    
+</config>

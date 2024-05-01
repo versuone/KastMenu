@@ -1,0 +1,776 @@
+ -------------------
+|xpc:xpath long help|
+ -------------------
+
+
+help shows this help: a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+Note:
+-----
+The samples below use the file <REPOZ_INSTALLATION_DIR>/samples/test.xml with a processor like this:
+xpc -F <repoz_intallation_dir>/samples/test.xml
+
+When an xml processor is mounted, the path is set to the first tag of the xml file.
+e.g.:
+:test:/tag1>
+
+
+
+1 INTRODUCTION
+
+
+This xpath like implementation supports 8 commands:
+
+ls, cd, upd, new, rm, cp, mv, set
+
+These commands use one or more picpath arguments.
+
+
+
+2 THE PICPATH EXPRESSION
+
+
+The picpath syntax is:
+
+TAG[@ATTR=VALUE[,@ATTR=VALUE]],@ATTR Tag sep:/
+TAG[@ATTR=VALUE[,@ATTR=VALUE]],@ATTR[,@ATTR]
+TAG[@ATTR=VALUE[,@ATTR=VALUE]],@*
+
+e.g.:
+ls tag2 # Lists the content of tag2 and its attributes.
+
+ls tag2,@attr1,@attr2 # Lists the attr1 and attr2 attributes of tag2.
+
+ls tag2@attr2=i/tag4/tag5 # Selects for the tag2 only the node(s) with attribute attr2 equal to i,
+						  # the sub child node(s) tag5.
+
+						  
+e.g.:
+ls tag2@attr2=i/tag4/tag5@attr1=True,@attr1,@attr3
+# Selects for the tag2, node(s) with attribute attr2 equal to i, 
+# the sub child node(s) tag5 with attribute attr1 equal to True,
+# and shows only the attributes attr1 and attr3 of this last.
+
+
+- Working with text:
+
+TAG[@ATTR=VALUE[,@ATTR=VALUE]],@%text
+
+e.g.:
+ls tag3@%text # shows the text content of tag3.
+
+
+Note:
+-----
+For more informaton about picpath, check out the documention of the picxml project on www.sourceforge.net.
+
+
+
+3 LIST COMMAND
+
+
+Command: ls
+
+The ls command, lists one or more picpath(s).
+
+
+Syntax: 
+-------
+ls <picpath> [<picpath>]
+
+
+- With no picpath at all, ls list the current Node content:
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+- Listing child nodes
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+e.g.:
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:f attr2:g attr3:A value with spaces !
+
+
+- Listing a set of attribute for more multiples nodes.
+
+e.g.:
+:test:/tag1>ls tag2@attr2
+d,i,p
+
+
+- Listing a set of picpath
+
+e.g.:
+:test:/tag1>ls tag2 tag2@attr2 tag3
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+d,i,p
+
+/tag1/tag3> attr1:f attr2:g attr3:A value with spaces !
+
+
+- Listing a node at a specific index
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>ls tag2[0]
+indice:: 0 3
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+
+:test:/tag1>ls tag2[1]
+indice:: 1 3
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+
+:test:/tag1>ls tag2[2]
+indice:: 2 3
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+- Listing a node text
+
+e.g.:
+:test:/tag1>ls tag3@%text
+aaaa1;bbbbbbbb2
+
+
+
+4 CHANGE DIRECTORY COMMAND
+
+
+Command: cd
+
+The cd command, changes directory command allows to switch from a node to another.
+
+Note:
+-----
+This command in fact opeartes a ls command in background on the picpath argument,
+and hence cding into the returned node.
+This requires that at least one and only one node must be returned by the request.
+
+
+Syntax: 
+-------
+cd <picpath>
+
+
+- Cding a simple node
+
+:test:/tag1>cd tag3
+/tag1/tag3> attr1:f attr2:g attr3:A value with spaces !
+
+:test:/tag1/tag3>ls
+/tag1/tag3> attr1:f attr2:g attr3:A value with spaces !
+
+
+- Using .. to move back
+
+:test:/tag1/tag3>cd ..
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+- Cding a complex request
+
+:test:/tag1>cd tag2@attr2=i
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+
+- Using .. to ls back
+
+:test:/tag1/tag2>ls ..
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+:test:/tag1/tag2>ls ..@attr2
+b
+
+:test:/tag1/tag2>ls ../tag2@attr2
+d,i,p
+
+
+- Cding sub child nodes
+
+e.g.:
+:test:/tag1/tag2>ls
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+:test:/tag1/tag2>cd tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+e.g.:
+:test:/tag1/tag2/tag4/tag5>ls
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+e.g.:
+:test:/tag1/tag2/tag4/tag5>ls  ../tag5@attr1
+True
+
+
+
+5 UPDATE COMMAND
+
+
+Command: upd
+
+The update command, updates one or more picpath(s).
+
+
+Syntax:
+-------
+upd <picpath>[@attr=value,@attr=value,...] [...]
+
+
+- Simple update
+
+e.g.:
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:f attr2:some values with spaces attr3:A value with spaces !
+
+:test:/tag1>upd tag3[@attr1=bbb]
+updated node:/tag1/tag3>
+   From attr1:f To attr1:bbb
+
+   
+- Updating more than one attributes using values with spaces
+   
+e.g.:
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:bbb attr2:some values with spaces attr3:A value with spaces !
+
+:test:/tag1>upd 'tag3[@attr1=c,@attr2=some values with spaces]'
+updated node:/tag1/tag3>
+   From attr2:some values with spaces To attr2:some values with spaces
+   From attr1:bbb To attr1:c
+
+   
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:c attr2:some values with spaces attr3:A value with spaces !
+
+
+- Updating using more than one picpath
+
+e.g.:
+:test:/tag1>upd 'tag3[@attr1=a,@attr2=b]' tag3[@attr3=c]
+updated node:/tag1/tag3>
+   From attr2:some values with spaces To attr2:b
+   From attr1:c To attr1:a
+
+updated node:/tag1/tag3>
+   From attr3:A value with spaces ! To attr3:c
+
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:a attr2:b attr3:c
+
+
+- Updating over multiple nodes
+
+e.g.:
+:test:/tag1>upd tag2[@attr2=aaa]
+updated node:/tag1/tag2>
+   From attr2:d To attr2:aaa
+
+updated node:/tag1/tag2>
+   From attr2:i To attr2:aaa
+
+updated node:/tag1/tag2>
+   From attr2:p To attr2:aaa
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:b attr2:aaa attr3:e attr4:None
+
+/tag1/tag2> attr1:b attr2:aaa attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:b attr2:aaa attr3:None attr4:None
+
+
+- Updating using seach criterias
+
+e.g.:
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+
+:test:/tag1>upd tag2@attr2=i/tag4/tag5[@attr1=False]
+updated node:/tag1/tag2/tag4/tag5>
+   From attr1:True To attr1:False
+
+
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:False attr2:m attr3:n
+
+
+- Updating a node text
+
+e.g.:
+:test:/tag1>ls tag3@%text
+aaaa1;bbbbbbbb2
+
+:test:/tag1>upd 'tag3[@%text=new value for;this;texts]'
+updated node:/tag1/tag3>
+   From %text:
+               aaaa1
+               bbbbbbbb2
+   To %text:
+               new value for
+               this
+               texts
+
+:test:/tag1>ls tag3@%text
+new value for;this;texts <---
+
+
+
+6 CREATE COMMAND
+
+
+Command: new
+
+The new  command, creates one or more new nodes.
+
+
+Syntax: 
+-------
+new <picpath> [<picpath>]
+
+
+- Simple node creation
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>new tag2[@attr1=a,@attr3=b]
+Created node: /tag1/tag2>
+updated node:/tag1/tag2>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:a
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:a attr2:None attr3:b attr4:None <---
+
+
+- Node creation with complex search criteria
+
+e.g.:
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+
+:test:/tag1>new tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+Created node: /tag1/tag2/tag4/tag5>
+updated node:/tag1/tag2/tag4/tag5>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:False
+
+   
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+/tag1/tag2/tag4/tag5> attr1:False attr2:None attr3:b <--
+
+
+- Node creation with multiple picpaths
+
+e.g.:
+:test:/tag1>new tag2[@attr1=a,@attr3=b]  tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+Created node: /tag1/tag2>
+updated node:/tag1/tag2>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:a
+
+Created node: /tag1/tag2/tag4/tag5>
+updated node:/tag1/tag2/tag4/tag5>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:False
+
+:test:/tag1>ls tag2 tag2@attr2=i/tag4/tag5
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:a attr2:None attr3:b attr4:None <---
+
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+/tag1/tag2/tag4/tag5> attr1:False attr2:None attr3:b <---
+
+/tag1/tag2>
+
+
+
+7 REMOVE COMMAND
+
+
+Command: rm
+
+The remove command, removes one or more nodes.
+
+Syntax: 
+-------
+rm <picpath> [<picpath>]
+
+
+- Simple remove
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>rm tag3
+Removed: /tag1/tag3<
+
+
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag2
+tag2
+
+
+- Removing more than one node
+
+e.g.:
+:test:/tag1>rm tag2
+Removed: /tag1/tag2<
+Removed: /tag1/tag2<
+Removed: /tag1/tag2<
+
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+
+:test:/tag1>
+
+
+
+8 COPY COMMAND
+
+
+Command: cp
+
+The cp commmand, copies one or more source node(s) to one or more targets nodes.
+
+
+Syntax: 
+-------
+cp <picpath_source> <picpath_destination>
+
+
+- Simple copy
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>cp tag2@attr2=i  ..
+   Adding child:/tag1/tag2
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k <---
+tag4
+
+:test:/tag1>
+
+
+- Copy resulting in multiple new nodes
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>cp tag2 ..
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+
+:test:/tag1>
+:test:/tag1>
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None <---
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k <---
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None <---
+
+
+
+9 MOVE COMMAND
+
+Command: mv
+
+The mv ommnad copies one or more source node(s) to one or more targets nodes and
+deletes all the source nodes.
+
+Syntax: 
+-------
+mv <picpath_source> <picpath_destination>
+
+
+- Move resulting in multiple new nodes
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+:test:/tag1>mv tag3 tag2
+EEpicxml: Not allowed child:tag3 for Node:tag2. Allowed children are:'tag4', or use force.
+
+
+:test:/tag1>mv tag3 tag2 -X
+   Adding child:/tag1/tag2/tag3
+   Adding child:/tag1/tag2/tag3
+   Adding child:/tag1/tag2/tag3
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e
+tag3 <---
+
+/tag1/tag2> attr1:h attr2:i attr3:j
+tag4
+tag3 <---
+
+/tag1/tag2> attr1:o attr2:p attr3:None
+tag3 <---
+
+:test:/tag1>
+
+
+
+10 SET COMMAND
+
+
+Command: set
+
+The set comand just set a value to a guiven attribute for the current path.
+
+Syntax: 
+-------
+set <attr> = <value>
+
+
+- Simple sample
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>set attr1 = b
+
+:test:/tag1>ls
+/tag1> attr1:b attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+- Sample with spaces
+
+e.g.:
+:test:/tag1>set attr1 = 'a new value'
+
+
+:test:/tag1>ls
+/tag1> attr1:a new value attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+
+11 SAVE and SHOW COMMAND
+
+
+The show (or save) command, show (or save) the content of the file managed by the curent proecessor.
+The command save --all save all processors.
+
+
+e.g.:
+:>xpc -F <REPOZ_INSTALLATION_DIR>samples/test.xml
+New processor with alias:test, created and mounted.
+:test:/tag1>show
+<tag1 attr1='a' attr2='b'>
+    <tag2 attr1='c' attr2='d' attr3='e'/>
+    <tag3 attr1='f' attr2='g' attr3='A value with spaces !'>
+        aaaa1
+        bbbbbbbb2
+    </tag3>
+    <tag2 attr1='h' attr2='i' attr3='j' attr4='k'>
+        <tag4>
+            <tag5 attr1='True' attr2='m' attr3='n'/>
+        </tag4>
+    </tag2>
+    <tag2 attr1='o' attr2='p'/>
+</tag1>
+
+
+e.g.:
+:>xpc -F <REPOZ_INSTALLATION_DIR>samples/test.xml -s -f c:\temp\mytest.xml
+New processor with alias:mytest, created and mounted.
+File:c:\temp\mytest.xml saved !
+:mytest:/tag1>save -a
+File:c:\temp\mytest.xml saved !
+:test:/tag1>
+
+
+
+ANNEXE 1/ The xpath commands options
+
+
+Usage:
+    Supported xpath commands are: cd, ls, upd, new, rm, cp, mv, set, save, show
+
+    For help on command type:
+        h (or help) <command>
+
+
+Options:
+  -h, --help            show this help message and exit
+  -v VERBOSE, --verbose=VERBOSE
+                        The verbose level.
+  -H, --HELP            Shows the processor extended options.
+  -X, --force           (default False) In conjunction with the new command
+                        option will allow the creation of nodes with unchecked
+                        attribute values.
+  -s ATTR_SEPARATOR, --attr_separator=ATTR_SEPARATOR
+                        Separator when multiple Attributes are returned
+                        (default: space). Option --attr_separator (-s) is
+                        allowed when not using: --console (-o), --update
+                        (-u), --create (-n) and --remove (-e) options.
+  -S NODE_SEPARATOR, --node_separator=NODE_SEPARATOR
+                        Separator when multiple nodes are returned  (default:
+                        ,). Option --attr_separator (-s) is allowed when not
+                        using: --console (-o), --update  (-u), --create (-n)
+                        and --remove (-e) options.
+  -t TEXT_SEPARATOR, --text_separator=TEXT_SEPARATOR
+                        Separator when multiple lines of text are returned
+                        (default: ;). Option --text_separator (-t) is allowed
+                        when not using: --console (-o), --update  (-u),
+                        --create (-n) and --remove (-e) options.
+  -z PICPATH_ATTR_SEPARATOR, --picpath_attr_separator=PICPATH_ATTR_SEPARATOR
+                        Attribute Separator but for the picpath expression
+                        (default: ,). Option --picpath_attr_separator (-z) is
+                        allowed when not using: --console (-o), --update
+                        (-u), --create (-n) and --remove (-e) options.
+  -T PICPATH_TEXT_SEPARATOR, --picpath_text_separator=PICPATH_TEXT_SEPARATOR
+                        Text item Separator but for the picpath expression
+                        (default: ;). Option --picpath_text_separator (-T) is
+                        allowed when not using: --console (-o), --update
+                        (-u), --create (-n) and --remove (-e) options.
+  --print               (default False) If used the resulting xml file is
+                        printed to the output.
+  -x, --xforce          (default False) force writing with no check and
+                        regardless to descriptor file. BE CAUTIOUS !

@@ -1,0 +1,88 @@
+ --------------------
+|xpc:xpath short help|
+ --------------------
+
+
+
+h shows this help: a short summary of the commands available  for the mounted processor for the currrent mode. 
+help shows a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+COMMANDS SUMMARY
+
+ls, cd, upd, new, rm, cp, mv, set
+
+
+ls: The ls command, lists one or more picpath(s).
+    Syntax: ls <picpath> [<picpath>]
+
+    :test:/tag1>ls
+    :test:/tag1>ls tag2
+    :test:/tag1>ls tag2 tag2@attr2 tag3
+    :test:/tag1>ls tag2/tag4
+
+    
+cd : The cd command, changes directory command allows to switch from a node to another.
+     Syntax: cd <picpath>
+
+     :test:/tag1>cd tag3
+     :test:/tag1/tag3>cd ..
+     :test:/tag1>cd tag2@attr2=i
+
+
+upd: The update  command, update one or more picpath(s).
+     Syntax: upd <picpath>[@attr=value,@attr=value,...] [...]
+
+     :test:/tag1>upd tag3[@attr1=bbb]
+     :test:/tag1>upd 'tag3[@attr1=c,@attr2=some values with spaces]'
+     :test:/tag1>upd 'tag3[@attr1=a,@attr2=b]' tag3[@attr3=c]
+
+
+new: The new  command, creates one or more new nodes.
+     Syntax: new <picpath> [<picpath>]
+
+     :test:/tag1>new tag2[@attr1=a,@attr3=b]
+     :test:/tag1>new tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+     :test:/tag1>new tag2[@attr1=a,@attr3=b]  tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+
+     
+rm: The remove command, removes one or more nodes.
+    Syntax: rm <picpath> [<picpath>]
+
+    :test:/tag1>rm tag3
+    :test:/tag1>rm tag2
+
+
+
+cp: The cp commmand, copies one or more source node(s) to one or more targets nodes.
+    Syntax: cp <picpath_source> <picpath_destination>
+
+    :test:/tag1>cp tag2@attr2=i  tag4 -X
+    :test:/tag1>cp tag2 ..
+
+
+mv: The mv ommnad copies one or more source node(s) to one or more targets nodes and
+    deletes all the source nodes.
+
+    Syntax: mv <picpath_source> <picpath_destination>
+
+    :test:/tag1>mv tag3 tag2
+    :test:/tag1>mv tag3 tag2 -X
+
+
+set: The set comand, set a value to a guiven attribute, from the node at the current path.
+     Syntax: set <attr> = <value>
+
+     :test:/tag1>set attr1 = b
+     :test:/tag1>set attr1 = 'a new value'
+
+
+save/show: The show (or save) command, show (or save) the content of the file managed by the curent proecessor.
+	The command save --all save all processors.
+
+     Syntax: show
+             save [-a]

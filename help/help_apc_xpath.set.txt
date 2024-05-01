@@ -1,0 +1,32 @@
+ --------------------------
+|apc:apath set command help|
+ --------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+
+3 SET COMMAND
+
+set: The set comand, sets a value to an attribute.
+
+Syntax:
+-------
+set <attr> = <value>
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:>set field1 = b
+:>set field1 = 'a new value'
+:test:/>
+
+:test:/>ls field1
+field1:a new value
+:test:/>

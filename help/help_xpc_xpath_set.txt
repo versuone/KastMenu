@@ -1,0 +1,58 @@
+ ------------------------
+|xpc:xql set command help|
+ ------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+10 SET COMMAND
+
+
+Command: set
+
+The set comand just set a value to a guiven attribute for the current path.
+
+Syntax: 
+-------
+set <attr> = <value>
+
+
+- Simple sample
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>set attr1 = b
+
+:test:/tag1>ls
+/tag1> attr1:b attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+- Sample with spaces
+
+e.g.:
+:test:/tag1>set attr1 = 'a new value'
+
+
+:test:/tag1>ls
+/tag1> attr1:a new value attr2:b
+tag2
+tag3
+tag2
+tag2

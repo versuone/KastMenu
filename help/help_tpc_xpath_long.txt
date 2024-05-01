@@ -1,0 +1,39 @@
+ -------------------
+|tpc:tpath long help|
+ -------------------
+
+
+help shows this help: a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+No command is supported
+
+
+5 SAVE and SHOW COMMAND
+
+The show (or save) command, show (or save) the content of the file managed by the curent proecessor.
+The command save --all save all processors.
+
+
+e.g.:
+:>tpc -D E:\Projets\REPOSITORY\repoz\samples\test.tmpl -f E:\Projets\REPOSITORY\repoz\samples\test.out
+New processor with alias:test, created and mounted.
+:test:/>show
+<!-- Tree Script Begin -->
+<script type='text/javascript'>
+$(function(){
+    $("#$div_tree").dynatree({
+    ...
+    
+e.g.:
+:>tpc -D  <REPOZ_INSTALLATION_DIR>samples/test.tmpl -f  /tmp/test.out -s
+:test:/>save
+File: /tmp/test.out saved !
+:test:/>save -a
+File: /tmp/test.out saved !
+:test:/>

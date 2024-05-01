@@ -1,0 +1,33 @@
+config:
+    title: OAT Environment Management
+    temp_dir: /tmp
+    menu:
+    -   title: menua
+        option:
+        -   name: optiona1
+            command: lsx -ltr
+        -   name: optiona2
+            help: MyHelp optiona2
+            command: dir
+            confirm: true
+        -   name: optiona3
+            command: dir
+        -   name: optiona4
+            help: MyHelp optiona4
+            command: ls -ltr
+        -   name: optiona5
+            command: ls -ltr
+        -   name: optiona6
+            command: dir
+        menu:
+        -   title: menub
+            option:
+            -   name: optionb1
+                command: dir
+            -   name: optionb3
+                command: ls -ltr
+            -   name: optionb4
+                command: dir
+            -   name: optionb5
+                command: ls -ltr
+

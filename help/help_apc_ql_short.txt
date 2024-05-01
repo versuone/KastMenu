@@ -1,0 +1,37 @@
+ ------------------
+|apc:aql short help|
+ ------------------
+
+
+h shows this help: a short summary of the commands available  for the mounted processor for the currrent mode. 
+help shows a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+COMMANDS SUMMARY
+
+select, update, delete
+
+
+select: The select operation, selects one or more Attributes according an optional where clause.
+        Syntax: select O_WHAT at F_TAGS if F_ATTRS
+
+        %test:/>select field1,field3
+        %test:/>select field1,field3 where field1=value1
+
+
+update: The Update operation, updates a set of Attributes with a set of pair Attribute/Values.
+        Syntax: update set O_SET
+
+        %test:/>update set field1=aaa
+        %test:/>update set field3={ccc:c,ddd:d}
+
+
+delete: The Delete operation, deletes one or more Attribute(s)
+        Syntax: delete F_ATTRS
+
+        %test:/>delete field1, field3
+

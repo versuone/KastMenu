@@ -1,0 +1,75 @@
+ ---------------------------
+|xpc:xql Delete command help|
+ ---------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+6 DELETE OPERATION
+
+
+The deletze operation, deletes one or more node regarding an optional where clause.
+
+Syntax:
+-------
+delete F_TAGS where F_ATTRS
+
+
+- Deleting multiple nodes
+
+%test:/tag1>delete tag2,tag3
+/tag1/tag2
+    Deleting Node:tag2 *tun:I2, on Node:/tag1 *tun:I1.
+
+/tag1/tag3
+    Deleting Node:tag3 *tun:I3, on Node:/tag1 *tun:I1.
+
+/tag1/tag2
+    Deleting Node:tag2 *tun:I4, on Node:/tag1 *tun:I1.
+
+/tag1/tag2
+    Deleting Node:tag2 *tun:I7, on Node:/tag1 *tun:I1.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+        </tag1>
+
+
+- Deleting using a Hierarchical where clause
+
+e.g.:
+%test:/tag1>delete tag5 where tag2@attr2=i
+/tag1/tag2/tag4/tag5
+    Deleting Node:tag5 *tun:I6, on Node:/tag1/tag2/tag4 *tun:I5.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>

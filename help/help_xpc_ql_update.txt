@@ -1,0 +1,91 @@
+ ---------------------------
+|xpc:xql Update command help|
+ ---------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+5 UPDATE OPERATION
+
+
+The Update opteration, updates one or more node with a set of pair of Attribute/Values.
+
+
+Syntax:
+-------
+update F_TAGS where F_ATTRS O_SET
+
+
+- Updating multiple nodes        
+        
+e.g.:
+%test:/tag1>update tag2 set attr1=bla bla
+/tag1/tag2
+Updating *tun:I2
+
+/tag1/tag2
+Updating *tun:I4
+
+/tag1/tag2
+Updating *tun:I7
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="bla bla">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="bla bla" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="New value" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="bla bla" attr2="p">
+            </tag2>
+        </tag1>
+
+
+- Updating using a Hierarchical where clause
+
+e.g.:
+%test:/tag1>update tag5 where tag2@attr2=i set attr3=New value
+/tag1/tag2/tag4/tag5
+Updating *tun:I6
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="New value" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+        

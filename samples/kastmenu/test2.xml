@@ -1,0 +1,11 @@
+<ssl type ='softclass' bsl='middleware§jss.ssl' dir='/tmp/kwad'>
+    <p12/>
+</ssl>
+---    
+<ssl type='softclass' bsl='middleware§jss.ssl' sub_type='configuration' name='my_srv_keystore' dir='/tmp/kwad' expire='3650' password='mypass' sclabel='my1scl' scfile='my_srv.cert' scsize='512' scpassword='mypass' scexpire='3650' scalg='DSA' scdn='CN=my_srv,O=my_srv_company,OU=my_srv_unit,OU=my_srv_other_unit,C=US'>
+    <p12 label='my1l' name='my_clt1_keystore' kpassword='mypass' password='mypass' expire='3650' alg='DSA' dn='CN=my_clt1,O=my_clt_company,OU=my_clt_unit,OU=my_clt_other_unit,C=US'/>
+</ssl>
+...
+<ssl type='softclass' bsl='middleware§jss.ssl' sub_type='configuration' name='my_srv_keystore2' dir='/tmp/kwad' expire='3650' password='mypass' sclabel='my2scl' scfile='my_srv.cert' scsize='512' scpassword='mypass' scexpire='3650' scalg='DSA' scdn='CN=my_srv,O=my_srv_company,OU=my_srv_unit,OU=my_srv_other_unit,C=US'>
+    <p12 label='my2l' name='my_clt2_keystore2' kpassword='mypass' password='mypass' expire='3650' alg='DSA' dn='CN=my_clt2,O=my_clt_company,OU=my_clt_unit,OU=my_clt_other_unit,C=US'/>
+</ssl>

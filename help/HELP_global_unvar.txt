@@ -1,0 +1,7 @@
+Usage:
+
+    Destroys a global Variable.
+
+    unvar <var_name> : Destroys the global variable <var_name>.
+    e.g:
+    unvar myvar

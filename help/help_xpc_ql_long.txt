@@ -1,0 +1,1038 @@
+ -----------------
+|xpc:xql long help|
+ -----------------
+
+ 
+help shows this help: a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+Note:
+-----
+The samples below use the file <REPOZ_INSTALLATION_DIR>/samples/test.xml with a processor like this:
+:>xpc -F <repoz_intallation_dir>/samples/test.xml
+
+When an xml processor is mounted, the path is set to the first tag of the xml file.
+e.g.:
+:test:/tag1>
+
+
+
+1 INTRODUCTION
+
+
+This xql like implementation supports 5 operations:
+	select, create, update, delete, duplicate, insert
+	
+Foreach operation there is one or two main commands and eventually secondary advanced commands.
+
+Select operation :
+	Main commands: select, xselect
+	Advanced commands: cselect, ccselect, rselect, crselect
+
+Create operation :
+	Main command: create
+	Advanced commands: ccreate, rcreate
+	
+Delete operation :
+	Main command: delete
+
+Update operation :
+	Main command: update
+	
+Duplicate operation :
+	Main command: duplicate
+	
+Insert operation :
+	Main command: insert
+
+Each command supports a line argument called the xql request.
+
+
+
+2. THE REQUEST PATH
+
+
+All operations are requested to the current node.
+
+e.g.:
+:test:/tag1>% # Entering xql mode.
+%test:/tag1>select * at tag1
+
+                    *tun  attr2                attr1                *text
+/tag1
+                    I1    b                    a                    []
+
+
+%test:/tag1>:	# Changind path from the xpath mode.
+:test:/tag1>cd tag2@attr2=i
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+:test:/tag1/tag2>%   # Going back into xql mode.
+
+
+%test:/tag1/tag2>select * at tag1   # Shows nothing because there are no tag1 nodes below tag2 nodes.
+%test:/tag1/tag2>
+
+
+%test:/tag1/tag2>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+%test:/tag1/tag2>
+
+
+
+3 SELECT OPERATIONS
+
+
+The select operation, selects one or more node(s) at a set of tag(s) and regarding an optional where clause.
+
+
+Syntax:
+-------
+select O_WHAT at F_TAGS where F_ATTRS
+
+
+- simple seclect
+
+%test:/tag1>select * at tag1
+
+                    *tun  attr2                attr1                *text
+/tag1
+                    I1    b                    a                    []
+
+
+- The select deep search behaviour, comparing to the Repos xpath ls implementation
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+:test:/tag1>%
+
+
+%test:/tag1>xselect * at  tag3 # Because xql will search the whole descendant node from the current path,
+							   # the tag patern do not have to be successive (tag1/tga3) like in the Repoz xpath implemenation.
+
+      
+/tag1/tag3
+    *tun:I3
+
+        <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+            aaaa1
+            bbbbbbbb2
+        </tag3>
+
+
+e.g.:
+%test:/tag1>xselect * at  tag5
+
+/tag1/tag2/tag4/tag5
+    *tun:I6
+
+        <tag5  attr2="m" attr3="n" attr1="True">
+        </tag5>
+
+
+
+- Selecting more than one tag
+
+e.g.:
+:test:/tag1>%
+%test:/tag1>xselect * at  tag3,tag2
+
+
+e.g.:
+/tag1/tag2
+    *tun:I2
+
+        <tag2  attr4="None" attr3="e" attr1="c" attr2="d">
+        </tag2>
+
+
+/tag1/tag3
+    *tun:I3
+
+        <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+            aaaa1
+            bbbbbbbb2
+        </tag3>
+
+
+/tag1/tag2
+    *tun:I4
+
+        <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+            <tag4 >
+                <tag5  attr2="m" attr3="n" attr1="True">
+                </tag5>
+            </tag4>
+        </tag2>
+
+
+/tag1/tag2
+    *tun:I7
+
+        <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+        </tag2>
+
+                
+- Straightly jumping to a tag unique name (*tun)
+
+As you can see, the symbol *tun show that each node has a tag unique name,
+this is the unique identifier of the node througth the xml file.
+
+e.g.:
+%test:/tag1>select * at *tun=I7
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+e.g.:                
+%test:/tag1>select * at tag3,*tun=I7
+
+                    *tun  attr2                attr3                attr1                *text
+/tag1/tag3
+                    I3    g                    A value with spaces ! f                    [aaaa1,bbbbbbbb2]
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+%test:/tag1>
+
+
+- Selecting a set of attributes
+
+e.g.:
+%test:/tag1>select attr1,attr3 at tag2
+                    *tun  attr1                attr3                *text
+/tag1/tag2
+                    I2    c                    e                    []
+/tag1/tag2
+                    I4    h                    j                    []
+/tag1/tag2
+                    I7    o                    None                 []
+
+
+- Selecting using the where close
+
+e.g.:
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+%test:/tag1>
+%test:/tag1>select * at tag2 where attr2=i
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    
+- Selecting using the where close in conjunction with Hierarchical Attributes (aka Hierarchical where clause)
+
+e.g.:
+%test:/tag1>select * at tag2,tag3 where attr2=i or attr2=g           
+
+A where clause is processed in two steps:
+	_ 1st step : The set of nodes matching the "at" clause is retreived (e.g.: at tag2,tag3).
+	_ 2nd step : This set of nodes is check again upon the "where" clause conditions (e.g.: where attr2=i or attr2=g).
+	
+When the Attributes of the where clause are not Hierarchical all the nodes found in the first step
+are checked for the requested attributes.
+                    
+e.g.:
+%test:/tag1>select * at tag2,tag3 where attr2=i or attr2=g
+
+                    *tun  attr2                attr3                attr1                *text
+/tag1/tag3
+                    I3    g                    A value with spaces ! f                    [aaaa1,bbbbbbbb2]
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+%test:/tag1>
+
+In this selection the nodes tag3 and tag2 are retreived because both have an Attribute named attr2
+statisfying the where condition.
+
+
+Now using Hierarchical Attributes will allow to accept from the first extrsoftclass,
+only the nodes who match one or more ancestors defined by the Hierarchical Attributes.
+
+e.g.:
+%test:/tag1>select * at tag5 where tag2@attr2=i
+
+                    *tun  attr2                attr3                attr1                *text
+/tag1/tag2/tag4/tag5
+                    I6    m                    n                    True                 []
+
+%test:/tag1>
+
+Here the tag5 node found for the "at" clause is accepted because it has an ancestor:tag2,
+(actually its grand father: tag2/tag4/tag5) and this ancestor'Attribute attr2 satisfies the request (=i).
+
+
+Just for information this is the content under tag1:
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+%test:/tag1>
+
+
+- Selecting using complex multiple where closes
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I2    None                 d                    e                    c                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+
+%test:/tag1>select * at tag2 where attr2=i or attr2=p
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+%test:/tag1>select * at tag2 where (attr2=i or attr2=p) and attr1=o
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+%test:/tag1>select * at tag2 where ((attr2=i or attr2=p) and attr1=o) and attr4=None
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+As you can see there is no limit to parenthesis imbrication.
+
+
+- Selecting using complex where close with other operators than "="
+
+e.g.:
+%test:/tag1>select * at tag2 where attr2 > i  # Using > operator
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+                    
+e.g.:
+%test:/tag1>select * at tag2 where attr2 >= i # Using >= operator
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+e.g.:
+%test:/tag1>select * at tag2 where attr2 <> i # Using <> operator
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+e.g.:
+%test:/tag1>select * at tag2 where attr2 *in [i,p] # Using *in operator
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+e.g.:
+%test:/tag1>select * at tag2 where attr2 *between [i,p] # Using *between operator
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+%test:/tag1>
+
+
+- Selecting a guiven count of nodes
+
+e.g.:
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+e.g.:
+%test:/tag1>select * at tag2[1]
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+
+e.g.:
+%test:/tag1>select * at tag2[2]
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+%test:/tag1>
+
+
+
+
+4 CREATE OPERATION
+
+
+The create operation, creates one or more nodes to one or more guiven targets.
+
+
+Syntax:
+--------
+create  O_WHAT O_SET at F_TAGS where F_ATTRS
+
+
+- Simpple create
+
+e.g.:
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+%test:/tag1>create tag2  set attr1=a;attr2=b;attr3=c at tag1
+/tag1
+    Creating Node:tag2 *tun:I8, on Node:/tag1.
+
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I8    None                 b                    c                    a  <---
+
+%test:/tag1>
+
+
+- Creating using a where clause
+
+e.g.:
+%test:/tag1>create tag4   at tag2 where attr2=p
+/tag1/tag2
+    Creating Node:tag4 *tun:I17, on Node:/tag1/tag2.
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >
+                </tag4>
+            </tag2>
+        </tag1>
+
+        
+- Creating using a Hierarchical where clause
+        
+e.g.:    
+%test:/tag1>create tag5 set attr1=False;attr2=aaa;attr3=bbb at tag4 where tag2@attr2=p
+/tag1/tag2/tag4
+    Creating Node:tag5 *tun:I9, on Node:/tag1/tag2/tag4.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >
+                    <tag5  attr2="aaa" attr3="bbb" attr1="False">
+                    </tag5>
+                </tag4>
+            </tag2>
+        </tag1>
+
+
+
+
+5 UPDATE OPERATION
+
+
+The Update opteration, updates one or more node with a set of pair of Attribute/Values.
+
+
+Syntax:
+-------
+update F_TAGS where F_ATTRS O_SET
+
+
+- Updating multiple nodes        
+        
+e.g.:
+%test:/tag1>update tag2 set attr1=bla bla
+/tag1/tag2
+Updating *tun:I2
+
+/tag1/tag2
+Updating *tun:I4
+
+/tag1/tag2
+Updating *tun:I7
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="bla bla">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="bla bla" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="New value" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="bla bla" attr2="p">
+            </tag2>
+        </tag1>
+
+
+- Updating using a Hierarchical where clause
+
+e.g.:
+%test:/tag1>update tag5 where tag2@attr2=i set attr3=New value
+/tag1/tag2/tag4/tag5
+Updating *tun:I6
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="New value" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+        
+
+
+6 DELETE OPERATION
+
+The delete operation, deletes one or more node regarding an optional where clause.
+
+Syntax:
+-------
+delete F_TAGS where F_ATTRS
+
+
+- Deleting multiple nodes
+
+%test:/tag1>delete tag2,tag3
+/tag1/tag2
+    Deleting Node:tag2 *tun:I2, on Node:/tag1 *tun:I1.
+
+/tag1/tag3
+    Deleting Node:tag3 *tun:I3, on Node:/tag1 *tun:I1.
+
+/tag1/tag2
+    Deleting Node:tag2 *tun:I4, on Node:/tag1 *tun:I1.
+
+/tag1/tag2
+    Deleting Node:tag2 *tun:I7, on Node:/tag1 *tun:I1.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+        </tag1>
+
+
+- Deleting using a Hierarchical where clause
+
+e.g.:
+%test:/tag1>delete tag5 where tag2@attr2=i
+/tag1/tag2/tag4/tag5
+    Deleting Node:tag5 *tun:I6, on Node:/tag1/tag2/tag4 *tun:I5.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+
+7 DUPLICATE OPERATION
+
+
+The Duplicate operation, duplicates one node to one or more target.
+
+
+Syntax:
+-------
+duplicate F_TAGS where F_ATTRS at F_TAGS where F_ATTRS
+
+
+- Duplicating to more than one node
+
+e.g.:
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+%test:/tag1>duplicate  tag4 at tag2
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I8, on Node:/tag1/tag2.
+
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I10, on Node:/tag1/tag2.
+
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I12, on Node:/tag1/tag2.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr3="e" attr1="c" attr2="d">
+                <tag4 >  <--- Duplicated
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 > (original)
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+                <tag4 >  <--- Duplicated
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >  <--- Duplicated
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+        </tag1>
+
+
+- Duplicating using a Hierarchical where clause for the source node
+
+e.g.:
+%test:/tag1>duplicate tag4   where tag2@attr2=i  at tag2
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I8, on Node:/tag1/tag2.
+
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I10, on Node:/tag1/tag2.
+
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I12, on Node:/tag1/tag2.
+
+This guives the same result as previous sample.
+
+
+- Duplicating using a Hierarchical where clause for the source node and the target node
+
+e.g.:
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+%test:/tag1>duplicate tag4   where tag2@attr2=i  at tag2  where tag2@attr2=p
+/tag1/tag2
+    Duplicating Node:tag4 *tun:I8, on Node:/tag1/tag2.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+        </tag1>
+
+
+
+8 INSERT OPERATION
+
+
+The insert operation is a Repoz special operation that uses the Repoz Return cache capability,
+to allow insertion of the stored node(s) into another file
+or another part of the same xml file.
+
+
+Syntax:
+-------
+insert $ro where F_ATTRS at F_TAGS where F_ATTRS
+
+
+Here the original content of the file test.xml,
+we also open the first pocessor.
+
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+
+We run a select clause.
+In the Repoz scheme, a select always returns the set of found nodes into the Repoz Variable : ro.
+
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr2                attr3                attr1                *text
+/tag1/tag2
+                    I2    d                    e                    c                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+
+This is the content of the Repoz Variable ro (a list of nodes):
+
+%test:/tag1>var ro
+[<lib.epicxmlp.Node instance at 0x00BBF620>, <lib.epicxmlp.Node instance at 0x00BBF738>, <lib.epicxmlp.Node instance at 0x00BBF670>]
+
+
+Now we may create and mount a second processor where to make the insertion.
+
+Note:
+-----
+It could be the same proecessor.
+
+%test:/tag1>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X -s
+New processor with alias:test0, created. (use mount test0, to mount it)
+%test:/tag1>mount testO
+
+
+
+Now we run  the insert command using the Repoz: ro Variable
+
+%test0:/tag1>insert $ro at tag1
+
+Found target node at:/tag1
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+
+
+
+This is the result:
+
+%test0:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+            <tag2  attr2="d" attr3="e" attr1="c">  <-- New from insert
+            </tag2>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">  <-- New from insert
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">  <-- New from insert
+            </tag2>
+        </tag1>

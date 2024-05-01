@@ -1,0 +1,168 @@
+<!-- Copyright (c) 2007-2024, Patrick Germain Placidoux -->
+<!-- All rights reserved. -->
+<!-- -->
+<!-- This file is part of KastMenu (Unixes Operating System's Menus Broadkasting). -->
+<!-- -->
+<!-- KastMenu is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- KastMenu is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with KastMenu.  If not, see <http://www.gnu.org/licenses/>. -->
+<!-- -->
+<!-- Home: http://www.kastmenu.org -->
+<!-- Contact: kastmenu@kastmenu.org -->
+
+
+<config title='KastMenu Tutorial'  option_upper='False'>
+
+    <menu  confirm_exit='True' title='What is KastMenu ?' lhelp="          
+This a Short Presentation of the KastMenu Project (www.kastmenu.org).\n
+\n
+KastMenu is a Tree Menu.\n
+\n
+Syntax: km mymenu.xml\n
+e.g.:\n
+With log level:\n
+$ km mymenu.xml -v 30\n
+With debug:\n
+$ km mymenu.xml -v 30 --debug\n
+With noclear: do not clear the previous screen:\n
+$ km mymenu.xml -v 30 --noclear\n
+Whith BigBrother logging:\n
+$ km mymenu.xml -l -L /tmp -O\n
+-l: enable logging\n
+-L /tmp: where to log\n
+-O: allows command outputs logging.\n       
+See km -h for other options.\n
+\n
+KastMenu is a tools to allow transparent access to Terminal\n
+Tree Menus from:\n
+- The Terminal Console\n
+- The Web, with a very oriented Mobile Phone interface.\n
+\n
+Whatever the interface is:\n
+- A terminal Menu runs under the user for whom it is called for.\n
+\n
+Simple Efficient and Powerful:\n
+\n
+1) Menu Tree:\n
+KastMenu is a Menu Tree of the following components:\n
+Menu, Option and\n
+IMenu, IOption.\n
+\n
+- All final actions targets a shell command.\n
+- KastMenu sticks to what comes out from the command stdout.\n
+This means there is no attempt to transform the command output.\n
+KastMenu sticks to the real.
+Everything supported by the O.S. shell is addressable\n
+by KastMenu.\n
+\n
+2) KastMenu File:\n
+A KastMenu file is a simple file describing the menu.\n
+See syntax above (mymenu.xml).\n
+This file is described by the [kastmenu_home]/conf/descs/menu.desc.xml descriptor.\n
+And this file could be either:\n
+- mymenu.yaml\n
+- mymenu.hcl or\n
+- mymenu.xml\n
+\n
+If this file is called:\n
+mymenu.[type].mako or mymenu.[type].jinja\n
+It will be parsed using respectively either the mako or jinja parser.\n
+e.g.: km mymenu.xml.jinja, km mymenu.yaml.mako, km mymenu.hcl.jinja\n
+One can use --tmpl_kws option to provide CooltTyped dict of variables\n
+to jinja or mako.\n
+e.g.: {name:sebastian,address:2 open street}.\n
+\n
+3) KastMenu API:\n
+KastMenu API provides an API to programatically create full featured Menus\n
+on the flow.\n
+\n
+4) Indefinitly Pipable:\n
+KastMenu programs can call each others with the --follow_menu\n
+option that allows the same continuous quality of service\n
+accross the chain of menus.\n
+\n
+5) Big brother log:\n
+KastMenu provides a WYSIWYG logging system that keeps tracks of every\n
+action taken on a Menu by a user and (if required) of every outputs.\n
+This log will also trace the mpath.\n
+e.g.: km mymenu.xml -l -L /tmp -O\n
+See syntax.\n
+\n
+6) Menu Automation:\n
+A mpath is a sequential path of every input played on a menu.\n
+Calling back KastMenu with a menupath will replay the menu and\n
+pause on each screen  (here 2 second).\n
+e.g.: km mymenu.xml -g [mpath] -p 2\n
+\n
+7) KastMenu usage:\n
+KastMenu is ideal for supervision, monitoring and production control,\n
+for restricted users access control,\n
+for administration management and automation purposes,\n
+and for training and education.\n
+\n
+8) Colors:\n
+KastMenu supports colors: black, red, green, yellow, blue, purple, cyan, white.\n
+\n
+Going Farther:\n
+\n
+9) From anywhere to anywhere:\n
+Combined with DKwad:\n
+- KastMenu allows access from any mobile phone to any menu, under any user\n
+on any remote machine, or  VM.\n
+With access control.\n
+\n
+- Allows access to the full featured DKwad SoftClass scheme.\n
+DKwad allows to run Software management actions from anywhere\n
+to anywhere.\n
+A DKwad action is a SoftClasse's module with operation on it\n
+(create, update, delete or anything)\n
+\n
+
+        ">        
+        <option name='Option1' help='This is an Option' lhelp="An Option refers to a command.\n
+Selecting an option means: running a shell command into the current user terminal session on\n
+the local or remote machine.\n
+            " command='echo "I am user: $(whoami), my directory is the one of the file: $(pwd), Running command: ls -ltr" && ls -ltr'
+            police_bold='True' police_color='WHITE' police_bgcolor='PURPLE'/>
+        
+        <menu title='Menu2' help='This is a Menu' lhelp="A Menu is just a container\n
+with option in it.\n
+Menu also supports other Menus and IMenu in it.\n
+              ">
+            <option name='option2.1' command='dir'/>
+            <option name='option2.2' command='echo hi !'/>
+            
+            <menu title='Menu2.3' help='This is a Sub Menu' lhelp="Just to show that a Menu\n
+can contains others.\n
+It can also contains Imenus.">
+                <option name='option2.3.1' command='echo $(hostname)'/>
+            </menu>
+        </menu>
+
+        <imenu title='IMenu3' help='This an IMenu' lhelp="IMenu, I: stands for Interactive Menu.\n
+An IMenu supports user input through its Option childs.\n
+IMenu has a command attribute.\n
+This command can retreives input from IOption like this:\n
+echo 'This is my imenu command using ioptions: name: $name, age: $age, member: $member'.\n
+
+An IMenu also supports: Menu, other IMenu and Option childs.
+               " police_bold='True' police_color='BLUE' police_bgcolor='NONE' command='echo "This is my imenu command using ioptions: name: $name, age: $age, member: $member"' confirm='True'>
+            <ioption name='name' wk='{*type:str,*value:jim}'/>
+            <ioption name='age' wk='{*type:int,*value:25}'/>
+            <ioption name='member' wk='{*type:bool,*value:False}'/>
+        </imenu>
+
+
+        <option name='Show this menu file' help="Display this current menu's file" police_bold='False' police_color='GREEN' police_bgcolor='NONE' command='cat kastmenu.xml'/>
+    </menu>
+
+</config>

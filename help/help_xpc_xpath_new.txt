@@ -1,0 +1,104 @@
+ ------------------------
+|xpc:xql new command help|
+ ------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+6 CREATE COMMAND
+
+
+Command: new
+
+The new  command, creates one or more new nodes.
+
+
+Syntax: 
+-------
+new <picpath> [<picpath>]
+
+
+- Simple node creation
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>new tag2[@attr1=a,@attr3=b]
+Created node: /tag1/tag2>
+updated node:/tag1/tag2>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:a
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:a attr2:None attr3:b attr4:None <---
+
+
+- Node creation with complex search criteria
+
+e.g.:
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+
+:test:/tag1>new tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+Created node: /tag1/tag2/tag4/tag5>
+updated node:/tag1/tag2/tag4/tag5>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:False
+
+   
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+/tag1/tag2/tag4/tag5> attr1:False attr2:None attr3:b <--
+
+
+- Node creation with multiple picpaths
+
+e.g.:
+:test:/tag1>new tag2[@attr1=a,@attr3=b]  tag2@attr2=i/tag4/tag5[@attr1=False,@attr3=b]
+Created node: /tag1/tag2>
+updated node:/tag1/tag2>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:a
+
+Created node: /tag1/tag2/tag4/tag5>
+updated node:/tag1/tag2/tag4/tag5>
+   From attr3:None To attr3:b
+   From attr1:None To attr1:False
+
+:test:/tag1>ls tag2 tag2@attr2=i/tag4/tag5
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:a attr2:None attr3:b attr4:None <---
+
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+/tag1/tag2/tag4/tag5> attr1:False attr2:None attr3:b <---
+
+/tag1/tag2>

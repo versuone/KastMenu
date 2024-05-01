@@ -1,0 +1,248 @@
+Using kwad.attrs at :/PROJETS/DEPLOYMENT/kwad-5.5/conf/kwad.attrs.
+<!-- Dont copy/paste this file into a Terminal. Prefere scp !!! -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<config title='MiddleWare Management'  temp_dir='/tmp' option_upper='False' screen_max_lines='25' skip_line='True' dont_use_unix_color='False'>
+
+	<menu title='*** MENU ***' confirm_exit='True'>	
+
+		<!-- Applications -->	
+		<menu title='Applications'>
+		
+		      <menu title='pcon_contracts'>
+		
+		<!-- J2EE Instances -->
+			    <menu title='J2EE Instances'>
+		      
+				  <menu title='pcon_contracts_jvm_01'>
+				      <option name='status' command='ps -elf | grep pcon_contracts_jvm_01'/>
+				      <option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_01/bin/start.sh"'/>
+				      <option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_01/bin/stop.sh"'/>
+				  </menu>
+		      
+				  <menu title='pcon_contracts_jvm_02'>
+				      <option name='status' command='ps -elf | grep pcon_contracts_jvm_02'/>
+				      <option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_02/bin/start.sh"'/>
+				      <option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_02/bin/stop.sh"'/>
+				  </menu>
+		      
+				  <menu title='pcon_contracts_jvm_03'>
+				      <option name='status' command='ps -elf | grep pcon_contracts_jvm_03'/>
+				      <option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_03/bin/start.sh"'/>
+				      <option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_03/bin/stop.sh"'/>
+				  </menu>
+      
+				  <option name='Config exemple: samples/c2.xml/pinc_contract_jvm_02' command='/PROJETS/DEPLOYMENT/kwad-5.5/bin/kupd --kcac  /PROJETS/DEPLOYMENT/kwad-5.5/samples/kcac/c2.xml business_application/jeeserver@name=pinc_contract_jvm_02 --console --overwrite -C /PROJETS/DEPLOYMENT/kwad-5.5/conf/kwad.attrs -v5'/>
+			    
+			    </menu>
+
+		
+		<!-- WebServers Instances -->
+			    <menu title='WebServers Instances'>
+	    
+				
+				  <menu title='pcon_contracts_wbs_01'>
+					  <option name='status' command='ps -elf | grep pcon_contracts_jvm_03'/>
+					  <option name='start' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  start'/>
+					  <option name='restart' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  restart'/>
+					  <option name='graceful' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  graceful'/>
+					  <option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  graceful-stop'/>
+					  <option name='stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  stop'/>
+				  </menu>
+	    
+				
+				  <menu title='pcon_contracts_wbs_02'>
+					  <option name='status' command='ps -elf | grep pcon_contracts_jvm_03'/>
+					  <option name='start' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  start'/>
+					  <option name='restart' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  restart'/>
+					  <option name='graceful' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  graceful'/>
+					  <option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  graceful-stop'/>
+					  <option name='stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  stop'/>
+				  </menu>
+			    </menu>
+		      </menu>
+		      <menu title='oinc_incomes'>
+		
+		<!-- J2EE Instances -->
+			    <menu title='J2EE Instances'>
+		      
+				  <menu title='oinc_incomes_jvm_01'>
+				      <option name='status' command='ps -elf | grep oinc_incomes_jvm_01'/>
+				      <option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_01/bin/start.sh"'/>
+				      <option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_01/bin/stop.sh"'/>
+				  </menu>
+		      
+				  <menu title='oinc_incomes_jvm_02'>
+				      <option name='status' command='ps -elf | grep oinc_incomes_jvm_02'/>
+				      <option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_02/bin/start.sh"'/>
+				      <option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_02/bin/stop.sh"'/>
+				  </menu>
+		      
+				  <menu title='oinc_incomes_jvm_03'>
+				      <option name='status' command='ps -elf | grep oinc_incomes_jvm_03'/>
+				      <option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_03/bin/start.sh"'/>
+				      <option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_03/bin/stop.sh"'/>
+				  </menu>
+      
+				  <option name='Config exemple: samples/c2.xml/pinc_contract_jvm_02' command='/PROJETS/DEPLOYMENT/kwad-5.5/bin/kupd --kcac  /PROJETS/DEPLOYMENT/kwad-5.5/samples/kcac/c2.xml business_application/jeeserver@name=pinc_contract_jvm_02 --console --overwrite -C /PROJETS/DEPLOYMENT/kwad-5.5/conf/kwad.attrs -v5'/>
+			    
+			    </menu>
+
+		
+		<!-- WebServers Instances -->
+			    <menu title='WebServers Instances'>
+	    
+				
+				  <menu title='oinc_incomes_wbs_01'>
+					  <option name='status' command='ps -elf | grep oinc_incomes_jvm_03'/>
+					  <option name='start' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  start'/>
+					  <option name='restart' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  restart'/>
+					  <option name='graceful' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  graceful'/>
+					  <option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  graceful-stop'/>
+					  <option name='stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  stop'/>
+				  </menu>
+	    
+				
+				  <menu title='oinc_incomes_wbs_02'>
+					  <option name='status' command='ps -elf | grep oinc_incomes_jvm_03'/>
+					  <option name='start' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  start'/>
+					  <option name='restart' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  restart'/>
+					  <option name='graceful' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  graceful'/>
+					  <option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  graceful-stop'/>
+					  <option name='stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  stop'/>
+				  </menu>
+			    </menu>
+		      </menu>
+
+
+		</menu>
+
+		
+
+
+      <!-- J2EE Instances -->	
+      <menu title='J2EE Instances'>
+
+      
+	    
+		    <menu title='pcon_contracts_jvm_01'>
+			<option name='status' command='ps -elf | grep pcon_contracts_jvm_01'/>
+			<option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_01/bin/start.sh"'/>
+			<option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_01/bin/stop.sh"'/>
+		    </menu>
+	    
+		    <menu title='pcon_contracts_jvm_02'>
+			<option name='status' command='ps -elf | grep pcon_contracts_jvm_02'/>
+			<option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_02/bin/start.sh"'/>
+			<option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_02/bin/stop.sh"'/>
+		    </menu>
+	    
+		    <menu title='pcon_contracts_jvm_03'>
+			<option name='status' command='ps -elf | grep pcon_contracts_jvm_03'/>
+			<option name='start' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_03/bin/start.sh"'/>
+			<option name='stop' command='su - pcon -c "/webapps/pcon_contracts/tom/pcon_contracts_jvm_03/bin/stop.sh"'/>
+		    </menu>
+      
+	    
+		    <menu title='oinc_incomes_jvm_01'>
+			<option name='status' command='ps -elf | grep oinc_incomes_jvm_01'/>
+			<option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_01/bin/start.sh"'/>
+			<option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_01/bin/stop.sh"'/>
+		    </menu>
+	    
+		    <menu title='oinc_incomes_jvm_02'>
+			<option name='status' command='ps -elf | grep oinc_incomes_jvm_02'/>
+			<option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_02/bin/start.sh"'/>
+			<option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_02/bin/stop.sh"'/>
+		    </menu>
+	    
+		    <menu title='oinc_incomes_jvm_03'>
+			<option name='status' command='ps -elf | grep oinc_incomes_jvm_03'/>
+			<option name='start' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_03/bin/start.sh"'/>
+			<option name='stop' command='su - oinc -c "/webapps/oinc_incomes/tom/oinc_incomes_jvm_03/bin/stop.sh"'/>
+		    </menu>
+	</menu>
+
+			
+		
+
+      <!-- WebServers Instances -->
+      <menu title='WebServers Instances'>
+      
+      
+
+	    
+		<menu title='pcon_contracts_wbs_01'>
+			<option name='status' command='ps -elf | grep pcon_contracts_wbs_01'/>
+			<option name='start' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  start'/>
+			<option name='restart' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  restart'/>
+			<option name='graceful' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  graceful'/>
+			<option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  graceful-stop'/>
+			<option name='stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_01/conf/pcon_contracts_wbs_01_httpd.conf -k  stop'/>
+		</menu>
+	    
+		<menu title='pcon_contracts_wbs_02'>
+			<option name='status' command='ps -elf | grep pcon_contracts_wbs_02'/>
+			<option name='start' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  start'/>
+			<option name='restart' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  restart'/>
+			<option name='graceful' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  graceful'/>
+			<option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  graceful-stop'/>
+			<option name='stop' command='/usr/sbin/apachectl -f /webapps/pcon_contracts/apa/pcon_contracts_wbs_02/conf/pcon_contracts_wbs_02_httpd.conf -k  stop'/>
+		</menu>
+      
+
+	    
+		<menu title='oinc_incomes_wbs_01'>
+			<option name='status' command='ps -elf | grep oinc_incomes_wbs_01'/>
+			<option name='start' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  start'/>
+			<option name='restart' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  restart'/>
+			<option name='graceful' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  graceful'/>
+			<option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  graceful-stop'/>
+			<option name='stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_01/conf/oinc_incomes_wbs_01_httpd.conf -k  stop'/>
+		</menu>
+	    
+		<menu title='oinc_incomes_wbs_02'>
+			<option name='status' command='ps -elf | grep oinc_incomes_wbs_02'/>
+			<option name='start' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  start'/>
+			<option name='restart' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  restart'/>
+			<option name='graceful' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  graceful'/>
+			<option name='graceful_stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  graceful-stop'/>
+			<option name='stop' command='/usr/sbin/apachectl -f /webapps/oinc_incomes/apa/oinc_incomes_wbs_02/conf/oinc_incomes_wbs_02_httpd.conf -k  stop'/>
+		</menu>
+
+      </menu>
+
+
+	</menu>
+
+</config>
+
