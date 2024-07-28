@@ -1,5 +1,0 @@
-<kincludesc type='optstruct'  bsl='middleware§kwad' section='mac' klas='mac'  operation='read' verbose='30'>
-    {domain:t,doSubtree:True}
-</kincludesc>
-
-

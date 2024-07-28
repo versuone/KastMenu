@@ -1,8 +1,0 @@
-Usage:
-
-    Mount a processor.
-
-    mount <alias>
-    
-    e.g:
-    mount myalias

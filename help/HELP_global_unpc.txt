@@ -1,8 +1,0 @@
-Usage:
-
-    Destroys and eventually unmounts a processor.
-
-    unpc <alias>
-    
-    e.g:
-    unpc myalias
