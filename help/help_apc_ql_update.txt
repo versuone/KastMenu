@@ -1,0 +1,51 @@
+ ---------------------------
+|apc:aql update command help|
+ ---------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+3 UPDATE OPERATION
+
+
+The Update operation, updates a set of Attributes with a set of pair Attribute/Values.
+
+
+Syntax:
+-------
+update set O_SET
+
+
+- Simple update
+
+e.g.:
+:>apc -F <REPOZ_INSTALLATION_DIR>samples/test.attrs -D <REPOZ_INSTALLATION_DIR>samples/test.attrs.desc -A -C
+New processor with alias:test, created and mounted.
+:test:/>ls
+field1:value1 field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+
+:test:/>%
+%test:/>update set field1=aaa
+Updating attr:field1
+
+%test:/>:
+:test:/>ls
+field1:aaa field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:caa,ddd:daa}
+:test:/>%
+
+
+- Update with by complexe type
+
+e.g.:
+%test:/>update set field3={ccc:c,ddd:d}
+Updating attr:field3
+
+%test:/>:
+:test:/>ls
+field1:aaa field2:[{AAA:ccccA2,BBB:ccccB2},{AAA:bbbbA1,BBB:bbbbB1}] field3:{ccc:c,ddd:d}

@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+<meta charset="utf-8" />
+
+<html style="font-size:3vmin;">
+
+<!-- Copyright (c) 2007-2024, Patrick Germain Placidoux -->
+<!-- All rights reserved. -->
+<!-- -->
+<!-- This file is part of KastMenu (Unixes Operating System's Menus Broadkasting). -->
+<!-- -->
+<!-- KastMenu is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- KastMenu is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with KastMenu.  If not, see <http://www.gnu.org/licenses/>. -->
+<!-- -->
+<!-- Home: http://www.kastmenu.org -->
+<!-- Contact: kastmenu@kastmenu.org -->
+
+
+<head>
+
+<!-- avoiding browser/android resizing on input field: -->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+<!-- JS Template tool -->
+<script src='/kastmenu/js/handlebars-v1.3.0.js' type='text/javascript'></script>
+
+<!-- JQuery libraries
+<script src='/jquery-ui-1.10.3/jquery.js' type='text/javascript'></script>
+<script src='/jquery-ui-1.10.3/ui/minified/jquery.ui.core.min.js' type='text/javascript'></script>
+-->
+<!-- Bootstrap5 libraries: Has no Ajax equivalent and JS html5 ftech is too slow ! => Replacing fetch get by MenuWebSocketGet -->
+<link rel="shortcut icon" href="/kastmenu/images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/kastmenu/images/favicon.ico">
+
+<link rel="stylesheet"  href="/bootstrap5/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
+<link rel="stylesheet"  href="/bootstrap5/icons-1.10.5/font/bootstrap-icons.min.css">
+<script src="/bootstrap5/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+function apb_dashedinputtext_adapt_size(event, it) {
+    var max=500
+    var maxChar=null;
+    
+    if (maxChar!=null)
+    {
+        // event = (event) ? event : window.event
+        // var charCode = (event.which) ? event.which : event.keyCode
+        if (it.value.length>=maxChar) it.value='';
+    }
+
+    var step=8;
+    var vlength=it.value.length * step;
+
+    if (vlength>=max)
+    {
+	    it.style.width = max.toString() + 'px';
+	    return true;
+    }
+    
+    it.style.width = ((it.value.length + 1) * step).toString() + 'px';
+    
+    return true;
+}
+</script>
+
+
+<style type="text/css">
+/*
+    SYLE TABLE
+    ==========
+*/
+
+/*
+     *=============*    
+     | Input Value |    
+     *=============*    
+*/
+input.input_field {
+    border-style:none none dashed none;
+    border-width:0px 0px 1px 0px;
+    border-color:blue;
+    padding: 2px;
+    background: with;
+    color: black;
+    font-family: verdana;
+    font-size: 3vmin;
+    width: 60vmin;
+    min-width: 30vmin;
+}
+
+
+/*
+     *=================*    
+     | Tables Animated |    
+     *=================*    
+*/
+#table1 tr.d0 td {
+	background-color: #E5E4E2; color: black;
+	font-size:3vmin	
+}
+
+#table1 tr.d1 td {
+	background-color: white; color: black;
+	font-size:3vmin;
+}
+
+
+#table1 th {
+	background-color:#A0A0A0;
+}
+
+#table1 tr td.d2 {
+	background-color:#D1D0CE; color: black;
+	border-style : blue;
+	border-style : groove;
+	border-width:5px;
+	font-size:3vmin
+}
+
+
+
+/* #CCFFCC */
+#table1 tr:hover td
+{
+	color: black;
+	background: #888888;
+}
+
+#table1 tr.no_hover :hover td
+{
+	background: transparent;
+}
+
+/*
+     *====================*    
+     | Tables Round Coins |    
+     *====================*    
+*/
+table {
+    border-spacing: 0;
+}
+th, td {
+    border: 1px solid #000;
+    padding: 0.5rem 1rem;
+}
+thead tr:first-child th:first-child,
+tbody:first-child tr:first-child td:first-child {
+    border-top-left-radius: 0.6rem;
+}
+thead tr:first-child th:last-child,
+tbody:first-child tr:first-child td:last-child {
+    border-top-right-radius: 0.6rem;
+}
+
+thead + tbody tr:last-child td:first-child,
+tfoot tr:last-child td:first-child {
+    border: 0px;
+    border-bottom-left-radius: 0.6rem;
+}
+thead + tbody tr:last-child td:last-child,
+tfoot tr:last-child td:last-child {
+    border: 0px;
+    border-bottom-right-radius: 0.6rem;
+}
+
+thead + tbody tr td,
+tfoot + tbody tr td,
+tfoot tr td,
+tbody + tbody tr td,
+tr + tr td {
+    border-top: 0;
+}
+
+tr th + th,
+tr td + td {
+    border-left: 0;
+}
+
+/*
+     *=============*
+     | CSS Frames |    
+     *============*    
+Thanks to: http://www.dynamicdrive.com/style/layouts/item/css-top-and-bottom-frames-layout/
+*/
+
+/*
+body{
+overflow: hidden;
+}*/
+
+
+
+#frame_content{
+overflow: auto;
+background: #fff;
+margin-top: 14vmin;
+}
+
+
+.frame_header {
+    position:fixed;
+	width: 100%;
+	height: 13vmin;
+	background-color: #cccccc;
+	text-align : center;
+	top: 0;
+	left: 0;
+    background-color: #10154C;
+}
+  
+/* background-color: #121868; */
+
+
+#frame_content2{
+overflow: auto;
+background: #fff;
+/* margin-top: 27vmin; directly set on tag */ 
+}
+
+
+.frame_header2 {
+    position:fixed;
+	width: 100%;
+	/* height: 26vmin; directly set on tag */ 
+	background-color: #cccccc;
+	text-align : center;
+	top: 0;
+	left: 0;
+    background-color: #10154C;
+}
+
+
+
+.CompCenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+}
+</style>
+
+
+
+<style>
+/*
+    STYLE BOOTSTRAP ACCORDION:
+    ==========================
+    (From bootstrap.css)
+*/
+
+
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* padding: 1rem 1.25rem; */
+  padding: 0.50rem 1rem;
+  font-size: 1.10rem;
+  /* color: #212529; */
+  color: white;
+  font-family: verdana;
+  text-align: left;
+  /* background-color: #fff; #151B54 #006A4E #665D1E*/
+  background-color: #151B54;
+  border: 1px;
+  /* border: 0px; */
+  border-radius: 0;
+  border-color: #151B54;
+  border-bottom-color: white;
+  
+  /* compensiation des 2 box shadow uncollapsed:*/
+  /* box-shadow: -3.25px 0px 0px 0px black, 3.25px 0px 0px 0px #151B54; */
+  box-shadow: -0.25rem 0rem 0rem 0rem #151B54, 0.25rem 0rem 0rem 0rem #151B54;
+
+  /* border-width: 5px; */
+  overflow-anchor: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .accordion-button {
+    transition: none;
+  }
+}
+.accordion-button:not(.collapsed) {
+  /* color: #0c63e4; */
+  color: white;
+  background-color: #e7f1ff;
+  /* box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.125); */
+/* box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); The same but left, bottom and rigth: */  
+  box-shadow: -0.25rem 0rem 0rem 0rem rgba(13, 110, 253, 0.25), 0.25rem 0rem 0rem 0rem rgba(13, 110, 253, 0.25), 0rem 0.25rem 0rem 0rem rgba(13, 110, 253, 0.25);
+  /* border-radius: 0.55rem; */
+  border-bottom-right-radius: 0.55rem;
+  border-bottom-left-radius: 0.55rem;
+}
+.accordion-button:not(.collapsed)::after {
+  background-image: url("/kastmenu/images/ic_tickup_green_down.png");
+  transform: rotate(-180deg);
+}
+.accordion-button::after {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  content: "";
+  background-image: url("/kastmenu/images/ic_tickup_blue_down.png");
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  transition: transform 0.2s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .accordion-button::after {
+    transition: none;
+  }
+}
+.accordion-button:hover {
+  z-index: 2;
+}
+.accordion-button:focus {
+  z-index: 3;
+  /* border-color: #86b7fe; */
+  background-color: #006400;
+    /* background-color: #fff; #151B54 #006A4E #665D1E #3A5F0B*/
+  outline: 0;
+  
+  /* box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); The same but left, bottom and rigth: */  
+  box-shadow: -0.25rem 0rem 0rem 0rem rgba(13, 110, 253, 0.25), 0.25rem 0rem 0rem 0rem rgba(13, 110, 253, 0.25), 0rem 0.25rem 0rem 0rem rgba(13, 110, 253, 0.25);
+
+  /* border-radius: 0.55rem; */
+  border-bottom-right-radius: 0.55rem;
+  border-bottom-left-radius: 0.55rem;
+}
+
+.accordion-header {
+  margin-bottom: 0;
+}
+
+.accordion-item {
+  background-color: #fff;
+  /* background-color: red; */
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.accordion-item:first-of-type {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+.accordion-item:first-of-type .accordion-button {
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
+.accordion-item:not(:first-of-type) {
+  border-top: 0;
+}
+.accordion-item:last-of-type {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.accordion-item:last-of-type .accordion-button.collapsed {
+  border-bottom-right-radius: calc(0.25rem - 1px);
+  border-bottom-left-radius: calc(0.25rem - 1px);
+}
+.accordion-item:last-of-type .accordion-collapse {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.accordion-body {
+  padding: 1rem 1.25rem;
+}
+
+.accordion-flush .accordion-collapse {
+  border-width: 0;
+}
+.accordion-flush .accordion-item {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+.accordion-flush .accordion-item:first-child {
+  border-top: 0;
+}
+.accordion-flush .accordion-item:last-child {
+  border-bottom: 0;
+}
+.accordion-flush .accordion-item .accordion-button {
+  border-radius: 0;
+}
+</style>
+
+
+
+<style>
+/*
+    AUTOCOMPLETE:
+    =============
+*/
+
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+}
+
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+input[type=password] {
+  background-color: #f1f1f1;
+}
+
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+
+/* Bootstrap custom nav-pills: */
+.myorange.nav-pills .myorange.nav-link {
+  background: none;
+  padding:3vmin;
+  border: 0;
+  border-radius: 0.25rem;
+  color: black;
+}
+.myorange.nav-pills .myorange.nav-link.active,
+.myorange.nav-pills .myorange.show > .myorange.nav-link {
+  color: white;
+  background-color: #004225;
+}
+</style>
+
+</head>
+
+
+<!-- onload: Ne fonctionne pas ! 
+<body onload="javascript:connect_websocket();">
+-->
+<body>
+
+<!-- ========================================================================================================================================================================= -->
+
+<!--
+     *****************
+     | Menu Template |    
+     *****************
+-->
+<script id="menu-template" type="text/x-handlebars-template-0">
+<div id="menu_alldiv_{{this.config.id}}" style='background:white;'>
+<!--
+     *----------*
+     | Div Menu |    
+     *----------*
+-->
+<span id='anchor_{{this.config.id}}_0'></span>
+<!--                                                                tabindex:Get the focus on div. -->
+<!-- SM: <div id="menu_{{this.config.id}}" align="center" tabindex="0" onfocus="setCurrentMenu({{this.config.id}});"> -->
+<div id="menu_{{this.config.id}}" tabindex="0" onfocus="setCurrentMenu({{this.config.id}});">
+    <!-- <br> -->
+    <!-- <table id='table1' style='display:inline-table' cellspacing=0 cellpadding=0> -->
+    <table id='table1' style='display:inline-table' cellspacing=0 cellpadding=0 width='100%'> 
+	<thead>
+	    <tr class='no_hover'>
+		<th colspan="4">
+	    
+		    <table width='100%'>
+		    <tr>
+		    <td style='border:0;marging:0;padding:0;font-weight:normal;font-size:2.5vmin;'>Host: <b>{{this.config.host}}</b>&nbsp;</td>
+		    <td style='border:0;marging:0;padding:0;text-align:left;'>{{this.config.big_title}}</td>
+		    </tr>
+		    <tr>
+
+		    <td style='border:0;marging:0;padding:0;font-weight:normal;font-size:2.5vmin;'>User: <b>{{this.config.user}}</b> Seq: <b>{{this.config.id}}</b></td>
+		    <td style='border:0;marging:0;padding:0;text-align:center;color:white;'>
+		    
+
+			{{this.config.title}}
+		    {{#if this.config.help_found}}
+			&nbsp;&nbsp;
+			<a 
+			    href="javascript:showHelp('{{this.config.title}}', '{{this.config.help}}', '{{this.config.lhelp}}');"
+			    title="{{this.config.htitle}}"><img  border=0 src="/kastmenu/images/ic_help_blue.png" onmouseout="this.src='/kastmenu/images/ic_help_blue.png'" onmouseover="this.src='/kastmenu/images/ic_help_blue_light.png'" alt="help" style="width:6vmin;height:5vim;vertical-align: bottom;float:right;"/>
+            </a>
+		    {{/if}}
+		    </td>
+		    </tr>
+		    </table>
+		    
+		</th>
+	    </tr>
+	</thead>
+	
+	
+	<tfoot>
+	    <tr colspan="4" class='no_hover'>
+		<td colspan="4" style="background-color:#888888;">
+	    
+		    <table width='100%'>
+			<tr>
+			    <td style='border:0;marging:0;padding:0;vertical-align:bottom;'>
+
+			    {{#if this.config.prevmenu_car}}
+			    {{#unless this.config.is_first_menu}}
+				<img title="Previous Menu" id="prevmenu_{{this.config.id}}" border=0 src="/kastmenu/images/ic_arrow_left.png" onclick="MENUS.getMenu({{this.config.id}}).getOo(0).onClick(this, 'ic_arrow_left.png', '');"  onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_arrow_left.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_arrow_left_2.png');" alt="Previous Menu" style="width:8vmin;height:8vmin;vertical-align:bottom;float:left;"/>
+			    <span style="vertical-align: bottom;float:left">&nbsp;</span>
+			    {{/unless}}
+			    {{/if}}
+			    
+			    {{#if this.config.check_all_car}}
+				<img title="Submit" id="submit_{{this.config.id}}" border=0 src="/kastmenu/images/ic_validate.png" onclick="MENUS.getMenu({{this.config.id}}).getOo(0).onClick(this, 'ic_validate.png', '{{this.config.check_all_car}}');" onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_validate.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_validate_2.png');" alt="Submit" style="width:8vmin;height:8vmin;vertical-align:bottom;float:left;"/>
+				<!-- <span style="float:left">&nbsp;</span> -->
+			    {{/if}}
+			    
+			    <!-- Left icons -->
+			    {{#if this.config.is_first_menu_process}}
+			    <img title="Exit Menu" id="exit_{{this.config.id}}" border=0 src="/kastmenu/images/ic_button-exit-icon.png" onclick="DISPATCHER.terminateMenu();"   onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_button-exit-icon.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_button-exit-icon_2.png');" alt="Exit Menu" style="width:8vmin;height:8vmin;vertical-align:bottom;float:left;"/>
+			    {{/if}}
+			    
+			    {{#unless this.config.is_first_menu_process}}
+			    <img title="Exit Secondary Menu" id="exit_{{this.config.id}}" border=0 src="/kastmenu/images/ic_button-exit-icon_blue.png" onclick="MENUS.getMenu({{this.config.id}}).getOo(0).onClick(this, 'ic_button-exit-icon_blue.png', '{{this.config.exit_car}}');"  onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_button-exit-icon_blue.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_button-exit-icon_blue_2.png');" alt="Exit Secondary Menu" style="width:8vmin;height:8vmin;vertical-align:bottom;float:left;"/>
+			    {{/unless}}
+			    
+				<!-- Right icons -->
+			    {{#if this.config.down_car}}
+				<img title="Previous Page" id="down_{{this.config.id}}" border=0 src="/kastmenu/images/ic_arrow_previous.png" onclick="MENUS.getMenu({{this.config.id}}).getOo(0).onClick(this, 'ic_arrow_previous.png', '{{this.config.down_car}}');"  onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_arrow_previous.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_arrow_previous_2.png');" alt="Previous Page" style="width:8vmin;height:8vmin;vertical-align: bottom;float:right;"/>
+				<span style="float:right">&nbsp;</span>
+			    {{/if}}
+			    
+			    {{#if this.config.up_car}}
+				<img title="Next Page" id="up_{{this.config.id}}" border=0 src="/kastmenu/images/ic_arrow_next.png" onclick="MENUS.getMenu({{this.config.id}}).getOo(0).onClick(this, 'ic_arrow_next.png', '{{this.config.up_car}}');"  onmouseout="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOut(this, 'ic_arrow_next.png');" onmouseover="MENUS.getMenu({{this.config.id}}).getOo(0).onMouseOver(this, 'ic_arrow_next_2.png');" alt="Next Page" style="width:8vmin;height:8vmin;vertical-align:bottom;float:right;"/>
+			    {{/if}}
+			    
+			    <span id="unknown_span_{{this.config.id}}" style="display:none;">
+			    <span style="float:right">&nbsp;</span>
+			    <img title="Unknown" id="unknown_{{this.config.id}}" border=0 src="/kastmenu/images/ic_help_red.png" alt="Unknown" style="width:8vmin;height:8vmin;vertical-align:top;float:right;"/>
+			    </span>
+			    
+			    </td>
+			</tr>
+		    </table>
+		    
+		</td>
+	    </tr>
+	</tfoot>
+	
+	<tbody>
+	{{#each config.items}}
+	<!-- {"index": 1, "sep": ")", "name": "OPTION1", "help": null, "lock": true}, -->
+	<tr {{#if this.alt}}class="d1"{{/if}}{{#unless this.alt}}class="d0"{{/unless}}>
+
+	    <td class="d2" id="option_{{this.config_id}}_{{this.index}}" style="width:0;min-width:fit-content;"
+	    onmouseover="try{MENUS.getMenu({{this.config_id}}).getOo(0).optionOnMouseOver(this);}catch(e){}"  onmouseout="MENUS.getMenu({{this.config_id}}).getOo(0).optionOnMouseOut(this);" onclick="MENUS.getMenu({{this.config_id}}).getOo(0).optionOnClick(this, {{this.index}});">
+		<b>{{this.index}}{{this.sep}}</b>
+	    </td>
+	    
+	    
+	    <!-- Option Name -->
+	    {{#if this.fr_color}}
+	    <td style="border-right:0;color:{{this.fr_color}};background-color:{{this.bg_color}};width:0;min-width:25vmin;max-width:fit-content;">
+	    {{/if}}
+	    {{#unless this.fr_color}}
+	    <td style='border-right:0;width:0;min-width:fit-content;'>
+	    {{/unless}}
+	    {{this.name}}
+	    </td>
+	    
+	    <!-- Option Value -->
+	    <td style='border-right:0;padding:0;padding-left:2vmin;'>
+	    {{#if this.value}}
+		{{this.value}}
+	    {{/if}}
+	    
+	    {{#if this.olegend}}
+		<select style='marging:0;padding:0;background-color:transparent;line-height:1px;border-radius:0;border:none;width:5rem;font-size:3vmin;'>
+		    {{#each olegend}}
+			  <option value="{{this}}">{{this}}</option>
+		    {{/each}}
+		</select>
+	    {{/if}}
+	    </td>
+	    
+	    <!-- Option Help
+            No: <td style='word-wrap:break-word;word-break:break-all;'>
+	     -->
+	    <td style=''>
+	    {{#if this.help}}
+		<i>{{this.help}}</i>&nbsp;&nbsp;
+		{{#if this.help_show}}
+		    <a href="javascript:showHelp('{{this.name}}', '{{this.help_full}}', '{{this.lhelp}}');" title="{{this.htitle}}"><img border=0 src="/kastmenu/images/ic_help_blue.png" onmouseout="this.src='/kastmenu/images/ic_help_blue.png'" onmouseover="this.src='/kastmenu/images/ic_help_blue_light.png'" alt="help" style="width:6vmin;height:5vmin;vertical-align: bottom;float:right;"/></a>
+		{{/if}}
+	    {{/if}}
+	    </td>
+
+	</tr>
+	{{/each}}
+	</tbody>
+
+    </table>   
+    
+<br>
+<br>
+</div>
+
+
+<hr id="menu_line_{{this.config.id}}" size=5 width="100%" style='display:none;margin:0;'>
+
+<!--
+     *---------*
+     | Div oo |    
+     *---------*
+-->
+<div id="oo_{{this.config.id}}">
+</div>
+
+
+</div>
+</script>
+
+
+<!--
+     **********************
+     | MenuPaths Template |    
+     **********************
+-->
+<script id="menu_path-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_menupath'></span>
+<div id="oo_{{id}}_menupath" align="center" style="background-color:#E0E0E0">
+
+    <table style='border-width:5px;table-layout:fixed;width:100%'>
+	<thead>
+	    <tr>
+		<th style='background-color:#888888;padding:0;spacing:0;font-weight:normal;font-size:3vmin'>
+		    <img border=0 src="/kastmenu/images/ic_shape_square_select_1.png" onmouseout="this.src='/kastmenu/images/ic_shape_square_select_1.png';document.getElementById('menu_runner_foot').style.backgroundColor='#D8D8D8';" onmouseover="this.src='/kastmenu/images/ic_shape_square_select_2.png';document.getElementById('menu_runner_foot').style.backgroundColor='red';"  onclick="javascript:document.getElementById('menu_runner_input_indexes').value='{{indexes}}';document.getElementById('menu_runner_input_names').value='{{names}}';"  title="Select this Menu Path" alt="Select this Menu Path" style="width:27px;height:27px;vertical-align: middle;align:left;display:inline;"/>
+		    Menu Paths
+		</th>
+	    </tr>
+	</thead>
+	<tbody> 
+	    <tr>
+		<td style='background-color:#E5E4E2;margin:0;padding:0;spacing:0' title='Indexed Menu Path'>
+		    <div style="font-family:Verdana;overflow-x:auto;white-space:nowrap">
+		    <a href="javascript:select('oo_span_0_{{id}}_menupath');"  title="Select"><img border=0 src="/kastmenu/images/ic_image_select_1.png" onmouseout="this.src='/kastmenu/images/ic_image_select_1.png'" onmouseover="this.src='/kastmenu/images/ic_image_select_2.png'" alt="Select" style="width:8vmin;height:8vmin;vertical-align: bottom;align:left;display:inline;"/></a><a href="javascript:unSelect();"  title="unSelect" style="margin:0;padding:0;display:inline;"><img border=0 src="/kastmenu/images/ic_selection_select_input_1.png" onmouseout="this.src='/kastmenu/images/ic_selection_select_input_1.png'" onmouseover="this.src='/kastmenu/images/ic_selection_select_input_2.png'" alt="unSelec" style="width:8vmin;height:8vmin;vertical-align: top;align:left;display:inline;"/></a>
+		    
+		    <span id="oo_span_0_{{id}}_menupath">{{indexes}}</span>
+		    </div>
+		</td>
+	    </tr>
+	    <tr>
+		<td style='background-color:#E5E4E2;margin:0;padding:0;spacing:0' title='Named Menu Path'>
+		    <div style="font-family:Verdana;overflow-x:auto;white-space:nowrap">
+		    <a href="javascript:select('oo_span_1_{{id}}_menupath');"  title="Select"><img border=0 src="/kastmenu/images/ic_image_select_1.png" onmouseout="this.src='/kastmenu/images/ic_image_select_1.png'" onmouseover="this.src='/kastmenu/images/ic_image_select_2.png'" alt="Select" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a><a href="javascript:unSelect();"  title="unSelect" style="margin:0;padding:0;display:inline;"><img border=0 src="/kastmenu/images/ic_selection_select_input_1.png" onmouseout="this.src='/kastmenu/images/ic_selection_select_input_1.png'" onmouseover="this.src='/kastmenu/images/ic_selection_select_input_2.png'" alt="unSelec" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a>
+		    
+		    <span id="oo_span_1_{{id}}_menupath">{{names}}</span>
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+</div>
+</script>
+
+
+<!--
+     ******************
+     | Ouput Template |    
+     ******************
+-->
+
+
+<script id="output-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="oo_{{id}}_{{ooid}}" style='color:white;font-size:0.9vmin;background-color:black;margin:0;padding:0;spacing:0;width:100%;word-wrap:break-word;word-break:break-all;overflow:hidden;' tabindex="0" onfocus="setCurrentOo({{id}}, {{ooid}});">
+<a href="javascript:switchWrapNoWrap('oo_{{id}}_{{ooid}}');"  title="Wrap/No Wrap"><img border=0 src="/kastmenu/images/ic_menu_s16_1.png" onmouseout="this.src='/kastmenu/images/ic_menu_s16_1.png'" onmouseover="this.src='/kastmenu/images/ic_menu_s16_2.png'" alt="Wrap/No Wrap" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a><a href="javascript:select('oo_span_{{id}}_{{ooid}}');"  title="Select"><img border=0 src="/kastmenu/images/ic_image_select_1.png" onmouseout="this.src='/kastmenu/images/ic_image_select_1.png'" onmouseover="this.src='/kastmenu/images/ic_image_select_2.png'" alt="Select" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a><a href="javascript:unSelect();"  title="unSelect" style="margin:0;padding:0;display:inline;"><img border=0 src="/kastmenu/images/ic_selection_select_input_1.png" onmouseout="this.src='/kastmenu/images/ic_selection_select_input_1.png'" onmouseover="this.src='/kastmenu/images/ic_selection_select_input_2.png'" alt="unSelec" style="width:16px;height:16px;vertical-align: middle;align:left;display:inline;"/></a>
+<br>
+<span id="oo_span_{{id}}_{{ooid}}"  style="font-family:monospace;white-space:pre;">
+<code style="font-family:monospace;font-size:3vmin;white-space:pre;word-wrap: break-all;">
+{{#each messages}}
+{{{this}}}<br>
+{{/each}}
+</code>
+</span>
+
+<hr size=5 width="100%" style='margin:0;'>
+</div>
+</script>
+
+
+
+
+<!--
+     **************************
+     | Command Ouput Template |    
+     **************************
+-->
+
+
+<script id="command-output-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="oo_{{id}}_{{ooid}}" style='color:white;font-size:0.9vmin;background-color:black;margin:0;padding:0;spacing:0;width:100%;word-wrap:break-word;word-break:break-all;overflow:hidden;' tabindex="0" onfocus="setCurrentOo({{id}}, {{ooid}});">
+<a href="javascript:switchWrapNoWrap('oo_{{id}}_{{ooid}}');"  title="Wrap/No Wrap"><img border=0 src="/kastmenu/images/ic_menu_s16_1.png" onmouseout="this.src='/kastmenu/images/ic_menu_s16_1.png'" onmouseover="this.src='/kastmenu/images/ic_menu_s16_2.png'" alt="Wrap/No Wrap" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a><a href="javascript:select('oo_span_{{id}}_{{ooid}}');"  title="Select"><img border=0 src="/kastmenu/images/ic_image_select_1.png" onmouseout="this.src='/kastmenu/images/ic_image_select_1.png'" onmouseover="this.src='/kastmenu/images/ic_image_select_2.png'" alt="Select" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a><a href="javascript:unSelect();"  title="unSelect" style="margin:0;padding:0;display:inline;"><img border=0 src="/kastmenu/images/ic_selection_select_input_1.png" onmouseout="this.src='/kastmenu/images/ic_selection_select_input_1.png'" onmouseover="this.src='/kastmenu/images/ic_selection_select_input_2.png'" alt="unSelec" style="width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/></a>
+<br>
+<span id="oo_span_{{id}}_{{ooid}}"  style="font-family:monospace;white-space:pre;">
+<pre><code id="{{coid}}" style="font-family:monospace;font-size:3vmin;white-space:pre;word-wrap: break-all;"></pre>
+{{{message}}}
+</code>
+</span>
+
+<hr size=5 width="100%" style='margin:0;'>
+</div>
+</script>
+
+
+<!--
+     *******************
+     | Dialog Template |    
+     *******************
+-->
+<script id="dialog-template" type="text/x-handlebars-template-0">
+<div id="oo_{{id}}_{{ooid}}" align="center" style='background-color:#E0E0E0;' tabindex="0" onfocus="setCurrentOo({{id}}, {{ooid}});">
+                                                                                                                                                                                                                                                                                                                                                        
+    <table style='border-width:5px;'>
+	<thead>
+	    <tr>
+		<th style='background-color:#00CC00;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:3vmin'>Dialog</span>
+		</th>
+	    </tr>
+	</thead>
+	<tbody> 
+	    <tr>
+		<td style='background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;'>
+		    {{#each messages}}
+		    {{{this}}}<br>
+		    {{/each}}
+		</td>
+	    </tr>
+		{{#if is_value}}
+	    <tr>
+	    
+		<td style='background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;align:left;'>
+		    <input id="oo_input_{{id}}_{{ooid}}" class='input_field' type="{{#if is_password}}password{{/if}}{{#unless is_password}}text{{/unless}}"></input>
+		    <span id="oo_text_{{id}}_{{ooid}}" style="display:none;"></span>
+		    &nbsp;
+		    <img title="Next Page" id="confirm_ok_{{id}}_{{ooid}}"  border=0 src="/kastmenu/images/ic_validate.png" onclick="MENUS.getMenu({{id}}).getOo({{ooid}}).onClick(this, 'ic_validate.png', document.getElementById('oo_input_{{id}}_{{ooid}}').value);"  onmouseout="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOut(this, 'ic_validate.png');" onmouseover="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOver(this, 'ic_validate_2.png');" alt="help" style="width:8vmin;height:8vmin;vertical-align: bottom;float:right;"/> <img border=0 src="/kastmenu/images/ic_eraserb_1.png" onmouseout="this.src='/kastmenu/images/ic_eraserb_1.png'"  onmouseover="this.style.cursor='pointer';this.src='/kastmenu/images/ic_eraserb_2.png'" 
+		    onClick="document.getElementById('oo_input_{{id}}_{{ooid}}').value='';"  title="unSelect" alt="unSelec" style="margin:0;padding:0;width:8vmin;height:8vmin;vertical-align: middle;align:left;display:inline;"/>
+		</td>
+	    </tr>
+		{{/if}}
+		{{#if is_to_confirm}}
+	    <tr>
+		<td style='background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;align:left;margin:0;spacing:0'>
+		    {{#if confirm_ok}}<img title="Validate" id="confirm_ok_{{id}}_{{ooid}}"  border=0 src="/kastmenu/images/ic_validate.png" onclick="MENUS.getMenu({{id}}).getOo({{ooid}}).onClick(this, 'ic_validate.png', '{{confirm_ok}}');"  onmouseout="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOut(this, 'ic_validate.png');" onmouseover="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOver(this, 'ic_validate_2.png');" alt="help" style="width:8vmin;height:8vmin;vertical-align: bottom;float:right;"/>&nbsp;{{/if}}
+		    {{#if confirm_ko}}<img title="Cancel" id="confirm_ko_{{id}}_{{ooid}}"  border=0 src="/kastmenu/images/ic_koa_s32_0.png" onclick="MENUS.getMenu({{id}}).getOo({{ooid}}).onClick(this, 'ic_koa_s32_0.png', '{{confirm_ko}}');"  onmouseout="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOut(this, 'ic_koa_s32_0.png');" onmouseover="MENUS.getMenu({{id}}).getOo({{ooid}}).onMouseOver(this, 'ic_koa_s32_0_2.png');" alt="help" style="width:8vmin;height:8vmin;vertical-align: bottom;float:right;"/>{{/if}}
+		</td>
+	    </tr>
+		{{/if}}
+	</tbody>
+    </table>
+
+<hr size=5 width="100%" style='margin:0;'>
+</div>
+<br>
+<br>
+<span id='anchor_{{id}}_{{ooid}}'></span>
+</script>
+<!-- This id='anchor_... is placed at the bottom of the input div and after 2 br to not to be hidden by the floating address bar under firefox/android. -->
+
+<!--
+     ******************
+     | Error Template |    
+     ******************
+-->
+
+
+<script id="error-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="oo_{{id}}_{{ooid}}" align="center" style='background-color:#E0E0E0;' tabindex="0" onfocus="setCurrentOo({{id}}, {{ooid}});">
+
+    <table style='border-width:5px;'>
+	<thead>
+	    <tr>
+		<th style='{{#if is_raise}}background-color:red;{{/if}};border-color:red;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:3vmin'>{{type}}</span>
+		</th>
+	    </tr>
+	</thead>
+	<tbody> 
+	    <tr>
+		<td style='border-color:red;background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;'>
+		    {{#each messages}}
+		    {{{this}}}<br>
+		    {{/each}}
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+
+<hr size=5 width="100%" style='margin:0;'>
+</div>
+</script>
+
+
+<!--
+     *************************
+     | Global Error Template |    
+     *************************
+-->
+
+
+<script id="global-error-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="global_error" align="center" style='background-color:white;' tabindex="0">
+<br>
+<br>
+<br>
+<br>
+<br>
+    <table style='border-width:5px;'>
+	<thead>
+	    <tr>
+		<th style='background-color:{{color}};border-color:{{color}};color:white;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:3vmin'>Error</span>
+		</th>
+	    </tr>
+	</thead>
+	<tfoot>	
+	    <tr>
+		<td style='background-color:{{color}};word-wrap:break-word;word-break:break-all;overflow:hidden;align:center;margin:0;padding:0'>
+		    <div align="center"><img title="Validate" border=0 src="/kastmenu/images/ic_validate.png" onclick="this.src='/kastmenu/images/ic_validate.png';document.getElementById('global_screen').style.display='block';document.getElementById('global_error').style.display='none';MENUS.getLastMenu().goCurrentOoLast();"  onmouseout="this.src='/kastmenu/images/ic_validate.png';" onmouseover="this.style.cursor='pointer';this.src='/kastmenu/images/ic_validate_2.png';" alt="help" style="width:8vmin;height:8vmin;vertical-align: center;"/></div>
+		</td>
+	    </tr>
+	</tfoot>
+	
+	<tbody> 
+	    <tr>
+		<td style='border-color:violet;background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;'>
+An error occured accessing backend server !<br>
+{{#if messages}}SubException is:<br>{{/if}}
+{{{messages}}}
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+</div>
+</script>
+
+
+
+
+
+<!--
+     *************************
+     | Global Help Template |    
+     *************************
+-->
+
+
+<script id="global-help-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="global_help" align="center" style='background-color:white;' tabindex="0">
+
+    <table style='border-width:5px;width:100%'>
+	<thead>
+	    <tr>
+		<th style='background-color:blue;border-color:blue;color:white;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:7vmin'>{{title}}</span>
+		</th>
+	    </tr>
+	</thead>
+	<tfoot>	
+	    <tr>
+		<td style='background-color:blue;word-wrap:break-word;word-break:break-all;overflow:hidden;align:center;margin:0;padding:0'>
+		    <div align="center"><img title="Validate" border=0 src="/kastmenu/images/ic_validate.png" onclick="this.src='/kastmenu/images/ic_validate.png';document.getElementById('global_screen').style.display='block';document.getElementById('global_help').style.display='none';MENUS.getLastMenu().goCurrentOoLast();"  onmouseout="this.src='/kastmenu/images/ic_validate.png';" onmouseover="this.style.cursor='pointer';this.src='/kastmenu/images/ic_validate_2.png';" alt="help" style="width:8vmin;height:8vmin;vertical-align: center;"/></div>
+		</td>
+	    </tr>
+	</tfoot>
+	
+	<tbody> 
+	    <tr>
+		<td style='border-color:blue;background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;font-family:monospace;'>
+		    {{#each helps}}
+			  {{{this}}}<br>
+		    {{/each}}
+            <br>
+		    {{#each lhelps}}
+			  {{{this}}}<br>
+		    {{/each}}
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+</div>
+</script>
+
+
+
+
+<!--
+     **********************
+     | Option List Window |    
+     **********************
+-->
+<script id="global-optionlist-inputs-template" type="text/x-handlebars-template-0">
+<div style='text-align:center;text-align:left;margin-top: 2vmin;'>
+     &nbsp<b style='color:white;margin-right:0.3rem;'><span id="optionlist_key">{{this.name}}</span>:</b> <input id="optionlist_input" type="text" name="optionlist_input" placeholder="Enter a Search value for {{this.name}}" style='-moz-border-radius: 1.5rem;-webkit-border-radius: 1.5rem;border-radius: 1.5rem;width:60vmin'
+     onchange="makeOptionList('{{this.name}}', this.value, oinputfield.dataset.imageSvn == 'bi-binoculars')"  onkeypress="olKeyPress(event)"></input>
+        &nbsp<button id="optionlist_search_image" class="bi-binoculars-fill" style="font-size: 1rem; color: deepskyblue;-moz-border-radius: 10rem;-webkit-border-radius: 10rem;border-radius: 10rem; border-color: orange; background-color: Transparent;"
+        onclick="olSearchClick(this);"
+        onmouseover="this.style['color'] = 'cyan';"
+        onmouseout="this.style['color'] = 'deepskyblue';"
+        ></button>
+</div>
+</script>
+<script id="global-optionlist-template" type="text/x-handlebars-template-0">
+<div class="accordion" id="olaccordion">
+    {{#each values}}       
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{@index}}" aria-expanded="false" aria-controls="collapse_{{@index}}">
+            <b>{{this.key}}</b>:&nbsp{{this.value}} &nbsp&nbsp
+            <div style='border-width:2px;border-style: solid;border-color:green;-moz-border-radius: 10rem;-webkit-border-radius: 10rem;border-radius: 30rem;padding-left:0.5rem;padding-right:0.5rem;background-color:#B1FB17;font-style: italic; font-size:0.8rem; color:green;'  onclick="olSelect('{{this.pkey_value}}');">
+            V
+            </div> 
+        </button>
+        </h2>            
+        <div id="collapse_{{@index}}" class="accordion-collapse collapse" data-bs-parent="#olaccordion" style="" styles='background-color: lightgreen'>
+        <div class="accordion-body">
+            {{#each fields}}
+                <b>{{this.key}}</b>:&nbsp{{this.value}} &nbsp&nbsp<br>
+            {{/each}}
+        </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
+</script>
+
+
+
+<!--
+     ****************************
+     | Global Settings Template |    
+     ****************************
+-->
+
+
+
+<script id="global-settings-template" type="text/x-handlebars-template-0">
+
+<ul class="myorange nav nav-pills mb-3" id="pills-tab" role="tablist" style='background-color:orange;color:green;'>
+    <li class="nav-item" role="presentation" style='padding-right:2vmin;'>
+        <img id="settings-running_img" border=0 src="/kastmenu/images/tec6tem-spinner-logo-slow.gif"  
+            alt="Restart Menu Terminal Session" style="margin-top:0.3vmin;width:12vmin;height:12vmin;float:left;"/>
+  </li>          
+  <li class="nav-item" role="presentation">
+    <button class="myorange nav-link {{#if machine_is_active}}active{{/if}}" id="pills-machine-tab" data-bs-toggle="pill" data-bs-target="#pills-machine" type="button" role="tab" aria-controls="pills-machine" aria-selected="true" onclick="javascript:DISPATCHER._CURRENT_ADMIN_PAGE='MACHINE'";>
+        <span class="bi bi-pc-display-horizontal" style="font-size:4vmin;padding-top:30vmin;"> Machine</span>
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="myorange nav-link {{#if admin_is_active}}active{{/if}}" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false" onclick="javascript:DISPATCHER._CURRENT_ADMIN_PAGE='ADMIN'";>
+        <span class="bi bi-wrench-adjustable-circle" style="font-size:4vmin;padding-top:30vmin;"> Admin</span>
+    </button>
+  </li>
+    
+  <li class="nav-item" role="presentation">
+    <button class="myorange nav-link" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false" style="padding:1.5vmin;padding-top:0;padding-bottom:0;" onclick="javascript:switchMenuScreen();"
+    title="go back to active Menu">
+        <span class="bi bi-list-ol" style="font-size:8vmin;"></span>
+    </button>
+  </li>
+</ul>
+
+<div id="settings_machine_error" style='padding-left:2vmin;display:none;color:red;font-style:italic;'>
+</div>
+
+
+<div id="settings_machine_xacceptmail" style='display:none;'>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" id="settings_machine_xacceptmail_login" aria-current="page"  onclick="javascript:document.getElementById('settings_machine_xacceptmail_signin').classList.remove('active');this.classList.add('active');switchSettingMachineAcceptMail2(false, null);">Login</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="settings_machine_xacceptmail_signin"  onclick="javascript:document.getElementById('settings_machine_xacceptmail_login').classList.remove('active');this.classList.add('active');switchSettingMachineAcceptMail2(true, null);">Signin with your mail !</a>
+  </li>
+</ul>
+</div>
+
+
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade {{#if machine_is_active}}show active{{/if}}" id="pills-machine" role="tabpanel" aria-labelledby="pills-machine-tab">
+    <form style='padding-left:2vmin;'>  
+    
+        <div class="form-group autocomplete">
+            <label for="machine"><b>Machine:</b></label>
+            <input type="text" class="form-control" name="machine" id="settings_machine_machine" placeholder="Choose a Machine" 
+            onclick='javascript:settings_machine_onMachineChange();javascript:settings_machine_onMachineFocus();'/>
+		</div>
+        <br>
+        <br>
+
+        <div class="form-group"  id="settings_machine_div_mail" style='display:none;'>
+            <label for="mail"><b>Mail Address:</b></label>
+            <input type="text" class="form-control" name="id" id="settings_machine_mail" placeholder="Enter your mail address">
+            <br>
+        </div>
+        
+        <div class="form-group autocomplete"  id="settings_machine_div_user">
+            <label for="user"><b>User:</b></label>
+            <input type="username" class="form-control" name="user" id="settings_machine_user" placeholder="Enter an User on this Machine" 
+            onclick='javascript:settings_machine_onUserChange();javascript:settings_machine_onUserFocus();'>
+            <br>
+        </div>
+        
+        <div class="form-group"  id="settings_machine_div_mail_vcode" style='display:none;'>
+            <label for="mail_vcode"><b>Validation Code:</b></label>
+            <input type="text" class="form-control" name="mail" id="settings_machine_mail_vcode" placeholder="Enter the validation code sent to you">
+            <br>
+        </div>
+        
+        <div class="form-group"  id="settings_machine_div_password" style='display:none;' >
+            <label for="password"><b>Password:</b></label>
+            <input type="password" class="form-control" name="password" id="settings_machine_password" placeholder="Enter User Password">
+            <br>
+        </div>                
+        
+        <div class="form-group autocomplete"  id="settings_machine_div_menu">
+            <label for="menufile"><b>Menu Name:</b></label>
+            <textarea class="form-control" name="menufile" id="settings_machine_menu" rows="3"  placeholder="Enter an (absolute) Menu File Path on this Machine" style="background-color:#f1f1f1;"
+            onclick='javascript:settings_machine_onMenuFileFocus();'
+            ></textarea>            
+            <br>
+        </div>   
+        
+        <div class="form-group autocomplete"   id="settings_machine_div_menupath">
+            <label for="menupath"><b>Menu Path:</b></label>
+            <textarea class="form-control" name="menupath" id="settings_machine_menupath" rows="3"  placeholder="(Optional) Enter a Menu Path on this Menu" style="background-color:#f1f1f1;"></textarea>
+            <br>
+        </div>   
+                
+        <small class="form-text text-muted">Validate will open KastMenu on this Machine/User/MenuPath !</small>
+        <br>
+        <br>
+         
+        <!-- <button  class="btn btn-warning" style='color:blue' onclick'javascript:DISPATCHER.settings_machine_submit();'>Validate</button> -->
+        <a class="btn btn-warning" style='color:white;font-size:4vmin;'  href="javascript:DISPATCHER.settings_machine_submit();">Validate</a>
+    </form> 
+    <br>
+  </div>
+  
+
+  <div class="tab-pane fade {{#if admin_is_active}}show active{{/if}}" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
+    <form style='padding-left:2vmin;'>    
+    
+        <div id="settings_admin_error" style='display:none;color:red;font-style:italic;'>
+		</div>
+		
+        <div class="form-group">
+            <label for="user"><b>User:</b></label>
+            <input type="username" class="form-control" name="user" id="settings_admin_user" placeholder="Enter a Kast Admin User">
+        </div>
+        
+        <div class="form-group" id="settings_admin_div_password">
+            <label for="password"><b>Password:</b></label>
+            <input type="password" class="form-control" name="password" id="settings_admin_password" placeholder="Enter User Password">
+        </div>
+        <br>
+         
+        <small class="form-text text-muted">Validate will open KastMenu on KastMenu Admin MenuPath !</small>
+        <br>
+        
+        <a class="btn btn-warning" style='color:white;font-size:4vmin;'  href="javascript:DISPATCHER.settings_admin_submit();">Validate</a>
+    </form> 
+    <br>
+  </div>
+  
+  <div class="tab-pane fade" id="pills-quit" role="tabpanel" aria-labelledby="pills-quit-tab" onclick='javascript:alert("QUIT !!")'/>
+  
+  
+</div>
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+<!--
+     ________________________________________________________________________________________________________________________________________________
+     |                                                                                                                                              |
+     | HEADER                                                                                                                                |
+     |______________________________________________________________________________________________________________________________________________|
+-->
+
+<div class="frame_header2" id='frame_header2' style='display:none;'>
+    <div>
+        <div id="global_header2">
+        </div>
+    </div>
+</div>
+    
+<div class="frame_header" id='frame_header'>
+    <div>        
+    <div id="global_header" style='display:initial;'>
+        <span style="float:left;"></span>    
+        <a href="javascript:restartMenu();"  title="Restart Menu">
+        <img title="Restart Menu Terminal Session" id="running_img" border=0 src="/kastmenu/images/tec6tem-spinner-logo-slow.gif"  
+            onmouseout="this.src='/kastmenu/images/tec6tem-spinner-logo-slow.gif';" onmouseover="this.src='/kastmenu/images/ic_refreshf_1.png';"
+            alt="Restart Menu Terminal Session" style="margin-top:0.5vmin;width:12vmin;height:12vmin;float:left;"/></a>
+         
+        <!-- <span style="float:left;">&nbsp;</span> -->
+        <span style="float:left;">&nbsp;&nbsp;</span>    
+        
+        <span style="float:left;margin-top:3.5vmin;font-size:3.5vmin;float:left;color:white" id='title'>Menu Sequence:</span>      
+        
+
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist"  style="float:right;padding-top:0.5vmin;">
+            <li class="nav-item" role="presentation" title="Go Settings">
+                <button class="nav-link active" id="pills-machine-tab" data-bs-toggle="pill" data-bs-target="#pills-machine" type="button" role="tab" aria-controls="pills-machine" aria-selected="true" style="padding:1.5vmin;" onclick="javascript:switchSettingScreen();">
+                    <span class="bi bi-tools" style="font-size:6vmin;"></span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation" title="Show All Menu Sequences">
+                <button class="nav-link" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false" style="padding:1.5vmin;" onclick="javascript:showAll();">
+                    <span class="bi bi-exclude" style="font-size:6vmin;"></span>
+                </button>
+            </li>
+                
+            <li class="nav-item" role="presentation" title="Show only Current Menu Sequence">
+                <button class="nav-link" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false" style="padding:1.5vmin;" onclick="javascript:hideAll();">
+                    <span class="bi bi-justify" style="font-size:6vmin;"></span>
+                </button>
+            </li>
+            
+                
+            <li class="nav-item" role="presentation" title="Go bottom">
+                <button class="nav-link" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false" style="padding:0vmin;" onclick="javascript:window.scrollTo(0, document.body.scrollHeight);">
+                    <img  src="/kastmenu/images/ic_bottom_green_1.png" onmouseout="this.src='/kastmenu/images/ic_bottom_green_1.png';" onmouseover="this.src='/kastmenu/images/ic_bottom_green_2.png';" alt="Show only Current Menu Sequence" style="float:right;margin-top:0.5vmin;width:10vmin;height:11vmin;vertical-align: bottom;float:right;"/>
+                </button>
+            </li>
+        </ul>
+        
+        
+        <div   hidden="hidden">
+        <!-- Nav Menu Box: Hidden cause essential for functioning -->
+        <table style='border-width:5px;display:inline-table;vertical-align:top;float:right;'>
+        <thead>
+            <tr>
+            <th colspan=6 style='marging:0;padding:0;spacing:0;background-color:#00CC00;font-weight:normal'>
+                <span style='font-size:0.4vmin'>Menus Box</span>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuLast();"  title="Go to Last Menu Sequence"><img  border=1 src="/kastmenu/images/ic_menu_last_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_menu_last_s24_1.png';this.style.borderColor='black';" onmouseover="this.src='/kastmenu/images/ic_menu_last_s24_2.png';this.style.borderColor='red';" alt="Go to Last Menu Sequence" style="width:34px;height:34px;vertical-align: bottom;float:right;border-width:1px;"/></a>
+            </td>
+            <td style='marging:0;padding:0;background-color:cyan;' title="Select a Menu Sequence" >
+                <select id='menu_select' onchange="setCurrentMenu(this.value);MENUS.goCurrentMenu();" style='marging:0;padding:0;background-color:transparent;line-height:1px;border-radius:0;' 
+                onmouseout="this.src='/kastmenu/images/ic_menu_last_s24_1.png';this.style.borderColor='black';" onmouseover="this.src='/kastmenu/images/ic_menu_last_s24_2.png';this.style.borderColor='red';"
+                >
+                </select>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuPrev();"  title="Go to Previous Menu Sequence"><img border=1 src="/kastmenu/images/ic_up_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_up_s24_1.png';this.style.borderColor='black';" onmouseover="this.src='/kastmenu/images/ic_up_s24_2.png';this.style.borderColor='red';" alt="Go to Previous Menu Sequence" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuNext();"  title="Go to Next Menu Sequence"><img border=1 src="/kastmenu/images/ic_down_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_down_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_down_s24_2.png';this.style.borderColor='red'" alt="Go to Next Menu Sequence" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuFirst();"  title="Go to First Menu Sequence"><img border=1 src="/kastmenu/images/ic_top_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_images/top_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_top_s24_2.png';this.style.borderColor='red'" alt="Go to First Menu Sequence" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuLast();"  title="Go to Last Menu Sequence"><img border=1 src="/kastmenu/images/ic_bottom_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_bottom_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_bottom_s24_2.png';this.style.borderColor='red'" alt="Go to Last Menu Sequence" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+        
+        
+        <!-- SM: Current Menu Box: commented cause not essential 
+        <table style='border-width:5px;display:inline-table;vertical-align:top;float:right;'>
+        <thead>
+            <tr>
+            <th colspan=7 style='marging:0;padding:0;spacing:0;background-color:#00CC00;font-weight:normal'>
+                <span style='font-size:0.4vmin'>Current Menu Box</span>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goCurrentMenu();"  title="Go to Current Menu Sequence"><img border=1  src="/kastmenu/images/ic_doc_menu_s32_1.png" onmouseout="this.src='/kastmenu/images/ic_doc_menu_s32_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_doc_menu_s32_2.png';this.style.borderColor='red'" alt="Go to Current Menu Sequence" style="width:34px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goCurrentMenuOoPrev();"  title="Go to Previous Current Menu Hint"><img border=1  src="/kastmenu/images/ic_up_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_up_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_up_s24_2.png';this.style.borderColor='red'" alt="Go to Previous Current Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goCurrentMenuOoNext();"  title="Go to Next Current Menu Hint"><img border=1  src="/kastmenu/images/ic_down_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_down_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_down_s24_2.png';this.style.borderColor='red'" alt="Go to Next Current Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goCurrentMenuOoLast();"  title="Go to Last Current Menu Hint"><img border=1  src="/kastmenu/images/ic_bottom_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_bottom_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_bottom_s24_2.png';this.style.borderColor='red'" alt="Go to Last Current Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+        -->
+        
+        
+        <!-- Hint All Box: Hidden cause essential for functioning -->
+        <table id="hint_all_box" style='border-width:5px;display:inline-table;vertical-align:top;float:right;display:none;'>
+        <thead>
+            <tr>
+            <th colspan=7 style='marging:0;padding:0;spacing:0;background-color:#00CC00;font-weight:normal'>
+                <span style='font-size:0.4vmin'>Hint Box</span>
+            </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goOoPrev();"  title="Go to Previous  Menu Hint"><img border=1  src="/kastmenu/images/ic_up_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_up_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_up_s24_2.png';this.style.borderColor='red'" alt="Go to Previous  Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goOoNext();"  title="Go to Next  Menu Hint"><img border=1  src="/kastmenu/images/ic_down_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_down_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_down_s24_2.png';this.style.borderColor='red'" alt="Go to Next  Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+            
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goMenuFirst();"  title="Go to First Menu Sequence"><img border=1 src="/kastmenu/images/ic_top_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_top_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_top_s24_2.png';this.style.borderColor='red'" alt="Go to First Menu Sequence" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+
+            <td style='marging:0;padding:0;background-color:white;'>
+                <a href="javascript:MENUS.goOoLast();"  title="Go to Last Menu Hint"><img border=1  src="/kastmenu/images/ic_bottom_s24_1.png" onmouseout="this.src='/kastmenu/images/ic_bottom_s24_1.png';this.style.borderColor='black'" onmouseover="this.src='/kastmenu/images/ic_bottom_s24_2.png';this.style.borderColor='red'" alt="Go to Last Menu Hint" style="width:17px;height:34px;vertical-align: bottom;float:right;"/></a>
+            </td>
+            
+            </tr>
+        </tbody>
+        </table>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+
+<!--
+     ________________________________________________________________________________________________________________________________________________
+     |                                                                                                                                              |
+     | MAIN CONTENT                                                                                                                                 |
+     |______________________________________________________________________________________________________________________________________________|
+-->
+
+<!-- TOP CSS Frame -->
+<!--  style='border:0;marging:0;padding:0;font-weight:normal;float:left' -->
+<!--  <div  class="container-fluid overflow-y-scroll" id="frame_content"> -->
+<div class="frame_content"  id="frame_content">
+    <div id='global_screen'>
+        <div id='main'></div> 
+    </div>
+    <div id="global_error"></div>
+    <div id="global_help"></div>
+    <img class="CompCenter" id="welcome-click-number-img" src="/kastmenu/images/welcome-click-number.png">
+    <script>
+        wcn = document.getElementById("welcome-click-number-img");
+        if (wcn!=null) {
+            setTimeout(() => wcn.parentNode.removeChild(wcn), 10000);
+        }
+    </script>
+</div>
+
+
+
+
+<div class="frame_content2"  id="frame_content2" style='display:none;'>
+    <div id="global_screen2">
+    </div>
+</div>
+
+
+
+
+
+<script src='/kastmenu/js/kastmenu.js' type='text/javascript'></script>
+
+<script>
+window.onunload = function () {
+    DISPATCHER.onunload();
+}
+window.onload = function () {
+    // The following 2 lines + comment are in use by kastserver to template an arbitrary go_path:
+    let loadvalue = null;
+    let session_part = null;
+    let doDispatch = true;
+    //[1321321321]
+    
+    if (doDispatch) DISPATCHER.onload(loadvalue);
+    window.scrollTo(0, 0);
+}
+</script>
+
+</body>
+</html>

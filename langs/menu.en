@@ -1,0 +1,16 @@
+up_message = Up
+down_message = Down
+exit_message = Exit
+check_all_message = Submit
+choice_message = Choice
+confirm_message = Are you sure you want to: $1, please confirm
+confirm_exit_message = Are you sure you want to exit, please confirm
+wait_message = Press enter to return to Menu.
+web_wait_message = VAldate to get back to Menu.
+option_check_message1 = Value must be a digit or one of: $1.
+option_check_message2 = Choice must be a valid option Menu !
+input_field_message1 =Enter the value for field
+input_field_message2 = Many entries are allowed using the separator
+input_field_default_message = default
+input_field_checkin_message = Choose one of
+command_label = Running command: $1

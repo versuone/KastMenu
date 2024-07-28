@@ -1,0 +1,95 @@
+Install:
+========
+
+Check if pre-exist:
+-------------------
+$ dpkg -l | grep kastmenu
+
+Delete if pre-exist:
+--------------------
+$ sudo dpkg -P kastmenu
+
+Install:
+--------
+$ dpkg -i kastmenu_1.5.deb
+or:
+$ sudo apt -y install kastmenu_1.5.deb
+
+Run:
+----
+$ sudo -u kastserver /opt/kastmenu/current/bin/kastserver -v500
+
+
+Machines:
+=========
+Adding Machine:localhost: (required)
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmachine -m localhost -t Title_for_my_localhost -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastmenu  --kastweb_port 9100
+--ispublic: this will allow the publishing of the name of this machine in the web interface.
+--isdefault: this will show this machine by default in the web interface.
+--kastagent_dir /home/kastmenu: This will be the home dir of the kastagent server on this machine.
+This usually is the home dir of the kastagent user (see below) for this machine.
+kastagent user must have full right on this directory.
+Note: kastmenu auto deploy the kastagent to the target machine into this target directory.
+--kastweb_port 9100: Can be any port.
+This will be the port of what is called the kastweb proxy.
+The kastweb proxy is part of the kastagent agent installation,
+and is systematically started for the first menu called for any user on the target machine.
+
+
+Adding Machine:my_other_host: (for example)
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmachine -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastm --kastweb_port 9100
+--kastagent_dir /home/kastm: here we choose kastm as kastmenu user as it can be anyone.
+
+
+Sudo user: (optional)
+==========
+e.g. Sudo user (mysuser) for my_other_host:
+-------------------------------------------
+A typical sudo user must have the following rigth on the target machine (my_other_host):
+ALL=(ALL:ALL) NOPASSWD:ALL
+Note: a sudo user will not be allowed to create menu.
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m my_other_host -u mysuser  -t Sudo_user_for_my_other_host  -F -S
+Update machine my_other_host:
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmachine -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic -F
+
+
+Kastmenu User: (required)
+==============
+Adding kastmenu user to machine:localhost:
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m localhost -u kastmenu  -t Kastagent_user_for_localhost  -F -K
+-K: means is kastmenu user.
+Adding kastmenu user to machine:my_other_host:
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m my_other_host -u kastm  -t Kastagent_user_for_my_other_host  -F -K
+
+
+Average user:
+=============
+Machine:
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m localhost -u test  -t cfhgfhg  -F
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmenu  -m localhost -u test -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F
+Machine:
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m my_other_host -u asjkinst  -t cfhgfhg  -F  --ispublic
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmenu  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome/tutorials.xml -F
+
+---------------------------------------
+| Advanced considérations  (optional) | 
+---------------------------------------
+
+Create a guest user on a specific Machine:
+==========================================
+
+A guest user is a specific user with low right on a specific machine.
+The machine must support Sudo user.
+--xnopassword: means anyone will be allowed to run any menu under this user with no password.
+$ sudo -u kastserver /opt/kastmenu/current/bin/addkuser -m localhost -u guest  -t cfhgfhg  -F --xnopassword
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmenu  -m localhost -u guest -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F
+
+
+Allow AcceptMail on a specific Machine:
+=======================================
+-A: --xaccept_mail: With xaccept_mail (-A): Users connecting via the WebMenu would be allowed to automatically create their own
+account simply providing their mail accounts.                      
+-M welcome: --default_menu In conjunction with --xaccept_mail (-A). Will add this menu name for the newly created user.
+-P /opt/kastmenu/current/conf/welcome/tutorials.xml: In conjunction with --xaccept_mail (-A). Will add this menu file path for the newly created user.                                              
+
+$ sudo -u kastserver /opt/kastmenu/current/bin/addmachine -m localhost -t Localhost_machine -v3 -F -A -M welcome -P /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml --ispublic  -F

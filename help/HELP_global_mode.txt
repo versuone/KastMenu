@@ -1,0 +1,11 @@
+Usage:
+
+    Switch the interpretor.
+
+    mode [xpath|ql|os|python]
+    
+    e.g.:
+    mode xpath  # Switch to the xpath interpretor alternatively type :.
+    mode ql     # Switch to the ql interpretor alternatively type %.
+    mode os     # Switch to the os interpretor alternatively type !.
+    mode python # Switch to the python interpretor alternatively type ?.

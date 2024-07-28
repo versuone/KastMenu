@@ -1,0 +1,76 @@
+ -----------------------
+|Repoz Global Short help|
+ -----------------------
+
+
+H  shows this help: a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+help shows long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+
+
+COMMAND SUMMARY
+
+
+Processor commands:
+-------------------
+
+xpc: Creates a new xml processor for xml file management.
+     :>xpc -F /where/is/my/xml/file.xml [-f /where/is/my/xml/target_file.xml]
+
+apc: Creates a new attrs processor for attrs file management.
+     :>apc -F /where/is/my/attrs/file.attrs [-f /where/is/my/xml/target_file.xml]
+
+tpc: Creates a new template processor for template file management.
+     :>tpc -D /where/is/my/tmpl/file.tmpl [-f /where/is/my/xml/target_file.xml]
+
+unpc: Eventually unmount and Destroy a processor.
+	  :>unpc myalias
+
+mpc: Creates a new template processor for template file management.
+     :>mpc -D /where/is/my/tmpl/file.tmpl [-f /where/is/my/xml/target_file.xml]
+
+
+Note Advanced kwad support:
+xpc  --kact tom.datasrc : mount this SoftClass file.
+xpc --kcac my.xml : mount this custom.xml file.
+
+
+Mount commands:
+-------------
+
+mount: Mount a processor.
+       :>mount myalias
+
+unmount:UnMount the current processor.
+         :>unmount
+
+
+Variable commands:
+------------------
+
+var: Create or display a global Variable.
+     :>var myvar = myvalue
+     :>var myvar
+
+unvar: Destroys a global Variable.
+
+
+Mode commands:
+--------------
+
+mode: Switch the interpretor.
+      mode xpath
+      mode ql
+      mode os
+      mode python
+
+
+Show and Save:
+--------------
+
+show: print the content of the file.
+
+save: save the file.

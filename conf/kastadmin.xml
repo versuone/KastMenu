@@ -1,0 +1,132 @@
+<!--  Copyright (c) 2008, Patrick Germain Placidoux  -->
+<!--  All rights reserved.  -->
+<!--   -->
+<!--  This file is part of KastMenu Public Software.  -->
+<!--   -->
+<!--  KastMenu Public Software is released under the modified BSD License,  -->
+<!--  which should accompany it or any part of it in the file "COPYING".  -->
+<!--  If you do not have this file you can access the license   -->
+<!--  through the WWW at http://www.dkwad.org/license/bsd/license.txt.  -->
+<!--   -->
+<!-- Home: http://www.kastmenu.org  -->
+<!-- Contact: kastmenu@kastmenu.org  -->
+
+
+
+<config title='KastMenu Administration'  option_upper='False'>
+    <menu title='KastMenu Management' help='My short Help' lhelp='My long Help plus link test: http://www.kikonf.org'>
+       
+        <menu title='Machines Management'>
+            <imenu title='Add Machine' lhelp='Use this command to add/update a Machine to KastMenu.' command='${KAST_PATH}/bin/addmachine --verbose $verbose  --machine $machine --title $title --ssh_port $ssh_port --$xaccept_mail --$ispublic --$isdefault --$default_menu --$rmv_ispublic --$rmv_isdefault --$rmv_accept_mail --$rmv_sudo_user -F'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='Better not provide IP but FQDN as possible.' wk='{*type:str}'/>
+                <ioption name='title' help='A Title for this machine.'  wk='{*type:str}'/>
+                <ioption name='ssh_port' help='Default 22.'  wk='{*type:int,*value:0}'/>
+                <ioption name='xaccept_mail' help='Only if an sudo_user is attached to this machine (see addkuser).\nWith xaccept_mail (-A): Users connecting via the WebMenu would be allowed to automatically create their own account simply providing their mail accounts.'  wk='{*type:bool,*value:False}'/>
+                <ioption name='ispublic' help='If true will allow the display of this machine (in the search list) for all users, even if they dont have any account on this machine.'  wk='{*type:bool}'/>
+                <ioption name='isdefault' help='In conjunction with --ispublic. If true will display this machine by default when entering the WebMenu.'  wk='{*type:bool}'/>
+                <ioption name='default_menu' help='In conjunction with --xaccept_mail (-A). Will add this menu name for the newly created user.'  wk='{*type:str}'/>
+                <ioption name='default_menu_fpath' help='In conjunction with --xaccept_mail (-A). Will add this menu path for the newly created user.'  wk='{*type:str}'/>
+                <ioption name='rmv_ispublic' help='Remove ispublic. (and isdefault)'  wk='{*type:bool}'/>
+                <ioption name='rmv_isdefault' help='Remove isdefault.'  wk='{*type:bool}'/>
+                <ioption name='rmv_accept_mail' help='Remove xaccept_mail (and default_menu and default_menu_fpath).'  wk='{*type:bool}'/>
+                <ioption name='rmv_sudo_user' help='Remove sudo_user'  wk='{*type:bool}'/>
+            </imenu>
+            <option name='List Machines' command='${KAST_PATH}/bin/addmachine -l' help='This will list all the machines hold by the KastMenu database.'/>
+            <imenu title='Delete Machine' lhelp='Use this command to delete a Machine from KastMenu.' command='${KAST_PATH}/bin/dellmachine --verbose $verbose  --machine $machine' confirm='True'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='Better not provide IP but FQDN as possible.' wk='{*type:str}'/>
+            </imenu>            
+        </menu>
+
+                        
+        <menu title='Users Management'>
+            <imenu title='Add Machine' lhelp='Use this command to add/update a Machine to KastMenu.' command='${KAST_PATH}/bin/addkuser 
+        --verbose $verbose --machine $machine --user $user --title $title --password password --ssh_port $ssh_port --disabled $disabled --enabled $enabled --is_machine_sudo_user $is_machine_sudo_user -F'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='A machine previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='user' help='Existing user on this Machine.' lhelp='User name.
+    When a kuser is created.
+    Only if the target machine has no sudo_user set to it,
+    - A no pass ssh_key is specifically created for the user kastmenu to access this user on the target machine.
+    Beware as "no pass ssh_keys" are created for the user kastmenu on the kastmenu,
+    this user and by extension the kastmenu or the machine holding the kastmenu must be super protected.
+    The WebMenu will use this ssh_key to connect this user on the remote machine.
+
+    As WebMenu is using ssh_key to connect to this user to remote machine:
+    - it will still work even if the user change their password on the remote machine.
+    - Use delkuser to remove the specific "no pass ssh_keys".
+    - Authentication of user to machine: is run by WebMenu checking the user password directly on the remote machine.
+    KastMenu do not store user password.' wk='{*type:str}'/>
+                <ioption name='title' help='A Title for this user.'  wk='{*type:str}'/>
+                <ioption name='password' help='The password of this user on this machine.' wk='{*password:True,*password_file_option:password_file}'/>
+                <ioption name='ssh_port' help='Default 22.'  wk='{*type:int,*value:0}'/>
+                <ioption name='enabled' help='Exlusive with disabled. Enable this user. If provided this user will accessable again from the WebMenu !'  wk='{*type:bool,*value:True}'/>
+                <ioption name='disabled' help='Exlusive with enabled. Disable this user. If provided this user will be no more accessable from the WebMenu !'  wk='{*type:bool,*value:False}'/>
+                <ioption name='is_machine_sudo_user' lhelp="If provided: this user will be associated to the machine as the Machine's sudo_user.
+    This user must have sudo power on the target machine (in order to allow sudo -u [other_kuser]).
+    This user will also be: disabled: This means it  will be no more accessable from the WebMenu.
+    If can enable it afterwards but but this is not recommended.
+
+    Once a super user is set to a machine:
+    - A no pass ssh_key is created for the user kastmenu to access this user on the target machine.
+    Beware as 'no pass ssh_keys' are created for the user kastmenu on the kastmenu,
+    this user and by extension the kastmenu or the machine holding the kastmenu must be super protected.
+    - Once a machine as a sudo_user further user adds (using addkuser) will no more create specific 'no pass ssh_keys'
+    for kastmenu user.
+    - The WebMenu will run remote connection to this target machine exclusively using this sudo_user. 
+
+    You can use delkuser on previous kusers of this machine in order to remove the specific 'no pass ssh_keys'.
+    And recreate them."  wk='{*type:bool,*value:False}'/>
+            </imenu>
+                <option name='List Users' command='${KAST_PATH}/bin/addkuser -l' help='This will list all the users hold by the KastMenu database.'/>
+            <imenu title='Delete User' lhelp='Use this command to delete an User from KastMenu.' command='${KAST_PATH}/bin/dellkuser --verbose $verbose  --machine $machine --user $user' confirm='True'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='A machine previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='user' help='Existing user on this Machine.' lhelp='The user on this Machine.' wk='{*type:str}'/>
+            </imenu>            
+        </menu>
+
+    
+        <menu title='Menus Management'>
+            <imenu title='Add Machine' lhelp='Use this command to add/update a Machine to KastMenu.' command='${KAST_PATH}/bin/addkuser 
+        --verbose $verbose --machine $machine --user $user --title $title --password password --ssh_port $ssh_port --disabled $disabled --enabled $enabled --is_machine_sudo_user $is_machine_sudo_user -F'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='A machine previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='user' help='An existing user on this Machine.And previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='name' help='This is a logical name for the menu file for this user on this machine.' wk='{*type:str}'/>
+                <ioption name='path' help='This is an absolute path for the menu file on the machine !' wk='{*type:str}'/>
+            </imenu>
+                <option name='List Menus' command='${KAST_PATH}/bin/addmenu -l' help='This will list all the menus hold by the KastMenu database.'/>
+            <imenu title='Delete Menu' lhelp='Use this command to delete a Menu from KastMenu.' command='${KAST_PATH}/bin/dellmenu --verbose $verbose  --machine $machine --user $user --name $name' confirm='True'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='machine' help='Machine Host.' lhelp='A machine previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='user' help='An existing user on this Machine.And previously declared into KastMenu.' wk='{*type:str}'/>
+                <ioption name='name' help='This is a logical name for the menu file for this user on this machine.' wk='{*type:str}'/>                
+            </imenu>            
+        </menu>
+
+    
+        <menu title='Admins Management'>
+            <imenu title='Add Machine' lhelp='Use this command to add/update an admin to KastMenu.' command='${KAST_PATH}/bin/admin 
+        --verbose $verbose --user $user --add --password password --disabled $disabled --enabled $enabled -F'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='user' help='An admin user for KastMenu.' lhelp='This user will have admin rigths on KastMenu.
+This user can access to the admin tab through the KastMenu interface: https://[host]:[port]/kastmenu/admin/[user].
+This user can run the KastMenu command.
+The user password is stored stashed into the KastMenu database. KastMenu do not store clear password.' wk='{*type:str}'/>
+                <ioption name='add' help='Operation add.' lhelp='Exclusive with del. Will add this admin user to KastMenu.'  wk='{*type:bool,*value:True}'/>
+                <ioption name='del' help='Operation delete.' lhelp='Exclusive with del. Will delete this user from KastMenu.'  wk='{*type:bool,*value:False}'/>
+                <ioption name='password' help='The password of this admin user.' wk='{*password:True,*password_file_option:password_file}'/>
+                <ioption name='enabled' help='Exlusive with disabled. Enable this admin user. If provided this admin user will accessable again from the WebMenu !'  wk='{*type:bool,*value:True}'/>
+                <ioption name='disabled' help='Exlusive with enabled. Disable this admin user. If provided this admin user will be no more accessable from the WebMenu !'  wk='{*type:bool,*value:False}'/>
+            </imenu>
+                <option name='List Admin Users' command='${KAST_PATH}/bin/admin -l' help='This will list all the admin users hold by the KastMenu database.'/>
+            <imenu title='Delete User' lhelp='Use this command to delete an User from KastMenu.' command='${KAST_PATH}/bin/admin --verbose $verbose  --user $user --del' confirm='True'>
+                <ioption name='verbose' help='Verbose level, int value.'  wk='{*type:int,*value:0}'/>
+                <ioption name='user' help='Admin user.' wk='{*type:str}'/>
+            </imenu>            
+        </menu>
+        
+    </menu>   
+</config>

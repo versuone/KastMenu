@@ -1,0 +1,35 @@
+kikxml Project 
+==============
+[E/I]KIKXML### (ex: EKIKXML001)
+
+
+
+class kikxmlParameterTypeException(kikxmlBaseException):
+    def __init__(self, from_class, from_method, parm, expected, received, code=None):
+        kikxmlBaseException.__init__(self, from_class, from_method, 'Incorrect type for ' + str(parm) + ', expected type:' + str(expected) + ', received:' + str(received) + '.', code=code)
+class kikxmlParameterException(kikxmlBaseException):pass
+class kikxmlSystemException(kikxmlBaseException):pass 
+class kikxmlXmlSyntaxException(kikxmlBaseException):pass
+class kikxmlJxQueryException(kikxmlBaseException):pass
+
+
+
+
+
+
+
+
+
+class kwadParameterTypeException(kwadBaseException):
+    def __init__(self, from_class, from_method, parm, expected, received, code=None):
+        kwadBaseException.__init__(self, from_class, from_method, 'Incorrect type for ' + str(parm) + ', expected type:' + str(expected) + ', received:' + str(received) + '.', code=code)
+class kwadParameterException(kwadBaseException):pass
+class kwadSystemException(kwadBaseException):pass
+class kwadSoftClassException(kwadBaseException):pass
+class kwadSoftClassSyntaxException(kwadBaseException):pass
+class kwadSoftClassDescriptorSyntaxException(kwadBaseException):pass
+class kwadSoftClassRestrictorSyntaxException(kwadBaseException):pass
+class kwadSoftClassCheckException(kwadBaseException):pass
+class kwadSoftClassRestrictorCheckException(kwadBaseException):pass
+class kwadSoftClassDescriptorCheckException(kwadBaseException):pass
+class kwadSoftClassExecutionException(kwadBaseException):pass

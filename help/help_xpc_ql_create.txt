@@ -1,0 +1,137 @@
+ ---------------------------
+|xpc:xql Create command help|
+ ---------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+4 CREATE OPERATION
+
+
+The create operation, creates one or more nodes to one or more guiven targets.
+
+
+Syntax:
+--------
+create  O_WHAT O_SET at F_TAGS where F_ATTRS
+
+
+- Simpple create
+
+e.g.:
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+
+%test:/tag1>create tag2  set attr1=a;attr2=b;attr3=c at tag1
+/tag1
+    Creating Node:tag2 *tun:I8, on Node:/tag1.
+
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I2    None                 d                    e                    c
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I4    k                    i                    j                    h
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I7    None                 p                    None                 o
+
+                    *tun  attr4                attr2                attr3                attr1
+/tag1/tag2
+                    I8    None                 b                    c                    a  <---
+
+%test:/tag1>
+
+
+- Creating using a where clause
+
+e.g.:
+%test:/tag1>create tag4   at tag2 where attr2=p
+/tag1/tag2
+    Creating Node:tag4 *tun:I17, on Node:/tag1/tag2.
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >
+                </tag4>
+            </tag2>
+        </tag1>
+
+        
+- Creating using a Hierarchical where clause
+        
+e.g.:    
+%test:/tag1>create tag5 set attr1=False;attr2=aaa;attr3=bbb at tag4 where tag2@attr2=p
+/tag1/tag2/tag4
+    Creating Node:tag5 *tun:I9, on Node:/tag1/tag2/tag4.
+
+
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+                <tag4 >
+                    <tag5  attr2="aaa" attr3="bbb" attr1="False">
+                    </tag5>
+                </tag4>
+            </tag2>
+        </tag1>

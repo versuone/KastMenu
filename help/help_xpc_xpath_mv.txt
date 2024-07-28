@@ -1,0 +1,67 @@
+ -----------------------
+|xpc:xql mv command help|
+ -----------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+9 MOVE COMMAND
+
+
+Command: mv
+
+The mv ommnad copies one or more source node(s) to one or more targets nodes and
+deletes all the source nodes.
+
+Syntax: 
+-------
+mv <picpath_source> <picpath_destination>
+
+
+- Move resulting in multiple new nodes
+
+e.g.:
+:test:/tag1>ls
+/tag1> attr1:a attr2:b
+tag2
+tag3
+tag2
+tag2
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+:test:/tag1>mv tag3 tag2
+EEpicxml: Not allowed child:tag3 for Node:tag2. Allowed children are:'tag4', or use force.
+
+
+:test:/tag1>mv tag3 tag2 -X
+   Adding child:/tag1/tag2/tag3
+   Adding child:/tag1/tag2/tag3
+   Adding child:/tag1/tag2/tag3
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e
+tag3 <---
+
+/tag1/tag2> attr1:h attr2:i attr3:j
+tag4
+tag3 <---
+
+/tag1/tag2> attr1:o attr2:p attr3:None
+tag3 <---
+
+:test:/tag1>

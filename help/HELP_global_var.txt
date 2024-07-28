@@ -1,0 +1,11 @@
+Usage:
+
+    Creates or displays a global Variable.
+
+    var <var_name> = <value> Creates and sets the value <value> to the new global variable <var_name>.
+    e.g:
+    var myvar = myvalue
+
+    var <var_name> Displays the variable <var_name>.
+    e.g:
+    var myvar

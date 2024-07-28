@@ -1,0 +1,68 @@
+ ------------------
+|xpc:xql short help|
+ ------------------
+
+
+h shows this help: a short summary of the commands available  for the mounted processor for the currrent mode. 
+help shows a long help for the commands available for the mounted processor for the currrent mode.
+h (or help) <command> shows help for this commands available for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+COMMANDS SUMMARY
+
+select, create, delete, update, duplicate, insert
+
+
+select: The select operation, selects one or more node(s) at a set of tag(s) and regarding an optional where clause.
+		Syntax: select O_WHAT at F_TAGS where F_ATTRS
+		
+	  	%test:/tag1>select * at tag1
+	  	%test:/tag1>select * at tag2,tag3 where attr2=i
+	
+	    Advanced commands: cselect, ccselect, rselect, crselect
+
+
+create: The create operation creates one or more nodes to one or more guiven targets.
+        Syntax:create  O_WHAT O_SET at F_TAGS where F_ATTRS
+        
+        %test:/tag1>create tag2 at tag1
+	    %test:/tag1>create tag2 set attr1=a;attr2=b;attr3=c at tag1
+	    %test:/tag1>create tag5 set attr1=False;attr2=aaa;attr3=bbb at tag4 where tag2@attr2=p
+
+	    Advanced commands: ccreate, rcreate
+
+
+delete: The delete operation, deletes one or more node regarding an optional where clause.
+        Syntax:delete F_TAGS where F_ATTRS
+        
+        %test:/tag1>delete tag2,tag3
+        %test:/tag1>delete tag5 where tag2@attr2=i
+
+        
+update: The Update opteration, updates one or more node with a set of pair of Attribute/Values.
+        Syntax: update F_TAGS where F_ATTRS O_SET
+        
+        %test:/tag1>update tag2 set attr1=bla bla
+        %test:/tag1>update tag5 where tag2@attr2=i set attr3=New value
+
+
+duplicate: The Duplicate operation, duplicates one node to one or more target.
+           Syntax: duplicate F_TAGS where F_ATTRS at F_TAGS where F_ATTRS
+           
+           %test:/tag1>duplicate  tag4 at tag2
+           %test:/tag1>duplicate tag4   where tag2@attr2=i  at tag2
+           %test:/tag1>duplicate tag4   where tag2@attr2=i  at tag2  where tag2@attr2=p
+
+
+insert: The insert operation is a Repoz special operation that uses the Repoz Return cache capability,
+        to allow insertion of the stored node(s) into another file
+        or another part of the same xml file.
+        
+        Syntax:insert $ro where F_ATTRS at F_TAGS where F_ATTRS
+
+        %test:/tag1>select * at tag2
+        %test:/tag1>var ro
+        %test0:/tag1>insert $ro at tag1

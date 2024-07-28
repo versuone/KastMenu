@@ -1,0 +1,7 @@
+kastmenu and kastmenu-server are merged in one:
+
+- kastmenu becomes kastagent
+- kastmenu-server is renamed as kastmenu, so kastmenu-server becomes fully GNU open source under kastmenu GPL 3 License.
+- kastagent and is embedded into kastmenu as kastagent-<version>.tar.gz
+under directory <kastmenu>/kastagent.
+Kastagent is fully deployed by Kastmenu to local or remote machine.

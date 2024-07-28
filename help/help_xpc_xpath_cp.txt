@@ -1,0 +1,88 @@
+ -----------------------
+|xpc:xql cp command help|
+ -----------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+8 COPY COMMAND
+
+
+Command: cp
+
+The cp commmand, copies one or more source node(s) to one or more targets nodes.
+
+
+Syntax: 
+-------
+cp <picpath_source> <picpath_destination>
+
+
+- Simple copy
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>cp tag2@attr2=i  ..
+   Adding child:/tag1/tag2
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k <---
+tag4
+
+:test:/tag1>
+
+
+- Copy resulting in multiple new nodes
+
+e.g.:
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+
+:test:/tag1>cp tag2 ..
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+
+:test:/tag1>
+:test:/tag1>
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None
+
+/tag1/tag2> attr1:c attr2:d attr3:e attr4:None <---
+
+/tag1/tag2> attr1:h attr2:i attr3:j attr4:k <---
+tag4
+
+/tag1/tag2> attr1:o attr2:p attr3:None attr4:None <---

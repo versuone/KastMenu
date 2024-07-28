@@ -1,0 +1,125 @@
+ ------------------------
+|xpc:xql upd command help|
+ ------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+5 UPDATE COMMAND
+
+
+Command: upd
+
+The update command, updates one or more picpath(s).
+
+
+Syntax:
+-------
+upd <picpath>[@attr=value,@attr=value,...] [...]
+
+
+- Simple update
+
+e.g.:
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:f attr2:some values with spaces attr3:A value with spaces !
+
+:test:/tag1>upd tag3[@attr1=bbb]
+updated node:/tag1/tag3>
+   From attr1:f To attr1:bbb
+
+   
+- Updating more than one attributes using values with spaces
+   
+e.g.:
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:bbb attr2:some values with spaces attr3:A value with spaces !
+
+:test:/tag1>upd 'tag3[@attr1=c,@attr2=some values with spaces]'
+updated node:/tag1/tag3>
+   From attr2:some values with spaces To attr2:some values with spaces
+   From attr1:bbb To attr1:c
+
+   
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:c attr2:some values with spaces attr3:A value with spaces !
+
+
+- Updating using more than one picpath
+
+e.g.:
+:test:/tag1>upd 'tag3[@attr1=a,@attr2=b]' tag3[@attr3=c]
+updated node:/tag1/tag3>
+   From attr2:some values with spaces To attr2:b
+   From attr1:c To attr1:a
+
+updated node:/tag1/tag3>
+   From attr3:A value with spaces ! To attr3:c
+
+:test:/tag1>ls tag3
+/tag1/tag3> attr1:a attr2:b attr3:c
+
+
+- Updating using over multiple nodes
+
+e.g.:
+:test:/tag1>upd tag2[@attr2=aaa]
+updated node:/tag1/tag2>
+   From attr2:d To attr2:aaa
+
+updated node:/tag1/tag2>
+   From attr2:i To attr2:aaa
+
+updated node:/tag1/tag2>
+   From attr2:p To attr2:aaa
+
+
+:test:/tag1>ls tag2
+/tag1/tag2> attr1:b attr2:aaa attr3:e attr4:None
+
+/tag1/tag2> attr1:b attr2:aaa attr3:j attr4:k
+tag4
+
+/tag1/tag2> attr1:b attr2:aaa attr3:None attr4:None
+
+
+- Updating using seach criterias
+
+e.g.:
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:True attr2:m attr3:n
+
+
+:test:/tag1>upd tag2@attr2=i/tag4/tag5[@attr1=False]
+updated node:/tag1/tag2/tag4/tag5>
+   From attr1:True To attr1:False
+
+
+:test:/tag1>ls tag2@attr2=i/tag4/tag5
+/tag1/tag2/tag4/tag5> attr1:False attr2:m attr3:n
+
+
+- Updating a node text
+
+e.g.:
+:test:/tag1>ls tag3@%text
+aaaa1;bbbbbbbb2
+
+:test:/tag1>upd 'tag3[@%text=new value for;this;texts]'
+updated node:/tag1/tag3>
+   From %text:
+               aaaa1
+               bbbbbbbb2
+   To %text:
+               new value for
+               this
+               texts
+
+:test:/tag1>ls tag3@%text
+new value for;this;texts <---

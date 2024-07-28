@@ -1,0 +1,35 @@
+<!-- Copyright (c) 2007-2024, Patrick Germain Placidoux -->
+<!-- All rights reserved. -->
+<!-- -->
+<!-- This file is part of KastMenu (Unixes Operating System's Menus Broadkasting). -->
+<!-- -->
+<!-- KastMenu is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- KastMenu is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with KastMenu.  If not, see <http://www.gnu.org/licenses/>. -->
+<!-- -->
+<!-- Home: http://www.kastmenu.org -->
+<!-- Contact: kastmenu@kastmenu.org -->
+
+
+<config title='KastMenu Step by Step'  option_upper='False'>
+    
+    <menu title='Welcome to KastMenu First Steps' help='My short Help' lhelp='My long Help plus link test: http://www.kikonf.org'>
+        <option name='KastMenu' help='What is KastMenu ?' lhelp='My long Help' command='${KINSTALL_DIR}/bin/km kastmenu/kastmenu.xml --follow_menu'  command_enter='echo "This is a command Enter sample !"'   command_exit='echo "This is a command Exit sample !"'  police_bold='False' police_color='WHITE' police_bgcolor='BLACK'/>
+        
+        <option name='KastMenu API' command='${KINSTALL_DIR}/bin/kmdemo --follow_menu'  police_bold='True' police_color='BLUE' police_bgcolor='NONE' help='Using KastMenu programatically' lhelp='My long Help'/>               
+       
+        <option name='Show this menu file' help="Display this current menu's file" command='cat tutorials.xml' police_bold='True' police_color='PURPLE' police_bgcolor='NONE'/>
+        <option name='Show KastMenu History' command='echo "KLOG_FILE=${KLOG_FILE}" && if [[ ${KLOG_FILE} != "" ]]; then cat ${KLOG_FILE} && echo "History shown, see previous !";fi'  police_bold='False'   police_color='WHITE' police_bgcolor='BLACK'/>
+    </menu>
+
+    
+</config>

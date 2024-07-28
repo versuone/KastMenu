@@ -1,0 +1,138 @@
+ ---------------------------
+|xpc:xql Insert command help|
+ ---------------------------
+
+
+h (or help) <command> shows this help: an help for this commands available for the mounted processor for the currrent mode. 
+help a long help for the commands available for the mounted processor for the currrent mode.
+h show a short summary of the commands available  for the mounted processor for the currrent mode.
+H shows a short summary of the globally available commands (for all mode, all processor).
+HELP shows a long help for the globally available commands.
+H (or HELP) <command> shows help for this globally available commands.
+
+
+8 INSERT OPERATION
+
+
+The insert operation is a Repoz special operation that uses the Repoz Return cache capability,
+to allow insertion of the stored node(s) into another file
+or another part of the same xml file.
+
+
+Syntax:
+-------
+insert $ro where F_ATTRS at F_TAGS where F_ATTRS
+
+
+Here the original content of the file test.xml,
+we also open the first pocessor.
+
+:>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X
+New processor with alias:test, created and mounted.
+:test:/tag1>%
+%test:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+        </tag1>
+
+
+
+We run a select clause.
+In the Repoz scheme, a select always returns the set of found nodes into the Repoz Variable : ro.
+
+
+%test:/tag1>select * at tag2
+
+                    *tun  attr2                attr3                attr1                *text
+/tag1/tag2
+                    I2    d                    e                    c                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I4    k                    i                    j                    h                    []
+
+                    *tun  attr4                attr2                attr3                attr1                *text
+/tag1/tag2
+                    I7    None                 p                    None                 o                    []
+
+
+
+This is the content of the Repoz Variable ro (a list of nodes):
+
+%test:/tag1>var ro
+[<lib.epicxmlp.Node instance at 0x00BBF620>, <lib.epicxmlp.Node instance at 0x00BBF738>, <lib.epicxmlp.Node instance at 0x00BBF670>]
+
+
+Now we may create and mount a second processor where to make the insertion.
+
+Note:
+-----
+It could be the same proecessor.
+
+%test:/tag1>xpc -F E:\Projets\REPOSITORY\repoz\samples\test.xml -X -s
+New processor with alias:test0, created. (use mount test0, to mount it)
+%test:/tag1>mount testO
+
+
+
+Now we run  the insert command using the Repoz: ro Variable
+
+%test0:/tag1>insert $ro at tag1
+
+Found target node at:/tag1
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+   Adding child:/tag1/tag2
+
+
+
+This is the result:
+
+%test0:/tag1>xselect * at tag1
+
+/tag1
+    *tun:I1
+
+        <tag1  attr2="b" attr1="a">
+            <tag2  attr2="d" attr3="e" attr1="c">
+            </tag2>
+            <tag3  attr3="A value with spaces !" attr1="f" attr2="g">
+                aaaa1
+                bbbbbbbb2
+            </tag3>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">
+            </tag2>
+            <tag2  attr2="d" attr3="e" attr1="c">  <-- New from insert
+            </tag2>
+            <tag2  attr4="k" attr3="j" attr1="h" attr2="i">  <-- New from insert
+                <tag4 >
+                    <tag5  attr2="m" attr3="n" attr1="True">
+                    </tag5>
+                </tag4>
+            </tag2>
+            <tag2  attr4="None" attr3="None" attr1="o" attr2="p">  <-- New from insert
+            </tag2>
+        </tag1>

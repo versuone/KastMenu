@@ -1,0 +1,33 @@
+kikxml Project 
+==============
+[E/I]KIKXML### (ex: EKIKXML001)
+
+
+kwad Project
+==============
+[E/I]KAST### (ex: EKAST001)
+
+
+kwad/software Project
+=======================
+[E/I]KAST[SFW]### (ex: EKIKONWAS001)
+
+
+kwad/software/softclasses Project
+===============================
+[E/I]KAST[SFW][ACTION]### (ex: EKIKONWASJVM001)
+
+
+Wanted Keyword Project 
+======================
+[E/I]WK### (ex: EWK001)
+
+
+cooltyping Project 
+==================
+[E/I]CT### (ex: ECT001)
+
+
+repository Project 
+==================
+[E/I]REPOS### (ex: EREPOS001)

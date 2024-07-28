@@ -1,0 +1,283 @@
+<!-- Copyright (c) 2007-2024, Patrick Germain Placidoux -->
+<!-- All rights reserved. -->
+<!-- -->
+<!-- This file is part of KastMenu (Unixes Operating System's Menus Broadkasting). -->
+<!-- -->
+<!-- KastMenu is free software: you can redistribute it and/or modify -->
+<!-- it under the terms of the GNU General Public License as published by -->
+<!-- the Free Software Foundation, either version 3 of the License, or -->
+<!-- (at your option) any later version. -->
+<!-- -->
+<!-- KastMenu is distributed in the hope that it will be useful, -->
+<!-- but WITHOUT ANY WARRANTY; without even the implied warranty of -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the -->
+<!-- GNU General Public License for more details. -->
+<!-- -->
+<!-- You should have received a copy of the GNU General Public License -->
+<!-- along with KastMenu.  If not, see <http://www.gnu.org/licenses/>. -->
+<!-- -->
+<!-- Home: http://www.kastmenu.org -->
+<!-- Contact: kastmenu@kastmenu.org -->
+
+
+<html style="font-size:3vmin;">
+
+
+<head>
+
+<!-- avoiding browser/android resizing on input field: -->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+<!-- JS Template tool -->
+<script src='/kastmenu/js/handlebars-v1.3.0.js' type='text/javascript'></script>
+
+<!-- Bootstrap5 libraries: Has no Ajax equivalent and JS html5 ftech is too slow ! => Replacing fetch get by MenuWebSocketGet -->
+<link rel="shortcut icon" href="/kastmenu/images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/kastmenu/images/favicon.ico">
+
+
+
+<style type="text/css">
+#frame_content{
+overflow: auto;
+background: #fff;
+margin-top: 14vmin;
+}
+
+
+.frame_header {
+    position:fixed;
+	width: 100%;
+	height: 13vmin;
+	background-color: #cccccc;
+	text-align : center;
+	top: 0;
+	left: 0;
+    background-color: #10154C;
+}
+
+#frame_content2{
+overflow: auto;
+background: #fff;
+/* margin-top: 27vmin; directly set on tag */ 
+}
+
+.frame_header2 {
+    position:fixed;
+	width: 100%;
+	/* height: 26vmin; directly set on tag */ 
+	background-color: #cccccc;
+	text-align : center;
+	top: 0;
+	left: 0;
+    background-color: #10154C;
+}
+</style>
+
+</head>
+
+
+<body>
+
+
+<!--
+     *************************
+     | Global Error Template |    
+     *************************
+-->
+
+
+<script id="global-error-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<div id="global_error" style='background-color:white;width:100%;' tabindex="0">
+<br>
+<br>
+<br>
+<br>
+    <table style='border-width:5px;width:100%;'>
+	<thead>
+	    <tr>
+		<th style='background-color:red;border-color:red;color:white;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:3vmin'>Error</span>
+		</th>
+	    </tr>
+	</thead>
+	<tfoot>	
+	    <tr>
+		<td style='background-color:red;word-wrap:break-word;word-break:break-all;overflow:hidden;align:center;margin:0;padding:0'>
+        &nbsp
+		</td>
+	    </tr>
+	</tfoot>
+	
+	<tbody> 
+	    <tr>
+		<td style='border-color:red;background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;'>
+An error occured accessing backend server !<br>
+{{#if messages}}SubException is:<br>{{/if}}
+{{{messages}}}
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+</div>
+</script>
+
+
+
+
+
+<!--
+     *************************
+     | Global Help Template |    
+     *************************
+-->
+
+
+<script id="global-help-template" type="text/x-handlebars-template-0">
+<span id='anchor_{{id}}_{{ooid}}'></span>
+<br>
+<br>
+<br>
+<br>
+<div id="global_help" align="center" style='background-color:white;' tabindex="0">
+
+    <table style='border-width:5px;width:100%'>
+	<thead>
+	    <tr>
+		<th style='background-color:blue;border-color:blue;color:white;padding:0;spacing:0;font-weight:normal'>
+		    <span style='font-size:7vmin'>{{title}}</span>
+		</th>
+	    </tr>
+	</thead>
+	<tfoot>	
+	    <tr>
+		<td style='background-color:blue;word-wrap:break-word;word-break:break-all;overflow:hidden;align:center;margin:0;padding:0'>
+		    <div align="center"><img title="Validate" border=0 src="/kastmenu/images/ic_validate.png" onclick="this.src='/kastmenu/images/ic_validate.png';document.getElementById('global_screen').style.display='block';document.getElementById('global_help').style.display='none';document.getElementById('global_error').style.display='block';"  onmouseout="this.src='/kastmenu/images/ic_validate.png';" onmouseover="this.style.cursor='pointer';this.src='/kastmenu/images/ic_validate_2.png';" alt="help" style="width:8vmin;height:8vmin;vertical-align: center;"/></div>
+		</td>
+	    </tr>
+	</tfoot>
+	
+	<tbody> 
+	    <tr>
+		<td style='border-color:blue;background-color:white;word-wrap:break-word;word-break:break-all;overflow:hidden;'>
+		    {{#each helps}}
+			  {{{this}}}<br>
+		    {{/each}}
+            <br>
+		    {{#each lhelps}}
+			  {{{this}}}<br>
+		    {{/each}}
+		</td>
+	    </tr>
+	</tbody>
+    </table>
+</div>
+</script>
+
+
+
+<!--
+     ________________________________________________________________________________________________________________________________________________
+     |                                                                                                                                              |
+     | MAIN CONTENT                                                                                                                                 |
+     |______________________________________________________________________________________________________________________________________________|
+-->
+
+<!-- TOP CSS Frame -->
+<div class="frame_content"  id="frame_content">
+    <div id='global_screen'>
+    
+        <div class="frame_header" id='frame_header'>
+            <div>        
+            <div id="global_header" style='display:initial;'>
+                <span style="float:left;"></span>    
+                <a href="javascript:restartMenu();"  title="Restart Menu">
+                <img title="Restart Menu Terminal Session" id="running_img" border=0 src="/kastmenu/images/tec6tem-spinner-logo-slow.gif"  
+                    style="margin-top:0.5vmin;width:12vmin;height:12vmin;float:left;"/></a>
+                
+                <!-- <span style="float:left;">&nbsp;</span> -->
+                <span style="float:left;">&nbsp;&nbsp;</span>    
+                
+                <span style="float:left;margin-top:3.5vmin;font-size:4vmin;float:left;color:white" id='title'>KastMenu</span>      
+                
+                <div class="nav nav-pills mb-3" id="pills-tab" role="tablist"  style="float:right;padding-top:3.5vmin;">
+                    <a 
+                        href="javascript:showHelp(HELP_TITLE, HELP, HELP);"
+                        title="javascript:HELP"><img  border=0 src="/kastmenu/images/ic_help_blue.png" onmouseout="this.src='/kastmenu/images/ic_help_blue.png'" onmouseover="this.src='/kastmenu/images/ic_help_blue_light.png'" alt="help" style="width:6vmin;height:5vim;vertical-align: bottom;float:right;"/>
+                    </a>
+              </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="global_error"></div>
+    <div id="global_help"></div>
+</div>
+
+<script>
+const urlify = (text) => {
+  const urlRegex = /(https?:\/\/[^\s\'\"\<\>]+)/g;
+  return text.replace(urlRegex, (url) => {
+    //noopener noreferrer: to prevent the newly opened tab from being able to modify the original tab maliciously
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+  })
+}
+
+// Global Error:
+function makeGlobalError (messages) {
+    var ghd = document.getElementById("global_help");
+    var ged = document.getElementById("global_error");
+    
+    // Display:
+    var source = document.getElementById("global-error-template").innerHTML;
+    var template = Handlebars.compile(source);
+    
+    ged.innerHTML = template({"messages": messages});
+    ghd.style.display='none';
+    ged.style.display='block';
+}; 
+
+
+function showHelp (title, help, lhelp) {   
+    var ghd = document.getElementById("global_help");
+    var ged = document.getElementById("global_error");
+    
+    // Display:
+    var source = document.getElementById("global-help-template").innerHTML;
+    var template = Handlebars.compile(source);
+
+    help = help.replaceAll(String.fromCharCode(92), 'eacute_backslah');
+    help = help.replaceAll('eacute_backslahn', 'eacute_br');
+    help = help.replaceAll('eacute_backslah', ' ');
+    help = urlify(help);
+    var helps = help.split('eacute_br');
+    
+    lhelp = lhelp.replaceAll(String.fromCharCode(92), 'eacute_backslah');
+    lhelp = lhelp.replaceAll('eacute_backslahn', 'eacute_br');
+    lhelp = lhelp.replaceAll('eacute_backslah', ' ');
+    lhelp = urlify(lhelp);
+    var lhelps = lhelp.split('eacute_br');
+    
+    ghd.innerHTML = template({"title": title, "helps": helps, "lhelps": lhelps});
+    ged.style.display='none';
+    ghd.style.display='block';
+};
+
+
+
+
+
+var  ERROR_MESSAGE = "[[[ERROR_MESSAGE]]]";
+var HELP_TITLE = "[[[HELP_TITLE]]]";
+var HELP = "[[[HELP]]]";
+var LHELP = "[[[LHELP]]]";
+makeGlobalError (ERROR_MESSAGE);
+// True: showHelp (HELP_TITLE, HELP, LHELP);
+
+</script>
+
+
+</body>
+</html>
