@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+<meta charset="utf-8" />
+<title>KastMenu Server</title>
+<meta http-equiv="Content-Type" content="text/HTML; charset=iso-8859-1" />
+<meta name="keywords" content="linux, debian, unix, ssh, shell, bash, terminal, console, containerd, linux namespace, cloud, kvm, k8s, kubernetes, raspberry, domoticz" />	 
+<meta name="authors" content="Patrick Germain Placidoux" />
+<meta name="robots" content="index, follow" />
+<meta name="revisit after" content="3 days" />
+<meta name="description" content="KastMenu Server provides Mobile and Web access to system Menu files running on target remote Machines." />
+
+
+
+<!-- avoiding browser/android resizing on input field: -->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+<!-- JS Template tool -->
+<script src='./js/handlebars-v1.3.0.js' type='text/javascript'></script>
+<link rel="shortcut icon" href="./images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+
+<link rel="stylesheet"  href="./bootstrap5/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
+<link rel="stylesheet"  href="./bootstrap5/icons-1.10.5/font/bootstrap-icons.min.css">
+<script src="./bootstrap5/js/bootstrap.bundle.min.js"></script>
+
+
+<style type="text/css">
+h1 {
+    display: inline;
+}
+h2 {
+    display: inline;
+    font-size:4vmin;'
+}
+a.Button1 {
+   text-align: top;
+   text-decoration: none;
+   display: block;
+   cursor: pointer;
+   margin: 0 0 10px;
+   /* ko: font-size: 15px; */
+   /* ko: font-weight: bold; */
+   padding: 8px 0;  
+   background: url('./images/dbutton.png') repeat-x center left #f8f8f8;
+   /* ko: color: #463E41;
+   /* text-shadow: 0 8px 0 #fff; */
+   border: 1px solid #999;
+   border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+	box-shadow: 0px 0px 2px #999;
+	-moz-box-shadow: 0px 0px 2px #999;
+	-webkit-box-shadow: 0px 0px 2px #999;  
+   }
+a.Button1:hover {
+   color: #463E41;
+   border: 1px solid #666;
+	box-shadow: 0px 0px 15px blue;
+	-moz-box-shadow: 0px 0px 15px blue;
+	-webkit-box-shadow: 0px 0px 15px blue;  
+}
+a.Button1:focus {
+   color: #463E41;
+	box-shadow: 0px 0px 2px #999;
+	-moz-box-shadow: 0px 0px 2px #999;
+	-webkit-box-shadow: 0px 0px 2px #999;  
+}
+
+a.Button2 {
+   text-align: top;
+   text-decoration: none;
+   display: block;
+   cursor: pointer;
+   margin: 0 0 10px;
+   /* ko: font-size: 15px; */
+   /* ko: font-weight: bold; */
+   padding: 8px 0;  
+   background: url('./images/dbutton.png') repeat-x center left #f8f8f8;
+   /* ko: color: #463E41;
+   /* text-shadow: 0 8px 0 #fff; */
+   border: 1px solid #999;
+   border-radius: 50px;
+   -moz-border-radius: 50px;
+   -webkit-border-radius: 50px;
+	box-shadow: 0px 0px 2px #999;
+	-moz-box-shadow: 0px 0px 2px #999;
+	-webkit-box-shadow: 0px 0px 2px #999;  
+   }
+a.Button2:hover {
+   color: #463E41;
+   border: 1px solid #666;
+	box-shadow: 0px 0px 15px blue;
+	-moz-box-shadow: 0px 0px 15px blue;
+	-webkit-box-shadow: 0px 0px 15px blue;  
+}
+a.Button2:focus {
+   color: #463E41;
+	box-shadow: 0px 0px 2px #999;
+	-moz-box-shadow: 0px 0px 2px #999;
+	-webkit-box-shadow: 0px 0px 2px #999;  
+}
+
+/* footer: */
+div #footer { width: 100%;
+				border-top :  #c3c3c3  2px solid;
+				text-align:center;				
+}
+
+#footer li{display:inline;margin:0 6px 0 6px;}
+#footer li, #footer li a, #footer span{color:#463E41;
+												font-family:Verdana, Tahoma, Trebuchet, sans-serif;
+												font-size:12px;	
+												font-style:italic;						
+												}
+#footer li a{text-decoration:none;font-style:normal;	}
+#footer li a:hover{color:#c3c3c3;}
+</style>
+
+
+
+<script>
+function isMobileCheckWith() {
+    return ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 600 ) );
+}
+  
+  
+function isMobileCheckWithTouch() {
+    var match = window.matchMedia || window.msMatchMedia;
+    if(match) {
+        var mq = match("(pointer:coarse)");
+        return mq.matches;
+    }
+    return false;
+}
+
+
+function isMobileCheckWithOrientation() {
+    return window.orientation > -1;
+}
+
+function isMobileCheckSessionStorage() {
+    if (sessionStorage.desktop) // desktop storage 
+        return false;
+    else if (localStorage.mobile) // mobile storage
+        return true;
+}
+
+
+function isMobile() {
+    if (isMobileCheckWithTouch() && isMobileCheckWithOrientation()) {
+        return true;
+    }
+    return false;
+}
+
+var IS_MOBILE = isMobile();
+</script>
+
+</head>
+
+<body>
+
+
+<div style='text-align: center;font-family:verdana;font-size:7vmin;'>
+<hr style="width:100%;background-color:green; height: 0.5vmin; border: 0; "/>
+<a href="https://kastmenu.com:9000" target="_blank" title='See the Demo' style='text-decoration:none;'>
+<span style="color:#8B008B;"><b style='color:#0000A5;'><h1>K</b>ast<b style='color:#0000A5;'>M</b>enu Server</h1></span>
+</a>
+<br>
+<span style="color:grey;font-size:5vmin">Unixes Operating System's Menu broadKast</span>
+<hr style="width:100%;background-color:#3F9B0B; height: 0.5vmin; border: 0; "/>
+</div>
+
+<div  id='diva'  style='padding-left:10vmin;white-space: nowrap;text-align: center;'>
+<br>
+<br>
+<br>
+
+
+<!-- Mobile: -->
+<div   style="transform: rotate(-30deg);display: inline-block;">
+<u><b>On Mobiles:</b></u>
+<br>
+<img id='img-mobile' border=1  src="./images/mobile/mobile-page-welcome.zuser@localhost.png"  style="width:40vmin;margin-left:10vmin;border-radius:0.55rem;border-left-width:1vmin;border-right-width:1vmin;border-top-width:3vmin;border-bottom-width:3vmin;border-color:chocolate">
+</div>
+
+
+<!-- Browser: -->
+<div  style="display: inline-block;vertical-align:top;">
+<u><b>On Browser with MultiTabs:</b></u>
+<br>
+<img  id='img-browser' border=0 src="./images/browser/browser-4-tabs.guest@k8manager.png" style="width:120vmin;"/>
+</div>
+
+
+<!-- Terminal Consol: -->
+<div   style="transform: rotate(30deg);display: inline-block;vertical-align:center;">
+<u>On Terminal Consols:</u>
+<br>
+<img  id='img-console' border=0 src="./images/console/console-welcome.guest@localhost.png" style="width:70vmin;"/>
+</div>
+
+</div>
+
+
+<!-- Arrow Bottom: #3F9B0B; -->
+<div id='divb' style='padding-left:10vmin;text-align: center;padding:0;margin:0;'>
+<i  id='arrow-middle' class="bi bi-caret-down-fill" style="color:#52D017;font-size:20vmin;"></i>
+<br>
+
+
+<!-- Big Brother Log: -->
+<div   style="display: inline-block;vertical-align:center;">
+<u>Real time Visual log & Menu replay !</u>
+<br>
+<img id='img-log' border=0 src="./images/log/log-big-brother.patrick@localhost.png" style="width:100vmin;">
+</div>
+
+</div>
+
+<br>
+<br>
+
+<table>
+<tr>
+<td>
+<!-- Download Button (Begin) -->
+<div style='padding-left:3vmin;'>
+<table>
+<tr>
+<td>
+<a href="https://kastmenu.com:9000" target="_blank" class="Button1"> 
+<table>
+<tr>
+<td id='seedemo' style='color:#336600; font-family:verdana;font-size: 17px; font-weight: bold;padding-left:1vmin;text-align:left;'>
+See the demo<br> 
+Mobile & Browser !
+</td>
+<td>
+&nbsp;&nbsp;<img src="./images/darrow.png" onclick="window.open('https://kastmenu.com:9000', '_blank');" />
+</td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+</table>
+</div>
+</td>
+
+<td>
+<!-- Download Button (Begin) -->
+<div style='padding-left:3vmin;'>
+<table>
+<tr>
+<td>
+<a href="./install.html#On_the_KastMenu_Server_Machine" target="_blank" class="Button2"> 
+<table>
+<tr>
+<td  id='install' style='color:#336600; font-family:verdana;font-size: 17px; font-weight: bold;padding-left:1vmin;text-align:left;'>
+Download<br> 
+KastMenu Server !
+</td>
+<td>
+&nbsp;&nbsp;<img src="./images/darrow.png" onclick="window.open('./install.html#On_the_KastMenu_Server_Machine', '_blank');" />
+</td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+<!-- Download Button (End) -->
+
+<img src="./images/demo.qrcode.png"  style="padding-left:8vmin;width:40vmin;"/>
+
+<script>
+const diva = document.getElementById('diva');
+const divb = document.getElementById('divb');
+const arrowMiddle = document.getElementById('arrow-middle');
+const img1 = document.getElementById('img-console');
+const img2 = document.getElementById('img-log');
+const img3 = document.getElementById('img-browser');
+const img4 = document.getElementById('img-mobile');
+const seedemo = document.getElementById('seedemo');
+const install = document.getElementById('install');
+if (IS_MOBILE==true) {
+    diva.style.fontSize = '1.5vmin';
+    diva.style.paddingLeft = '5vmin';
+    divb.style.fontSize = '2vmin';
+    seedemo.style.fontSize =  '2.5vmin';
+    install.style.fontSize =  '2.5vmin';
+    arrowMiddle.style.fontSize = '10vmin';
+    img1.style.width = '30vmin';
+    img2.style.width = '30vmin';
+    img3.style.width = '30vmin';
+    img4.style.width = '20vmin';
+}
+</script>
+
+
+<hr style="width:100%;background-color:green; height: 0.5vmin; border: 0; "/>
+<div style='padding-left:3vmin;font-family:verdana;font-size:3vmin;'>
+
+<!-- Summary: ----------------------------------------------------------------------------------------------------------------------- -->
+
+<p><strong><a href="https://www.kastmenu.com" target='_blank'>Official web site here !</a></strong>
+<strong><a href="https://www.kastmenu.com:9000" target='_blank'>KastMenu Demo here !</a></strong></p>
+<p><strong><u>Summary:</u></strong></p>
+<ul>
+<li>1/ <a href="#What is KastAgent">What is KastAgent ?</a></li>
+<li>2/ <a href="#What is KastMenu">What is KastMenu ?</a></li>
+<li>3/ <a href="#KastMenu Features">KastMenu Features</a></li>
+<li>4/ <a href="#What Public is it dedicated for">What Public is it dedicated for ?</a></li>
+<li>5/ <a href="#KastMenu Commands">KastMenu Server Commands</a></li>
+<li>6/ <a href="#Install KastMenu">Install KastMenu</a></li>
+<li>7/ <a href="#Run">Run</a></li>
+<li>8/ <a href="#Feeding the KastMenu registry">Feeding the KastMenu registry</a>
+<br>
+<br></li>
+</ul>
+<p><strong>1/ <a href="#top">What is KastAgent ?</a></strong>  </p>
+<p><strong>K</strong>astAgent is the agent for KastMenu.<br>KastAgent is automanaged and deployed by KastMenu.<br>So this project is not intend to be downloaded/installed standalone outside KastMenu.<br>But is there to follow the development of KastAgent.<br>Hence KastAgent is periodically integrated into KastMenu under the directory kastagent.  </p>
+<p><strong>K</strong>astAgent is the remote counterpart of the KastMenu server and runs on the target machine.<br>For more information about KastAgent see the KastAgent project.  </p>
+<p><strong>K</strong>astAgent is both a Web and a Terminal Menu.</p>
+<ul>
+<li>It is trigered remotly by KastMenu server or locally by the user, via SSH  and runs on a local machine or VM.</li>
+<li>It is called for a specific User and runs under the User of this session.  </li>
+<li>It runs everywhere you can have a unix Terminal.  </li>
+<li>It provides Web or Terminal Menu access to any unix comands under the unix security paradygm.  </li>
+</ul>
+<p><strong>K</strong>astAgent aims to support any linux distributions,<br>while KastMenu server will only plan to support real free linux: debian distributions and derivatives.  </p>
+<p><strong>K</strong>astAgent is Powefull because it can run any command that runs on Unix.  </p>
+<p>The KastAgent features include: infinite Menus imbrication and:</p>
+<ul>
+<li><a href="https://www.kastmenu.org/index.html#KastMenu_Log" target='_blank'>KastMenu Log System</a></li>
+<li><a href="https://www.kastmenu.org/index.html#KastMenu_Replay" target='_blank'>KastMenu Replay</a></li>
+<li><a href="https://www.kastmenu.org/index.html#KastMenu_Help" target='_blank'>KastMenu Help Sytem</a></li>
+</ul>
+<p>For informations on KastMenu see: <a href="https://www.kastmenu.com" target='_blank'>www.kastmenu.com</a>.  </p>
+<p><strong>K</strong>astAgent aims to support any linux distributions,<br>while <strong>K</strong>astMenu will only plan to support real free linux: debian distributions and derivatives.<br><br></p>
+<p><strong>2/ <a href="#top">What is KastMenu ?</a></strong>  </p>
+<p>Previously KastMenu was called KastMenu server and where separated from KastAgent.<br>Now both KastMenu server and KastAgent are merged under the project KastMenu and KastMenu embed KastAgent under the kastagent directory.<br>KastMenu autodeploy KastAgent to the first seen machine/VM.  </p>
+<p>The full projet is 100% Free and OpenSource under the GPL 3 license.  </p>
+<p><strong>K</strong>astMenu <strong>enhances</strong> the capabilities of KastAgent by providing a <strong>Mobile</strong> and <strong>Web Browser</strong> view of the Terminal Menu by securely running it in the background.<br>In the same conditions as KastAgent does it.  </p>
+<p>With KastMenu Server the User can access his <strong>Menu files</strong> on any <strong>target Machines</strong> through his <strong>SmartPhone</strong> or favourite <strong>Web Browser</strong>.<br>He doesn&#39;t need, no more to be directly connected to the Machine nor by SSH to run his menu.<br><strong>So using KastMenu Users can run complex unix commands on any Machines from his Mobile or Browser.</strong><br><br></p>
+<p><strong>3/ <a href="#top">KastMenu Features</a></strong>   </p>
+<ul>
+<li><p><strong>Suppport of Multiple Machines:</strong><br>Users can open KastMenu sessions on multiple Machines.</p>
+</li>
+<li><p><strong>Suppport of Multiple Tabs:</strong><br>Users can open multiple tabs of KastMenu session, in the same Browser.<br>These tabs may target distinct machines or not.<br>Tabs would be entitled <strong><user>@<machine></strong>.  </p>
+</li>
+<li><p><strong>Support of User authentication:</strong><br>KastMenu server is able to authenticate Users by delegating authentication to the target Machine.<br>KastMenu server is transparent and <strong>do not store User password</strong>.<br>Users must have an User account to the target Machine (but may be prevented to logon with .profile or .bashrc &lt;=&gt; exit 0. for example).</p>
+</li>
+<li><p><strong>Support of autorization:</strong><br>KastMenu server will only allow an User to a specific Machine if it is registred to KastMenu Server.</p>
+</li>
+<li><p><strong>Support of default Machine:</strong><br>A specific Machine can be set as the default Machine.<br>This would show this Machine as the default Machine on the welcome page of the WebView<br><a href="https://kastmenu.com:9000" target='_blank'>See the Demo for it !</a></p>
+</li>
+<li><p><strong>Support of guest Users:</strong><br>This is an advanced feature it needs to be activated into the config file: kast.conf.<br>A specific guest user can be registred for a specific Machine into KastMenu Server.<br>This would show this guest user as the default on the welcome page of the WebView for this specific Machine.  </p>
+<p>Typically a guest user is an account on this Machine with low rights.<br>Because it is set as this, <strong>only this guest user would be allowed to no authentication</strong> and would perform the guest <strong>user default menu</strong>.<br>This feature allows to <strong>welcome Newbees</strong> on one Machine.<br><a href="https://kastmenu.com:9000" target='_blank'>See the Demo for it !</a></p>
+</li>
+<li><p><strong>Support of Mail Users:</strong><br>This is an advanced feature it needs to be activated into the config file: kast.conf.<br>One may be bored to register users one by one on a Machine.<br>KastMenu Server supports <strong>Auto user registration and account creation</strong>,<br>with the featrure called <strong>&quot;Signin with your mail&quot;</strong> only if the registred Machine is set to support it.  </p>
+<p>Once the &quot;Signin with your mail&quot; form is fullfilled and validated:<br>A new user unix account is created on the target Machine:  </p>
+<ul>
+<li>prefixed with the value for the _&quot;generated_user_linux_prefix&quot;_ attribute of the config file: kast.conf (e.g.: z). and</li>
+<li>rooted with the base name of the mail user plus an index.</li>
+</ul>
+<p>e.g.: zpaul01  </p>
+<p>So the user account is created on the target Machine with the provided password.<br>This password is not stored in KastMenu Server but the user is registered.<br>By default the mail is not stored also but a derived hashed (this hash can be disabled into kast.conf).<br><a href="https://kastmenu.com:9000" target='_blank'>See the Demo for it !</a></p>
+</li>
+<li><p><strong>Support of KastMenu menufile:</strong><br>Users can access any menufile path as registred for them into KastMenu Server.</p>
+</li>
+<li><p><strong>Support of Replay:</strong><br>A user can target a menufile on a target Machine with a replayable KastMenu <strong>menupath</strong>,<br>this would <strong>play back</strong> this whole menu sequence into the WebView with a pause of 3s per screen by default.</p>
+</li>
+<li><p><strong>Support of Log system:</strong><br>BigBrother Log system is supported for the same as KastMenu does.
+<br>
+<br></p>
+</li>
+</ul>
+<p>
+<br>
+
+<strong>4/ <a href="#top">What Public is it dedicated for</a></strong>   </p>
+<p><strong>KastMenu is a fair Interactive View of your System</strong>  </p>
+<p>Because it is structured it allows you to publish only what you want the User to see/access on your system.  </p>
+<p>It is also <strong>didactic</strong>, whith the nowaday <strong>Developers/Devops pressure</strong> who want to have more and more access to the system&#39;s commands.<br>This is <strong>not an open ssh</strong> and the Devs can be <strong>happy to see their commands</strong> and openly watch their <strong>not perverted</strong> output.  </p>
+<p>For these reasons KastMenu is suit to:  </p>
+<ul>
+<li><p><strong>New incomming Chalenger Cloud providers:</strong><br>who directly want to compete big ones providing the treasure of nowadays mass of cloud management commands.  </p>
+<ul>
+<li><p>In a per User basis and didactic and structural way.  </p>
+</li>
+<li><p>It fast and easy to implement in large scales.  </p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>Developers/Devops:</strong><br>Because they want more and more direct accesses to the commands provided by the hyper prolific world<br>of the cloud frameworks of any kinds, public or private.<br>They know them and are actually capable of providing a subset xml of commands to the Admins in order to manages their Applications.  </li>
+</ul>
+<ul>
+<li><strong>Cloud Engineers:</strong><br>Who want to provide access to complex but monitored commands of the backends to their peers or users.  </li>
+</ul>
+<ul>
+<li><strong>Admins:</strong><br>Who want to provide powerfull but limited access to the backends.<br>Or to provide: install, start, stop, recovering ... commands, to other departments, e.g. to the supervisors.  </li>
+</ul>
+<ul>
+<li><strong>DBAs:</strong><br>Who want to access to the strength of their Databases system commands.<br>Or want to publish accesses to their batch commands, to non DBAs expert like night Admins.  </li>
+</ul>
+<ul>
+<li><strong>Supervisors:</strong><br>Who have to run heartbeat commands on Applications,<br>or to run dedicated recovering command on them.  </li>
+</ul>
+<ul>
+<li><strong>To welcome a Newbee in any of this department:</strong><br>A restrictive but self demonstrating access to a part of your infrastructure.<br>This way the newbee also learn the commands.  </li>
+</ul>
+<ul>
+<li><strong>To Students:</strong><br>Students directly see the real commands not perverted by any transformation, running into their real environment.<br>And they can tune them.  </li>
+</ul>
+<ul>
+<li><strong>To Training plaform:</strong> Demo, train and test your students on real platforms.<br><br></li>
+</ul>
+<p><strong>5/ <a href="#top">KastMenu Commands</a></strong>   </p>
+<p><strong>K</strong>astMenu Server runs simply as:<br><strong>$</strong> <strong>sudo -u kastserver /opt/kastmenu-server/current/bin/kastserver</strong><br>or: <strong>$</strong> <strong>nohup</strong> sudo -u kastserver /opt/kastmenu-server/current/bin/kastserver -v100 <strong>&amp;</strong>  </p>
+<p>The KastMenu Server commands are:</p>
+<ul>
+<li><p><strong><a href="https://kastmenu.com/cde-addmachine.html" target='_blank'>addmachine:</a></strong> use this command to add new Machines to KastMenu Server.</p>
+</li>
+<li><p><strong><a href="https://kastmenu.com/cde-addkuser.html" target='_blank'>addkuser:</a></strong> use this command to add new Users to KastMenu Server..</p>
+</li>
+<li><p><strong><a href="https://kastmenu.com/cde-addmenu.html" target='_blank'>addmenu:</a></strong> use this command to add new Menu Files to a User into KastMenu Server..</p>
+</li>
+<li><p><strong><a href="https://kastmenu.com/cde-admin.html" target='_blank'>admin:</a></strong> use this command to add Super admin users to KastMenu Server.</p>
+</li>
+<li><p><strong><a href="https://kastmenu.com/cde-convert.html" target='_blank'>convert:</a></strong> use this command to add Super admin users to KastMenu Server.
+<br>
+<br></p>
+</li>
+</ul>
+<p><strong>6/ <a href="#top">Install KastMenu</a></strong>   </p>
+<p>Download kastmenu_<versuion>.deb  </p>
+<p><strong>Check if pre-exist</strong><br><strong>$</strong> dpkg -l | grep kastmenu  </p>
+<p><strong>Delete if pre-exist:</strong><br><strong>$</strong> sudo dpkg -P kastmenu  </p>
+<p><strong>Install:</strong><br><strong>$</strong> dpkg -i <strong>/where/is/kastmenu_1.5.deb</strong><br>or:<br><strong>$</strong> sudo apt -y install <strong>/where/is/kastmenu_1.5.deb</strong><br><br></p>
+<p><strong>7/ <a href="#top">Run</a></strong>  </p>
+<p><strong>$</strong> sudo -u kastserver <strong>/opt/kastmenu/current/bin/kastserver</strong> -v5<br>(-v500 full logging)<br>or:<br><strong>$</strong> nohup sudo -u kastserver <strong>/opt/kastmenu/current/bin/kastserver</strong> -v5 &amp;  </p>
+<p><strong>Open your Browser at https://<hostname>:9000</strong><br><br></p>
+<p><strong>8/ <a href="#top">Feeding the KastMenu registry</a></strong>   </p>
+<p><strong>Adding Machines:</strong><br><u>Adding Machine localhost:</u> (required)<br><strong>$</strong> sudo -u kastserver <strong>/opt/kastmenu/current/bin/addmachine</strong> -m localhost -t Title_for_my_localhost -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastmenu  --kastweb_port 9100<br><span style='color: blue;'><i>--ispublic: this will allow the publishing of the name of this machine in the web interface.<br>--isdefault: this will show this machine by default in the web interface.<br>--kastagent_dir /home/kastmenu: This will be the home dir of the kastagent server on this machine.<br>This usually is the home dir of the kastagent user (see below) for this machine.<br>kastagent user must have full right on this directory.<br>Note: kastmenu auto deploy the kastagent to the target machine into this target directory.<br><br>
+--kastweb_port 9100: Can be any port.<br>This will be the port of what is called the kastweb proxy.<br>The kastweb proxy is part of the kastagent agent installation,<br>and is systematically started for the first menu called for any user on the target machine.   </i></span>
+<br></p>
+<p><u>Adding Machine my_other_host:</u> (for example)<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmachine</strong> -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastm --kastweb_port 9100<br><span style='color: blue;'><i>--kastagent_dir /home/kastm: here we choose kastm as kastmenu user as it can be anyone.   </i></span></p>
+<p><strong>Adding a Sudo user: (optional)</strong><br><span style='color: blue;'><i>e.g. Sudo user (mysuser) for my_other_host:<br>A typical sudo user must have the following rigth on the target machine (my_other_host):<br>ALL=(ALL:ALL) NOPASSWD:ALL<br>Note: a sudo user will not be allowed to create menu.   </i></span>
+<br>
+<strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u mysuser  -t Sudo_user_for_my_other_host  -F -S   </p>
+<p><u>Update machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmachine</strong> -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic -F   </p>
+<p><strong>Adding the kastagent&#39;s User: (required)</strong><br><u>Adding kastmenu user to machine localhost:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m localhost -u kastmenu  -t Kastagent_user_for_localhost  -F -K<br><span style='color: blue;'><i>-K: means is kastmenu user.   </i></span>
+<br>
+<u>Adding kastmenu user to machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u kastm  -t Kastagent_user_for_my_other_host  -F -K   </p>
+<p><strong>Adding Users:</strong><br><u>Adding user to Machine localhost:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m localhost -u test  -t cfhgfhg  -F<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m localhost -u test -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F<br><u>Adding user to Machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u asjkinst  -t cfhgfhg  -F  --ispublic<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome   /tutorials.xml -F   </p>
+<hr>
+<h2 id="-advanced-consid-rations-optional-">Advanced considérations  (optional)</h2>
+<hr>
+<p><strong>Creating a guest user on a specific Machine:</strong><br><span style='color: blue;'><i>A guest user is a specific user with low right on a specific machine.<br>The machine must support Sudo user.<br>--xnopassword: means anyone will be allowed to run any menu under this user with no password.  </i></span>
+<br>
+<strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u guest  -t cfhgfhg  -F --xnopassword<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m my_other_host -u guest -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F  </p>
+<p><strong>Allowing AcceptMail on a specific Machine:</strong><br><span style='color: blue;'><i>-A: --xaccept_mail: With xaccept_mail (-A): Users connecting via the WebMenu would be allowed to automatically create their own<br>account simply providing their mail accounts.<br>-M welcome: --default_menu In conjunction with --xaccept_mail (-A). Will add this menu name for the newly created user.<br>-P /opt/kastmenu/current/conf/welcome/tutorials.xml: In conjunction with --xaccept_mail (-A). Will add this menu file path for the newly created user.</i></span><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmachine</strong> -m my_other_host -t My_other_host_machine -v3 -F -A -M welcome -P /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml --ispublic  -F  </p>
+<hr>
+<p>Copyright © 2024 - Patrick Germain Placidoux</p>
+
