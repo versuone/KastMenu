@@ -292,7 +292,7 @@ Note: a sudo user will not be allowed to create menu.   </i></span>
 
 
 ---------------------------------------
-| Advanced considérations  (optional) | 
+<!-- Advanced considérations  (optional) -->
 ---------------------------------------
 
 **Creating a guest user on a specific Machine:**   

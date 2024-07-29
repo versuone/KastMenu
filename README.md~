@@ -291,6 +291,7 @@ Note: a sudo user will not be allowed to create menu.   </i></span>
 **$** sudo -u kastserver /opt/kastmenu/current/bin/**addmenu**  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome   /tutorials.xml -F   
 
 
+---------------------------------------
 | Advanced considérations  (optional) | 
 ---------------------------------------
 
