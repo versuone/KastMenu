@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html lang="en" class="antialiased">
 <head>
 <meta charset="utf-8" />
-<title>KastMenu Server</title>
+<title>KastMenu</title>
 <meta http-equiv="Content-Type" content="text/HTML; charset=iso-8859-1" />
 <meta name="keywords" content="linux, debian, unix, ssh, shell, bash, terminal, console, containerd, linux namespace, cloud, kvm, k8s, kubernetes, raspberry, domoticz" />	 
 <meta name="authors" content="Patrick Germain Placidoux" />
 <meta name="robots" content="index, follow" />
 <meta name="revisit after" content="3 days" />
-<meta name="description" content="KastMenu Server provides Mobile and Web access to system Menu files running on target remote Machines." />
+<meta name="description" content="KastMenu provides Mobile and Web access to system Menu files running on target remote Machines." />
 
 
 
@@ -166,7 +166,7 @@ var IS_MOBILE = isMobile();
 <div style='text-align: center;font-family:verdana;font-size:7vmin;'>
 <hr style="width:100%;background-color:green; height: 0.5vmin; border: 0; "/>
 <a href="https://kastmenu.com:9000" target="_blank" title='See the Demo' style='text-decoration:none;'>
-<span style="color:#8B008B;"><b style='color:#0000A5;'><h1>K</b>ast<b style='color:#0000A5;'>M</b>enu Server</h1></span>
+<span style="color:#8B008B;"><b style='color:#0000A5;'><h1>K</b>ast<b style='color:#0000A5;'>M</b>enu</h1></span>
 </a>
 <br>
 <span style="color:grey;font-size:5vmin">Unixes Operating System's Menu broadKast</span>
@@ -256,12 +256,12 @@ Mobile & Browser !
 <table>
 <tr>
 <td>
-<a href="./install.html#On_the_KastMenu_Server_Machine" target="_blank" class="Button2"> 
+<a href="https://gitlab.com/kastmenu/kastmenu/-/blob/main/kastmenu_1.5.deb?ref_type=heads" target="_blank" class="Button2"> 
 <table>
 <tr>
 <td  id='install' style='color:#336600; font-family:verdana;font-size: 17px; font-weight: bold;padding-left:1vmin;text-align:left;'>
 Download<br> 
-KastMenu Server !
+KastMenu !
 </td>
 <td>
 &nbsp;&nbsp;<img src="./images/darrow.png" onclick="window.open('./install.html#On_the_KastMenu_Server_Machine', '_blank');" />
@@ -310,22 +310,22 @@ if (IS_MOBILE==true) {
 
 <!-- Summary: ----------------------------------------------------------------------------------------------------------------------- -->
 
-<p><strong><a href="https://www.kastmenu.com" target='_blank'>Official web site here !</a></strong>
-<strong><a href="https://www.kastmenu.com:9000" target='_blank'>KastMenu Demo here !</a></strong></p>
-<p><strong><u>Summary:</u></strong></p>
+<p><strong><a href="https://gitlab.com/kastmenu/kastmenu" target='_blank'>GitLab here !</a></strong>
+<strong><a href="https://github.com/versuone/KastMenu" target='_blank'>Github here !</a></strong></p>
+<p><strong><u><a name="summary">Summary:</a></u></strong></p>
 <ul>
 <li>1/ <a href="#What is KastAgent">What is KastAgent ?</a></li>
 <li>2/ <a href="#What is KastMenu">What is KastMenu ?</a></li>
 <li>3/ <a href="#KastMenu Features">KastMenu Features</a></li>
 <li>4/ <a href="#What Public is it dedicated for">What Public is it dedicated for ?</a></li>
-<li>5/ <a href="#KastMenu Commands">KastMenu Server Commands</a></li>
+<li>5/ <a href="#KastMenu Commands">KastMenu Commands</a></li>
 <li>6/ <a href="#Install KastMenu">Install KastMenu</a></li>
 <li>7/ <a href="#Run">Run</a></li>
 <li>8/ <a href="#Feeding the KastMenu registry">Feeding the KastMenu registry</a>
 <br>
 <br></li>
 </ul>
-<p><strong>1/ <a href="#top">What is KastAgent ?</a></strong>  </p>
+<p><strong>1/ <a href="#summary" name='What is KastAgent'>What is KastAgent ?</a></strong>  </p>
 <p><strong>K</strong>astAgent is the agent for KastMenu.<br>KastAgent is automanaged and deployed by KastMenu.<br>So this project is not intend to be downloaded/installed standalone outside KastMenu.<br>But is there to follow the development of KastAgent.<br>Hence KastAgent is periodically integrated into KastMenu under the directory kastagent.  </p>
 <p><strong>K</strong>astAgent is the remote counterpart of the KastMenu server and runs on the target machine.<br>For more information about KastAgent see the KastAgent project.  </p>
 <p><strong>K</strong>astAgent is both a Web and a Terminal Menu.</p>
@@ -345,12 +345,12 @@ if (IS_MOBILE==true) {
 </ul>
 <p>For informations on KastMenu see: <a href="https://www.kastmenu.com" target='_blank'>www.kastmenu.com</a>.  </p>
 <p><strong>K</strong>astAgent aims to support any linux distributions,<br>while <strong>K</strong>astMenu will only plan to support real free linux: debian distributions and derivatives.<br><br></p>
-<p><strong>2/ <a href="#top">What is KastMenu ?</a></strong>  </p>
+<p><strong>2/ <a href="#summary" name="What is KastMenu">What is KastMenu ?</a></strong>  </p>
 <p>Previously KastMenu was called KastMenu server and where separated from KastAgent.<br>Now both KastMenu server and KastAgent are merged under the project KastMenu and KastMenu embed KastAgent under the kastagent directory.<br>KastMenu autodeploy KastAgent to the first seen machine/VM.  </p>
 <p>The full projet is 100% Free and OpenSource under the GPL 3 license.  </p>
 <p><strong>K</strong>astMenu <strong>enhances</strong> the capabilities of KastAgent by providing a <strong>Mobile</strong> and <strong>Web Browser</strong> view of the Terminal Menu by securely running it in the background.<br>In the same conditions as KastAgent does it.  </p>
 <p>With KastMenu Server the User can access his <strong>Menu files</strong> on any <strong>target Machines</strong> through his <strong>SmartPhone</strong> or favourite <strong>Web Browser</strong>.<br>He doesn&#39;t need, no more to be directly connected to the Machine nor by SSH to run his menu.<br><strong>So using KastMenu Users can run complex unix commands on any Machines from his Mobile or Browser.</strong><br><br></p>
-<p><strong>3/ <a href="#top">KastMenu Features</a></strong>   </p>
+<p><strong>3/ <a href="#summary" name="KastMenu Features">KastMenu Features</a></strong>   </p>
 <ul>
 <li><p><strong>Suppport of Multiple Machines:</strong><br>Users can open KastMenu sessions on multiple Machines.</p>
 </li>
@@ -386,7 +386,7 @@ if (IS_MOBILE==true) {
 <p>
 <br>
 
-<strong>4/ <a href="#top">What Public is it dedicated for</a></strong>   </p>
+<strong>4/ <a href="#summary" name="What Public is it dedicated for">What Public is it dedicated for ?</a></strong>   </p>
 <p><strong>KastMenu is a fair Interactive View of your System</strong>  </p>
 <p>Because it is structured it allows you to publish only what you want the User to see/access on your system.  </p>
 <p>It is also <strong>didactic</strong>, whith the nowaday <strong>Developers/Devops pressure</strong> who want to have more and more access to the system&#39;s commands.<br>This is <strong>not an open ssh</strong> and the Devs can be <strong>happy to see their commands</strong> and openly watch their <strong>not perverted</strong> output.  </p>
@@ -425,13 +425,21 @@ if (IS_MOBILE==true) {
 <ul>
 <li><strong>To Training plaform:</strong> Demo, train and test your students on real platforms.<br><br></li>
 </ul>
-<p><strong>5/ <a href="#top">KastMenu Commands</a></strong>   </p>
+<p><strong>5/ <a href="#summary" name="KastMenu Commands">KastMenu Commands</a></strong>   </p>
 <p><strong>K</strong>astMenu Server runs simply as:<br><strong>$</strong> <strong>sudo -u kastserver /opt/kastmenu-server/current/bin/kastserver</strong><br>or: <strong>$</strong> <strong>nohup</strong> sudo -u kastserver /opt/kastmenu-server/current/bin/kastserver -v100 <strong>&amp;</strong>  </p>
 <p>The KastMenu Server commands are:</p>
 <ul>
 <li><p><strong><a href="https://kastmenu.com/cde-addmachine.html" target='_blank'>addmachine:</a></strong> use this command to add new Machines to KastMenu Server.</p>
 </li>
 <li><p><strong><a href="https://kastmenu.com/cde-addkuser.html" target='_blank'>addkuser:</a></strong> use this command to add new Users to KastMenu Server..</p>
+<u>Known bugs:</u><br>
+a) addkuser would ask the password twice: you only need to provide the password the first time.<br>
+The second time you see the password prompt: do nothing.<br>
+Actully addkuser is working in backgroud with the ssh prompt.<br>
+We are looking for a way for hiding this output.<br>
+b) At the end of the command type enter twice to fully exit.<br>
+We are looking a way to get rid of this also.<br>
+<br>
 </li>
 <li><p><strong><a href="https://kastmenu.com/cde-addmenu.html" target='_blank'>addmenu:</a></strong> use this command to add new Menu Files to a User into KastMenu Server..</p>
 </li>
@@ -442,27 +450,58 @@ if (IS_MOBILE==true) {
 <br></p>
 </li>
 </ul>
-<p><strong>6/ <a href="#top">Install KastMenu</a></strong>   </p>
+<p><strong>6/ <a href="#summary" name="Install KastMenu">Install KastMenu</a></strong>   </p>
 <p>Download kastmenu_<versuion>.deb  </p>
 <p><strong>Check if pre-exist</strong><br><strong>$</strong> dpkg -l | grep kastmenu  </p>
 <p><strong>Delete if pre-exist:</strong><br><strong>$</strong> sudo dpkg -P kastmenu  </p>
 <p><strong>Install:</strong><br><strong>$</strong> dpkg -i <strong>/where/is/kastmenu_1.5.deb</strong><br>or:<br><strong>$</strong> sudo apt -y install <strong>/where/is/kastmenu_1.5.deb</strong><br><br></p>
-<p><strong>7/ <a href="#top">Run</a></strong>  </p>
+<p><strong>7/ <a href="#summary" name="Run">Run</a></strong>  </p>
 <p><strong>$</strong> sudo -u kastserver <strong>/opt/kastmenu/current/bin/kastserver</strong> -v5<br>(-v500 full logging)<br>or:<br><strong>$</strong> nohup sudo -u kastserver <strong>/opt/kastmenu/current/bin/kastserver</strong> -v5 &amp;  </p>
-<p><strong>Open your Browser at https://<hostname>:9000</strong><br><br></p>
-<p><strong>8/ <a href="#top">Feeding the KastMenu registry</a></strong>   </p>
-<p><strong>Adding Machines:</strong><br><u>Adding Machine localhost:</u> (required)<br><strong>$</strong> sudo -u kastserver <strong>/opt/kastmenu/current/bin/addmachine</strong> -m localhost -t Title_for_my_localhost -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastmenu  --kastweb_port 9100<br><span style='color: blue;'><i>--ispublic: this will allow the publishing of the name of this machine in the web interface.<br>--isdefault: this will show this machine by default in the web interface.<br>--kastagent_dir /home/kastmenu: This will be the home dir of the kastagent server on this machine.<br>This usually is the home dir of the kastagent user (see below) for this machine.<br>kastagent user must have full right on this directory.<br>Note: kastmenu auto deploy the kastagent to the target machine into this target directory.<br><br>
+<p><strong>Open your Browser at https://[hostname]:9000</strong><br><br></p>
+<p><strong>8/ <a href="#summary" name="Feeding the KastMenu registry">Feeding the KastMenu registry</a></strong>   </p>
+
+<p><strong>Adding Machines:</strong><br><u>Adding Machine localhost:</u><br>
+localhost is actually the host where kastmenu is running.  
+It is not required to describe machine localhost.<br>
+For production it is actually adviced not to describe localhost.<br>
+You may describe localhost for two reasons:<br>
+_ To use the admin menu from the web interface (experimental for now).<br>
+_ For learning purpose, When you dont have another VM under your hands.<br>
+<br>
+
+<strong>$</strong> sudo -u kastserver <strong>/opt/kastmenu/current/bin/addmachine</strong> -m localhost -t Title_for_my_localhost -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastmenu  --kastweb_port 9100<br><span style='color: blue;'><i>--ispublic: this will allow the publishing of the name of this machine in the web interface.<br>--isdefault: this will show this machine by default in the web interface.<br>--kastagent_dir /home/kastmenu: This will be the home dir of the kastagent server on this machine.<br>This usually is the home dir of the kastagent user (see below) for this machine.<br>kastagent user must have full right on this directory.<br>Note: kastmenu auto deploy the kastagent to the target machine into this target directory.<br><br>
 --kastweb_port 9100: Can be any port.<br>This will be the port of what is called the kastweb proxy.<br>The kastweb proxy is part of the kastagent agent installation,<br>and is systematically started for the first menu called for any user on the target machine.   </i></span>
 <br></p>
 <p><u>Adding Machine my_other_host:</u> (for example)<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmachine</strong> -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastm --kastweb_port 9100<br><span style='color: blue;'><i>--kastagent_dir /home/kastm: here we choose kastm as kastmenu user as it can be anyone.   </i></span></p>
-<p><strong>Adding a Sudo user: (optional)</strong><br><span style='color: blue;'><i>e.g. Sudo user (mysuser) for my_other_host:<br>A typical sudo user must have the following rigth on the target machine (my_other_host):<br>ALL=(ALL:ALL) NOPASSWD:ALL<br>Note: a sudo user will not be allowed to create menu.   </i></span>
+<br>
+<p><strong>Adding a Sudo user: (optional)</strong><br>
+Use this only if as Kastmenu administrator you get tired to have to enter user passwords for this machine using the addkuser command.<br>
+<br>
+<span style='color: blue;'><i>e.g. Sudo user (mysuser) for my_other_host:<br>A typical sudo user must have the following rigth on the target machine (my_other_host):<br>ALL=(ALL:ALL) NOPASSWD:ALL<br>Note: a sudo user will not be allowed to create menu.   </i></span>
 <br>
 <strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u mysuser  -t Sudo_user_for_my_other_host  -F -S   </p>
 <p><u>Update machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmachine</strong> -m my_other_host -t Title_for_my_other_host -v3 -F --ispublic -F   </p>
+<br>
 <p><strong>Adding the kastagent&#39;s User: (required)</strong><br><u>Adding kastmenu user to machine localhost:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m localhost -u kastmenu  -t Kastagent_user_for_localhost  -F -K<br><span style='color: blue;'><i>-K: means is kastmenu user.   </i></span>
 <br>
 <u>Adding kastmenu user to machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u kastm  -t Kastagent_user_for_my_other_host  -F -K   </p>
-<p><strong>Adding Users:</strong><br><u>Adding user to Machine localhost:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m localhost -u test  -t cfhgfhg  -F<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m localhost -u test -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F<br><u>Adding user to Machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u asjkinst  -t cfhgfhg  -F  --ispublic<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome   /tutorials.xml -F   </p>
+<br>
+<p><strong>Adding Users:</strong><br>
+
+Beware the user you use with addkuser exists on the machine and ssh is running on this machine.<br>
+The password for this user will be asked by the command and checked on the ssh of the target machine.<br>  
+An ssh fingerprint nopassword will be created for the kastmenu deamon user: kastserver in order<br>
+to access to this new user in the future.<br>
+No user password is stored.<br>
+<br>
+
+
+<u>Adding user to Machine localhost:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m localhost -u test  -t cfhgfhg  -F<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m localhost -u test -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F<br><u>Adding user to Machine my_other_host:</u><br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addkuser</strong> -m my_other_host -u asjkinst  -t cfhgfhg  -F  --ispublic<br><strong>$</strong> sudo -u kastserver /opt/kastmenu/current/bin/<strong>addmenu</strong>  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome   /tutorials.xml -F   </p>
+
+Now go to your bowser at https://[hostname]:9000 and access to your user's menu.<br>
+Or provide their urls to your users.<br>
+<br>
+
 <hr>
 <h2 id="-advanced-consid-rations-optional-">Advanced considérations  (optional)</h2>
 <hr>

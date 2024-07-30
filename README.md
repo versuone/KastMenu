@@ -202,7 +202,14 @@ The KastMenu Server commands are:
 
 *   **[addmachine:](https://kastmenu.com/cde-addmachine.html)** use this command to add new Machines to KastMenu Server.
   
-*   **[addkuser:](https://kastmenu.com/cde-addkuser.html)** use this command to add new Users to KastMenu Server..
+*   **[addkuser:](https://kastmenu.com/cde-addkuser.html)** use this command to add new Users to KastMenu Server.  
+<u>Known bugs:</u>  
+a) addkuser would ask the password twice: you only need to provide the password the first time.  
+The second time you see the password prompt: do nothing.  
+Actully addkuser is working in backgroud with the ssh prompt.  
+We are looking for a way for hiding this output.  
+b) At the end of the command type enter twice to fully exit.  
+We are looking a way to get rid of this also.  
   
 *   **[addmenu:](https://kastmenu.com/cde-addmenu.html)** use this command to add new Menu Files to a User into KastMenu Server..
   
@@ -235,13 +242,20 @@ or:
 or:  
 **$** nohup sudo -u kastserver **/opt/kastmenu/current/bin/kastserver** -v5 &  
 
-**Open your Browser at https://<hostname>:9000**   
+**Open your Browser at https://[hostname]:9000**   
 <br>
 
 **8/ [Feeding the KastMenu registry](#top)**   
 
 **Adding Machines:**   
-<u>Adding Machine localhost:</u> (required)   
+<u>Adding Machine localhost:</u>  
+localhost is actually the host where kastmenu is running.  
+It is not required to describe machine localhost.  
+For production it is actually adviced not to describe localhost.  
+You may describe localhost for two reasons:  
+_ To use the admin menu from the web interface (experimental for now).  
+_ For learning purpose, When you dont have another VM under your hands.  
+
 **$** sudo -u kastserver **/opt/kastmenu/current/bin/addmachine** -m localhost -t Title_for_my_localhost -v3 -F --ispublic   --isdefault --kastagent_dir /home/kastmenu  --kastweb_port 9100   
 <span style='color: blue;'><i>--ispublic: this will allow the publishing of the name of this machine in the web interface.   
 --isdefault: this will show this machine by default in the web interface.   
@@ -262,6 +276,8 @@ and is systematically started for the first menu called for any user on the targ
 
 
 **Adding a Sudo user: (optional)**   
+Use this only if as Kastmenu administrator you get tired to have to enter user passwords for this machine using the addkuser command.  
+  
 <span style='color: blue;'><i>e.g. Sudo user (mysuser) for my_other_host:   
 A typical sudo user must have the following rigth on the target machine (my_other_host):   
 ALL=(ALL:ALL) NOPASSWD:ALL   
@@ -283,6 +299,12 @@ Note: a sudo user will not be allowed to create menu.   </i></span>
 
 
 **Adding Users:**   
+Beware the user you use with addkuser exists on the machine and ssh is running on this machine.  
+The password for this user will be asked by the command and checked on the ssh of the target machine.  
+An ssh fingerprint nopassword will be created for the kastmenu deamon user: kastserver in order  
+to access to this new user in the future.  
+No user password is stored.  
+
 <u>Adding user to Machine localhost:</u>  
 **$** sudo -u kastserver /opt/kastmenu/current/bin/**addkuser** -m localhost -u test  -t cfhgfhg  -F   
 **$** sudo -u kastserver /opt/kastmenu/current/bin/**addmenu**  -m localhost -u test -n welcome  -p /home/kastmenu/kastagent/current/conf/welcome/tutorials.xml -F   
@@ -290,6 +312,8 @@ Note: a sudo user will not be allowed to create menu.   </i></span>
 **$** sudo -u kastserver /opt/kastmenu/current/bin/**addkuser** -m my_other_host -u asjkinst  -t cfhgfhg  -F  --ispublic   
 **$** sudo -u kastserver /opt/kastmenu/current/bin/**addmenu**  -m my_other_host -u asjkinst -n mywelcome  -p /home/kastm/kastagent/current/conf/welcome   /tutorials.xml -F   
 
+Now go to your bowser at https://[hostname]:9000 and access to your user's menu.  
+Or provide their urls to your users.  
 
 ---------------------------------------
 Advanced considérations  (optional)
